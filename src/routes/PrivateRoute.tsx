@@ -2,6 +2,7 @@ import type { RouteObject } from 'react-router-dom'
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage'
 import { Userpage } from '../features/users/pages/Userpage'
 import { ProfilePage } from '../features/profiles/pages/ProfilePage'
+import { ArcgisServicePage } from '../features/arcgisServices/pages/ArcgisServicePage'
 
 export const PrivateRoute: RouteObject[] = [
   {
@@ -16,6 +17,10 @@ export const PrivateRoute: RouteObject[] = [
       {
         path: 'perfiles',
         element: <ProfilePage />,
+      },
+      {
+        path: 'arcgisServices',
+        element: <ArcgisServicePage />,
       },
     ],
   },

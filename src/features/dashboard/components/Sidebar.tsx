@@ -39,7 +39,7 @@ export const Sidebar = () => {
         {
           label: 'Servicios Arcgis Server , MXD',
           icon: 'pi pi-map',
-          command: () => navigate('/dashboard/users'),
+          command: () => navigate('/dashboard/arcgisServices'),
         },
         {
           label: 'Servicios WMS',
