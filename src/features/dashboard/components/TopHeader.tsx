@@ -2,11 +2,17 @@ import { Avatar } from 'primereact/avatar'
 import styles from './TopHeader.module.css'
 import { useRef } from 'react'
 import { Menu } from 'primereact/menu'
+import { useTheme } from '../../../shared/hooks/useTheme'
 
 import type { MenuItem } from 'primereact/menuitem'
 
-export const TopHeader = () => {
+interface TopHeaderProps {
+  onCollapse: () => void
+}
+
+export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
   const menuRight = useRef<Menu>(null)
+  const { toggleTheme, theme } = useTheme()
 
   const items: MenuItem[] = [
     {
@@ -24,20 +30,33 @@ export const TopHeader = () => {
     },
   ]
 
+  const handleChangeTheme = () => {
+    toggleTheme()
+  }
+
   return (
-    <header className={styles['layout-topbar']}>
+    <header className="layout-topbar">
+      <div className={styles['layout-topbar-toggle']}>
+        <button
+          type="button"
+          className={`p-link ${styles['layout-topbar-button']} `}
+          onClick={onCollapse}
+        >
+          <i className="pi pi-bars"></i>
+        </button>
+      </div>
+
       <div className={styles['layout-topbar-menu']}>
         <button
           type="button"
           className={`p-link ${styles['layout-topbar-button']}`}
+          onClick={() => handleChangeTheme()}
         >
-          <i className="pi pi-calendar"></i>
-        </button>
-        <button
-          type="button"
-          className={`p-link ${styles['layout-topbar-button']}`}
-        >
-          <i className="pi pi-user"></i>
+          <i
+            className={`pi ${
+              theme === 'lara-dark-blue' ? 'pi-moon' : 'pi-sun'
+            }`}
+          ></i>
         </button>
         <button
           onClick={(event) => menuRight?.current?.toggle(event)}

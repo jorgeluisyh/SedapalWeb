@@ -2,24 +2,10 @@ import type { MenuItem } from 'primereact/menuitem'
 import styles from './Sidebar.module.css'
 import { Menu } from 'primereact/menu'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-// importar logo
 import logoSedapal from '../../../assets/logoSedapal.png'
 
 export const Sidebar = () => {
   const navigate = useNavigate()
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
-  useEffect(() => {
-    const dashboardElemento = document.getElementById('dashboard')
-    debugger
-
-    if (isCollapsed && dashboardElemento) {
-      dashboardElemento.dataset.sidebarCollapsed = 'true'
-    } else {
-      dashboardElemento?.removeAttribute('data-sidebar-collapsed')
-    }
-  }, [isCollapsed])
 
   const items: MenuItem[] = [
     {
@@ -87,16 +73,9 @@ export const Sidebar = () => {
     },
   ]
   return (
-    <aside className={` ${styles['layout-sidebar']} `}>
+    <aside className="layout-sidebar">
       <div className={styles['layout-topbar-logo']}>
-        <img src={logoSedapal} alt="Logo" />
-        <button
-          type="button"
-          className={`p-link ${styles['layout-topbar-button']} `}
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <i className="pi pi-bars"></i>
-        </button>
+        <img src={logoSedapal} alt="Logo" className="layout-logo" />
       </div>
       <div className={styles.layoutTopbarMenu}>
         <Menu model={items} className={styles['layout-menu']} />

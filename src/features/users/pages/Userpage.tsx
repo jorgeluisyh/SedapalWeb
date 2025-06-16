@@ -6,9 +6,16 @@ import { InputIcon } from 'primereact/inputicon'
 import { InputText } from 'primereact/inputtext'
 import { useState } from 'react'
 import { Card } from 'primereact/card'
+import { NewUserForm } from '../components/NewUserForm'
+import type { User } from '../types/userType'
 
 export const Userpage = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleCreateProduct = async (user: User) => {
+    //create tu metodo para guardar usuario con un api bicho
+  }
 
   const customers = [
     {
@@ -48,38 +55,51 @@ export const Userpage = () => {
             placeholder="Palabra clave"
           />
         </IconField>
-        <Button type="button" icon="pi pi-plus" label="Nuevo usuario" />
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          type="button"
+          icon="pi pi-plus"
+          label="Nuevo usuario"
+        />
       </div>
     )
   }
 
   return (
-    <Card title="Usuarios">
-      <DataTable
-        header={renderHeader()}
-        value={customers}
-        paginator
-        rows={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        tableStyle={{ minWidth: '50rem' }}
-      >
-        <Column field="name" header="Name" style={{ width: '25%' }}></Column>
-        <Column
-          field="country.name"
-          header="Country"
-          style={{ width: '25%' }}
-        ></Column>
-        <Column
-          field="company"
-          header="Company"
-          style={{ width: '25%' }}
-        ></Column>
-        <Column
-          field="age"
-          header="Representative"
-          style={{ width: '25%' }}
-        ></Column>
-      </DataTable>
-    </Card>
+    <>
+      <Card title="Usuarios">
+        <DataTable
+          header={renderHeader()}
+          value={customers}
+          paginator
+          rows={5}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          tableStyle={{ minWidth: '50rem' }}
+        >
+          <Column field="name" header="Name" style={{ width: '25%' }}></Column>
+          <Column
+            field="country.name"
+            header="Country"
+            style={{ width: '25%' }}
+          ></Column>
+          <Column
+            field="company"
+            header="Company"
+            style={{ width: '25%' }}
+          ></Column>
+          <Column
+            field="age"
+            header="Representative"
+            style={{ width: '25%' }}
+          ></Column>
+        </DataTable>
+      </Card>
+
+      <NewUserForm
+        isModalOpen={isModalOpen}
+        onIsModalOpen={setIsModalOpen}
+        onSubmit={handleCreateProduct}
+      />
+    </>
   )
 }

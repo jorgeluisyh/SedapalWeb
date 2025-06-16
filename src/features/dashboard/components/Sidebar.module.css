@@ -1,4 +1,4 @@
-.layout-sidebar {
+/* .layout-sidebar {
     width: var(--layout-sidebar-width);
     background-color: #202B46;
     height: 100vh;
@@ -8,61 +8,60 @@
     z-index: 2;
     color: #ffffff;
     transition: all 0.2s ease-in-out;
-}
+} */
 .layout-topbar-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    color: #ffffff;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    background-color: transparent;
-    border: none;
-    font-size: 2rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
 }
 
 .layout-sidebar-visible {
-   width: var(--layout-sidebar-collapsed-width);
+  width: var(--layout-sidebar-collapsed-width);
 }
 
 .layout-topbar-button i {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .layout-topbar-logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: 500;
-    width: 100%;
-    border-radius: 12px;
-    height: var(--layout-height-header);
-    justify-content: space-between;
-    padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  width: 100%;
+  border-radius: 12px;
+  height: var(--layout-height-header);
+  justify-content: space-between;
+  padding: 0 1rem;
 }
 
 .layout-menu {
-    margin-top: 2rem;
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    padding: 0 1rem;
+  margin-top: 2rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 0 0.5rem;
 }
-.layout-menu ul li{
-    color: #ffffff;
-    background-color: transparent;
+.layout-menu ul li {
+  color: #ffffff;
+  background-color: transparent;
 }
 .layout-menu ul li a span {
-    color: #8d98af;
-
+  color: #8d98af;
 }
 .layout-menu ul li div:hover a span {
-    background-color: transparent;
-    color: #ffffff;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .layout-menu ul li div:hover {
-    background-color: transparent;
+  background-color: transparent;
 }
