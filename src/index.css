@@ -1,0 +1,33 @@
+:root {
+  --layout-sidebar-width: 300px;
+  --layout-height-header: 70px;
+  --layout-sidebar-collapsed-width: 80px;
+  --width-header: 300px;
+  --width-footer: 300px;
+
+}
+* {
+  box-sizing: border-box;
+}
+body{
+  overflow-x: hidden;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+#dashboard[data-sidebar-collapsed="true"]  aside{
+  width: var(--layout-sidebar-collapsed-width);
+}
+
+#dashboard[data-sidebar-collapsed="true"]  main{
+  margin-left: calc(100% - var(--layout-sidebar-collapsed-width));
+  width: calc(100% - var(--layout-sidebar-collapsed-width));
+  margin-left: var(--layout-sidebar-collapsed-width);
+}
+
+
