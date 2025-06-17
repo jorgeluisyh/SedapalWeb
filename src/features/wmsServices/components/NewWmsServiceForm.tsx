@@ -2,36 +2,36 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
-import type { ArcGisService } from '../types/arcgisServiceType'
+import type { WmsService } from '../types/wmsServiceType'
 
-interface NewArcgisServiceFormProps {
+interface NewWmsServiceFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: ArcGisService) => Promise<void>
+  onSubmit: (data: WmsService) => Promise<void>
 }
 
-export const NewArcgisServiceForm = ({
+export const NewWmsServiceForm = ({
   isModalOpen,
   onIsModalOpen,
   onSubmit,
-}: NewArcgisServiceFormProps) => {
+}: NewWmsServiceFormProps) => {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<ArcGisService>({
+  } = useForm<WmsService>({
     mode: 'onBlur',
   })
 
-  const onSubmitNewProduct = async (data: ArcGisService) => {
+  const onSubmitNewProduct = async (data: WmsService) => {
     await onSubmit(data)
     reset()
   }
 
   return (
     <Dialog
-      header="Nuevo Servicio ArcGIS"
+      header="Crear Servicio WMS"
       visible={isModalOpen}
       maximizable
       style={{ width: '50vw' }}
@@ -59,18 +59,10 @@ export const NewArcgisServiceForm = ({
 
         <FormInput
           name="url"
-          label="URL/Ruta MXDs"
+          label="URL"
           control={control}
           errors={errors}
           rules={{ required: 'Ingrese URL del servicio' }}
-        />
-
-        <FormInput
-          name="cacheado"
-          label="Tipo"
-          control={control}
-          errors={errors}
-          rules={{ required: 'Defina tipo del servicio' }}
         />
 
         <div className="flex justify-content-center gap-4">

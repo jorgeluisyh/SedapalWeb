@@ -3,6 +3,7 @@ import { DashboardPage } from '../features/dashboard/pages/DashboardPage'
 import { Userpage } from '../features/users/pages/Userpage'
 import { ProfilePage } from '../features/profiles/pages/ProfilePage'
 import { ArcgisServicePage } from '../features/arcgisServices/pages/ArcgisServicePage'
+import { WmsServicePage } from '../features/wmsServices/pages/WmsServicePage'
 
 export const PrivateRoute: RouteObject[] = [
   {
@@ -21,6 +22,10 @@ export const PrivateRoute: RouteObject[] = [
       {
         path: 'arcgisServices',
         element: <ArcgisServicePage />,
+      },
+      {
+        path: 'wmsServices',
+        element: <WmsServicePage />,
       },
     ],
   },
