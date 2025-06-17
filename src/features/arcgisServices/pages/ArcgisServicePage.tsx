@@ -12,8 +12,17 @@ import { FilterMatchMode } from 'primereact/api'
 import { Tag } from 'primereact/tag'
 import { NewArcgisServiceForm } from '../components/NewArcgisServiceForm'
 
+interface Filter {
+  value: string | null
+  matchMode: FilterMatchMode
+}
+
+interface Filters {
+  [key: string]: Filter
+}
+
 export const ArcgisServicePage = () => {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     url: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -23,7 +32,7 @@ export const ArcgisServicePage = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [statuses] = useState(['Cacheado', 'Dinámico', 'MXD'])
+  //   const [statuses] = useState(['Cacheado', 'Dinámico', 'MXD'])
 
   const getSeverity = (status: string) => {
     switch (status) {
@@ -57,6 +66,7 @@ export const ArcgisServicePage = () => {
 
   const handleCreateProduct = async (arcGisService: ArcGisService) => {
     //create tu metodo para guardar usuario con un api bicho
+    console.log(arcGisService.nombre)
   }
 
   const data = [

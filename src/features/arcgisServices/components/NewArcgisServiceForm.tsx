@@ -1,6 +1,6 @@
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
 import type { ArcGisService } from '../types/arcgisServiceType'
 

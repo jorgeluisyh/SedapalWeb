@@ -1,4 +1,4 @@
-import { Controller, Control, FieldErrors } from 'react-hook-form'
+import { Controller, type Control, type FieldErrors } from 'react-hook-form'
 import { Checkbox } from 'primereact/checkbox'
 
 interface FormCheckboxProps {
