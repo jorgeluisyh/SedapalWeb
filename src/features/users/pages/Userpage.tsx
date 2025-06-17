@@ -4,18 +4,27 @@ import { Button } from 'primereact/button'
 import { IconField } from 'primereact/iconfield'
 import { InputIcon } from 'primereact/inputicon'
 import { InputText } from 'primereact/inputtext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card'
 import { NewUserForm } from '../components/NewUserForm'
 import type { User } from '../types/userType'
+import { getProducts } from '../../arcgisServices/apis/arcgisServiceApi'
 
 export const Userpage = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [products, setProducts] = useState<User[]>([])
 
   const handleCreateProduct = async (user: User) => {
     //create tu metodo para guardar usuario con un api bicho
   }
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const products = await getProducts()
+      setProducts(products)
+    }
+    fetchProducts()
+  })
 
   const customers = [
     {
@@ -67,6 +76,7 @@ export const Userpage = () => {
 
   return (
     <>
+      {JSON.stringify(products)}
       <Card title="Usuarios">
         <DataTable
           header={renderHeader()}
