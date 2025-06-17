@@ -44,7 +44,7 @@ export const Sidebar = () => {
         {
           label: 'Servicios WMS',
           icon: 'pi pi-globe',
-          command: () => navigate('/dashboard/perfiles'),
+          command: () => navigate('/dashboard/wmsServices'),
         },
       ],
     },

@@ -252,6 +252,11 @@ export const ArcgisServicePage = () => {
           emptyMessage="No existen coincidencias"
         >
           <Column
+            header="#"
+            body={(rowData, { rowIndex }) => rowIndex + 1}
+            style={{ width: '5%' }}
+          />
+          <Column
             sortable
             field="nombre"
             header="Nombre"
