@@ -1,5 +1,5 @@
 export interface ArcGisService {
-  id: string
+  id: number
   nombre: string
   url: string
   cacheado: string
