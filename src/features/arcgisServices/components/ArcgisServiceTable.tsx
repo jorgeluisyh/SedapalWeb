@@ -59,6 +59,11 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
       emptyMessage="No existen coincidencias"
     >
       <Column
+        header="#"
+        body={(_rowData, { rowIndex }) => rowIndex + 1}
+        style={{ width: '5%' }}
+      />
+      <Column
         sortable
         field="nombre"
         header="Nombre"
