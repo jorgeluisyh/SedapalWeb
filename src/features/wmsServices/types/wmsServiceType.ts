@@ -1,7 +1,6 @@
 export interface WmsService {
-  id: string
+  id: number
   nombre: string
   url: string
-  cacheado: string
   descripcion: string
 }
