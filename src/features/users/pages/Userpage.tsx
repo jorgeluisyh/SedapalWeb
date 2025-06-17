@@ -16,7 +16,7 @@ export const Userpage = () => {
   const [products, setProducts] = useState<User[]>([])
 
   const handleCreateProduct = async (user: User) => {
-    //create tu metodo para guardar usuario con un api bicho
+    console.log(user.name)
   }
   useEffect(() => {
     const fetchProducts = async () => {

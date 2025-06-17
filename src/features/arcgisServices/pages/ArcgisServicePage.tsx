@@ -1,75 +1,17 @@
-import { DataTable } from 'primereact/datatable'
-import { Column } from 'primereact/column'
-import { Button } from 'primereact/button'
-import { IconField } from 'primereact/iconfield'
-import { InputIcon } from 'primereact/inputicon'
-import { InputText } from 'primereact/inputtext'
-import { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import { Card } from 'primereact/card'
-// import { NewUserForm } from '../components/NewUserForm'
-import type { ArcGisService } from '../types/arcgisServiceType'
-import { FilterMatchMode } from 'primereact/api'
-import { Tag } from 'primereact/tag'
 import { NewArcgisServiceForm } from '../components/NewArcgisServiceForm'
-
-interface Filter {
-  value: string | null
-  matchMode: FilterMatchMode
-}
-
-interface Filters {
-  [key: string]: Filter
-}
+import { ArcgisServiceTable } from '../components/ArcgisServiceTable'
+import type { ArcGisService } from '../types/arcgisServiceType'
+// import { initialData } from '../data/arcgisServiceData'
 
 export const ArcgisServicePage = () => {
-  const [filters, setFilters] = useState<Filters>({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    url: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    cacheado: { value: null, matchMode: FilterMatchMode.IN },
-    descripcion: { value: null, matchMode: FilterMatchMode.IN },
-  })
-  const [globalFilterValue, setGlobalFilterValue] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  //   const [statuses] = useState(['Cacheado', 'Dinámico', 'MXD'])
-
-  const getSeverity = (status: string) => {
-    switch (status) {
-      case 'Cacheado':
-        return 'info'
-
-      case 'Dinámico':
-        return null
-
-      case 'MXD':
-        return 'success'
-    }
-  }
-  const statusBodyTemplate = (rowData: ArcGisService) => {
-    const severity = getSeverity(rowData.cacheado)
-
-    return (
-      <Tag
-        value={rowData.cacheado}
-        severity={severity}
-        style={
-          severity === null
-            ? {
-                backgroundColor: 'gray',
-              }
-            : {}
-        }
-      />
-    )
-  }
-
   const handleCreateProduct = async (arcGisService: ArcGisService) => {
-    //create tu metodo para guardar usuario con un api bicho
     console.log(arcGisService.nombre)
   }
-
-  const data = [
+  const initialData: ArcGisService[] = [
     {
       id: 1,
       nombre: 'SGIO',
@@ -205,83 +147,13 @@ export const ArcgisServicePage = () => {
     },
   ]
 
-  const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    let _filters = { ...filters }
-
-    _filters['global'].value = value
-
-    setFilters(_filters)
-    setGlobalFilterValue(value)
-  }
-  const renderHeader = () => {
-    return (
-      <div className="flex justify-content-between">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            // onChange={(e) => setGlobalFilterValue(e.target.value)}
-            onChange={onGlobalFilterChange}
-            placeholder="Palabra clave"
-          />
-        </IconField>
-        <Button
-          onClick={() => setIsModalOpen(true)}
-          type="button"
-          icon="pi pi-plus"
-          label="Agregar Servicios y MXDs"
-        />
-      </div>
-    )
-  }
-
   return (
     <>
       <Card title="Servicios ArcGIS Server y MXDs">
-        <DataTable
-          header={renderHeader()}
-          value={data}
-          filters={filters}
-          paginator
-          rows={5}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          tableStyle={{ minWidth: '50rem' }}
-          size="small"
-          removableSort
-          emptyMessage="No existen coincidencias"
-        >
-          <Column
-            header="#"
-            body={(rowData, { rowIndex }) => rowIndex + 1}
-            style={{ width: '5%' }}
-          />
-          <Column
-            sortable
-            field="nombre"
-            header="Nombre"
-            style={{ width: '25%' }}
-          ></Column>
-          <Column
-            sortable
-            field="url"
-            header="URL"
-            style={{ width: '25%' }}
-          ></Column>
-          <Column
-            sortable
-            field="cacheado"
-            header="Cacheado"
-            body={statusBodyTemplate}
-            style={{ width: '25%' }}
-          ></Column>
-          <Column
-            sortable
-            field="descripcion"
-            header="Descripción"
-            style={{ width: '25%' }}
-          ></Column>
-        </DataTable>
+        <ArcgisServiceTable
+          data={initialData}
+          onAddClick={() => setIsModalOpen(true)}
+        />
       </Card>
 
       <NewArcgisServiceForm
