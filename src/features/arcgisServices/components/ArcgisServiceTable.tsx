@@ -5,6 +5,7 @@ import { useState, type ChangeEvent } from 'react'
 import { ArcgisServiceTableHeader } from './ArcgisServiceTableHeader'
 import { ArcgisServiceStatusTag } from './ArcgisServiceStatusTag'
 import type { ArcGisService } from '../types/arcgisServiceType'
+import { Button } from 'primereact/button'
 
 interface Props {
   data: ArcGisService[]
@@ -39,6 +40,27 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
     setGlobalFilterValue(value)
   }
 
+  const actionBodyTemplate = (rowData: ArcGisService) => {
+    return (
+      <div className="flex justify-content-center ">
+        <Button
+          icon="pi pi-pencil"
+          onClick={() => console.log(rowData)} // Llamamos a la función de edición pasando el servicio
+          severity="info"
+          text
+          size="small"
+        />
+        <Button
+          icon="pi pi-trash"
+          onClick={() => console.log(rowData)} // Llamamos a la función de eliminación pasando el ID
+          severity="danger"
+          text
+          size="small"
+        />
+      </div>
+    )
+  }
+
   return (
     <DataTable
       header={
@@ -65,23 +87,33 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
       />
       <Column
         sortable
-        field="nombre"
+        field="nombreServicioMapa"
         header="Nombre"
-        style={{ width: '25%' }}
+        style={{ width: '20%' }}
       />
-      <Column sortable field="url" header="URL" style={{ width: '25%' }} />
+      <Column
+        sortable
+        field="urlServicioMapa"
+        header="URL"
+        style={{ width: '20%' }}
+      />
       <Column
         sortable
         field="cacheado"
         header="Cacheado"
         body={(row) => <ArcgisServiceStatusTag status={row.cacheado} />}
-        style={{ width: '25%' }}
+        style={{ width: '20%' }}
       />
       <Column
         sortable
         field="descripcion"
         header="Descripción"
-        style={{ width: '25%' }}
+        style={{ width: '20%' }}
+      />
+      <Column
+        body={actionBodyTemplate}
+        header="Acciones"
+        style={{ width: '15%' }}
       />
     </DataTable>
   )
