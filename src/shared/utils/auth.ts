@@ -9,6 +9,8 @@ export const removeAuthToken  = () => {
 };
 
 export const isAuthenticated = () : boolean => {
+    console.log("viendo cookies")
   const token = Cookies.get('auth_token')
-  return token == null
+  console.log(token)
+  return token !== undefined 
 }

@@ -7,7 +7,7 @@ import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
 interface UpdateArcgisServiceFormProps {
   onSubmit: (data: ArcGisService) => Promise<void>
-  currentService?: ArcGisService | null
+  currentService: ArcGisService
   handleClose: () => void
 }
 
@@ -26,7 +26,7 @@ export const UpdateArcgisServiceForm = ({
   })
 
   const onSubmitNewProduct = async (data: ArcGisService) => {
-    console.log(data)
+    data.idServicioMapa = currentService.idServicioMapa
     await onSubmit(data)
     reset()
   }

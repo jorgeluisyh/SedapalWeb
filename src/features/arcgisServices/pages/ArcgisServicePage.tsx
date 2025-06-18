@@ -12,12 +12,12 @@ import {
 } from '../apis/arcgisServiceApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
-// import { initialData } from '../data/arcgisServiceData'
 
 export const ArcgisServicePage = () => {
   const toast = useRef<Toast>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [_arcgisServices, setArcgisServices] = useState<ArcGisService[]>([])
+  const [refresh, setRefresh] = useState(false)
+  const [arcgisServices, setArcgisServices] = useState<ArcGisService[]>([])
   const [selectedService, setselectedService] = useState<ArcGisService | null>(
     null
   )
@@ -27,7 +27,7 @@ export const ArcgisServicePage = () => {
     // crear dialogo para confirmar si se debe enviar usuario
 
     await confirmDialog({
-      message: '¿Estás seguro de que deseas enviar el usuario?',
+      message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
@@ -35,19 +35,16 @@ export const ArcgisServicePage = () => {
         toast.current?.show({
           severity: 'info',
           summary: 'Confirmed',
-          detail: 'Usuario agregado correctamente',
+          detail: 'servicio agregado correctamente',
           life: 3000,
         })
+        setRefresh(!refresh)
         console.log(response.message)
       },
       reject: () => {
-        toast.current?.show({
-          severity: 'info',
-          summary: 'Cancel',
-          detail: 'Se canceló la operación',
-          life: 3000,
-        })
-        console.log('No se envió el usuario' + arcGisService.nombreServicioMapa)
+        console.log(
+          'No se envió el servicio' + arcGisService.nombreServicioMapa
+        )
       },
     })
   }
@@ -62,23 +59,20 @@ export const ArcgisServicePage = () => {
           arcGisService.idServicioMapa,
           arcGisService
         )
-        console.log(response.message)
-        console.log('Se editó el usuario' + arcGisService.nombreServicioMapa)
         toast.current?.show({
           severity: 'info',
           summary: 'Cancel',
           detail: 'Se canceló la operación',
           life: 3000,
         })
+        console.log(response.message)
+        console.log('Se editó el servicio' + arcGisService.nombreServicioMapa)
+        setRefresh(!refresh)
       },
       reject: () => {
-        console.log('No se editó el usuario' + arcGisService.nombreServicioMapa)
-        toast.current?.show({
-          severity: 'warn',
-          summary: 'Cancel',
-          detail: 'Se canceló la operación',
-          life: 3000,
-        })
+        console.log(
+          'No se editó el servicio' + arcGisService.nombreServicioMapa
+        )
       },
     })
   }
@@ -95,85 +89,80 @@ export const ArcgisServicePage = () => {
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmed',
-          detail: 'Se eliminó el usuario',
+          detail: 'Se eliminó el servicio',
           life: 3000,
         })
-        console.log('Se eliminó el usuario ' + arcGisService.nombreServicioMapa)
-        // código para enviar el usuario
+        setRefresh(!refresh)
+        console.log(
+          'Se eliminó el servicio ' + arcGisService.nombreServicioMapa
+        )
       },
       reject: () => {
-        toast.current?.show({
-          severity: 'warn',
-          summary: 'Cancel',
-          detail: 'Se canceló la operación',
-          life: 3000,
-        })
         console.log(
-          'No se eliminó el usuario ' + arcGisService.nombreServicioMapa
+          'No se eliminó el servicio ' + arcGisService.nombreServicioMapa
         )
-        // código para no enviar el usuario
       },
     })
   }
 
-  const initialData: ArcGisService[] = [
-    {
-      idServicioMapa: 1,
-      nombreServicioMapa: 'SGIO',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/SGIO/MapServer',
-      cacheado: 1,
-      descripcion: 'Servicio de SGIO',
-    },
-    {
-      idServicioMapa: 2,
-      nombreServicioMapa: 'Análisis Redesmd',
-      urlServicioMapa:
-        '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Analisis Redes.mxd',
-      cacheado: 2,
-      descripcion: 'Análisis Redes',
-    },
-    {
-      idServicioMapa: 3,
-      nombreServicioMapa: 'ANFmd',
-      urlServicioMapa:
-        '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Evaluacion Sectores.mxd',
-      cacheado: 3,
-      descripcion: 'Mapa del Agua No Facturada',
-    },
-    {
-      idServicioMapa: 4,
-      nombreServicioMapa: 'Catastro Comercial',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/CatastroComercial/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Catastro Comercial',
-    },
-    {
-      idServicioMapa: 5,
-      nombreServicioMapa: 'AguaPotable',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/AguaPotable/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Agua Potable',
-    },
-    {
-      idServicioMapa: 6,
-      nombreServicioMapa: 'Satélite ESRI',
-      urlServicioMapa:
-        'http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
-      cacheado: 1,
-      descripcion: 'Servicio de Imágenes de Satélite',
-    },
-    {
-      idServicioMapa: 7,
-      nombreServicioMapa: 'Alcantarillado',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/Alcantarillado/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Alcantarillado',
-    },
-  ]
+  // const initialData: ArcGisService[] = [
+  //   {
+  //     idServicioMapa: 1,
+  //     nombreServicioMapa: 'SGIO',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/SGIO/MapServer',
+  //     cacheado: 1,
+  //     descripcion: 'Servicio de SGIO',
+  //   },
+  //   {
+  //     idServicioMapa: 2,
+  //     nombreServicioMapa: 'Análisis Redesmd',
+  //     urlServicioMapa:
+  //       '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Analisis Redes.mxd',
+  //     cacheado: 2,
+  //     descripcion: 'Análisis Redes',
+  //   },
+  //   {
+  //     idServicioMapa: 3,
+  //     nombreServicioMapa: 'ANFmd',
+  //     urlServicioMapa:
+  //       '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Evaluacion Sectores.mxd',
+  //     cacheado: 3,
+  //     descripcion: 'Mapa del Agua No Facturada',
+  //   },
+  //   {
+  //     idServicioMapa: 4,
+  //     nombreServicioMapa: 'Catastro Comercial',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/CatastroComercial/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Catastro Comercial',
+  //   },
+  //   {
+  //     idServicioMapa: 5,
+  //     nombreServicioMapa: 'AguaPotable',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/AguaPotable/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Agua Potable',
+  //   },
+  //   {
+  //     idServicioMapa: 6,
+  //     nombreServicioMapa: 'Satélite ESRI',
+  //     urlServicioMapa:
+  //       'http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
+  //     cacheado: 1,
+  //     descripcion: 'Servicio de Imágenes de Satélite',
+  //   },
+  //   {
+  //     idServicioMapa: 7,
+  //     nombreServicioMapa: 'Alcantarillado',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/Alcantarillado/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Alcantarillado',
+  //   },
+  // ]
 
   useEffect(() => {
     const fetchArcgisServices = async () => {
@@ -181,13 +170,13 @@ export const ArcgisServicePage = () => {
       setArcgisServices(arcgisServices)
     }
     fetchArcgisServices()
-  })
+  }, [refresh])
 
   return (
     <>
       <Card title="Servicios ArcGIS Server y MXDs">
         <ArcgisServiceTable
-          data={initialData}
+          data={arcgisServices}
           onAddClick={() => {
             setIsModalOpen(true)
           }}
