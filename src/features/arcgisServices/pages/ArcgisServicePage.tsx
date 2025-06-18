@@ -8,7 +8,7 @@ import { getArcgisServices } from '../apis/arcgisServiceApi'
 
 export const ArcgisServicePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [arcgisServices, setArcgisServices] = useState<ArcGisService[]>([])
+  const [_arcgisServices, setArcgisServices] = useState<ArcGisService[]>([])
 
   const handleCreateProduct = async (arcGisService: ArcGisService) => {
     console.log(arcGisService.nombreServicioMapa)

@@ -1,28 +1,40 @@
 import { Tag } from 'primereact/tag'
 
 interface Props {
-  status: string
+  status: number
 }
 
 export const ArcgisServiceStatusTag = ({ status }: Props) => {
   const getSeverity = () => {
     switch (status) {
-      case 'Cacheado':
+      case 1:
         return 'info'
-      case 'Dinámico':
+      case 2:
         return null
-      case 'MXD':
+      case 3:
         return 'success'
       default:
         return null
     }
   }
-
+  const getTextValue = () => {
+    switch (status) {
+      case 1:
+        return 'Cacheado'
+      case 2:
+        return 'Dinámico'
+      case 3:
+        return 'MXD'
+      default:
+        return 'Default'
+    }
+  }
+  const textValue = getTextValue()
   const severity = getSeverity()
 
   return (
     <Tag
-      value={status}
+      value={textValue}
       severity={severity}
       style={severity === null ? { backgroundColor: 'gray' } : {}}
     />

@@ -3,6 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
 import type { ArcGisService } from '../types/arcgisServiceType'
+import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
 interface NewArcgisServiceFormProps {
   isModalOpen: boolean
@@ -28,6 +29,12 @@ export const NewArcgisServiceForm = ({
     await onSubmit(data)
     reset()
   }
+
+  const cacheadoOptions = [
+    { label: 'Cacheado', value: 1 },
+    { label: 'Dinámico', value: 2 },
+    { label: 'MXD', value: 3 },
+  ]
 
   return (
     <Dialog
@@ -71,6 +78,15 @@ export const NewArcgisServiceForm = ({
           control={control}
           errors={errors}
           rules={{ required: 'Defina tipo del servicio' }}
+        />
+        <FormDropdown
+          name="cacheado"
+          label="Tipo"
+          control={control}
+          errors={errors}
+          options={cacheadoOptions}
+          rules={{ required: 'This field is required' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Select an option"
         />
 
         <div className="flex justify-content-center gap-4">
