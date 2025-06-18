@@ -42,7 +42,7 @@ export const NewArcgisServiceForm = ({
     >
       <form onSubmit={handleSubmit(onSubmitNewProduct)}>
         <FormInput
-          name="nombre"
+          name="nombreServicioMapa"
           label="Nombre"
           control={control}
           errors={errors}

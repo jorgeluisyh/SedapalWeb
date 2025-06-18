@@ -101,7 +101,7 @@ export const WmsServicePage = () => {
         >
           <Column
             header="#"
-            body={(rowData, { rowIndex }) => rowIndex + 1}
+            body={(_rowData, { rowIndex }) => rowIndex + 1}
             style={{ width: '5%' }}
           />
           <Column

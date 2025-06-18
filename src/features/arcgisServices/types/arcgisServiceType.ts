@@ -1,7 +1,7 @@
 export interface ArcGisService {
-  id: number
-  nombre: string
-  url: string
+  idServicioMapa: number
+  nombreServicioMapa: string
+  urlServicioMapa: string
   cacheado: string
   descripcion: string
 }

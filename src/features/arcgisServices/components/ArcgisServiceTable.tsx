@@ -65,11 +65,16 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
       />
       <Column
         sortable
-        field="nombre"
+        field="nombreServicioMapa"
         header="Nombre"
         style={{ width: '25%' }}
       />
-      <Column sortable field="url" header="URL" style={{ width: '25%' }} />
+      <Column
+        sortable
+        field="urlServicioMapa"
+        header="URL"
+        style={{ width: '25%' }}
+      />
       <Column
         sortable
         field="cacheado"

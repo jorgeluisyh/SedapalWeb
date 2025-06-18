@@ -1,0 +1,57 @@
+/* Contenedor principal para centrar el login */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Esto asegura que esté centrado verticalmente */
+  background-color: #f5f5f5; /* Fondo claro */
+}
+
+/* Wrapper del Card para mantener los márgenes */
+.cardWrapper {
+  width: 100%;
+  max-width: 400px; /* Ancho máximo del card */
+  margin: 20px; /* Espacio alrededor */
+}
+
+/* Estilos del Card */
+.card {
+  padding: 0px; /* Añadir padding al card */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+
+}
+
+/* Logo dentro del Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Espacio debajo del logo */
+}
+
+.logo {
+  width: 100px; /* Tamaño del logo */
+  height: auto;
+}
+
+/* Título centrado */
+.cardTitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Ajustes en el botón */
+button.w-100 {
+  margin-top: 15px;
+}
+
+.customButton {
+  background-color: #007bff ;  /* Color de fondo */
+  color: white;
+  width: 100% ;
+}
+.customButton:hover {
+  background-color: #0056b3;  /* Color de fondo cuando el mouse pasa por encima */
+
+}
+
