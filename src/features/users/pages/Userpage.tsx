@@ -1,108 +1,48 @@
-import { DataTable } from 'primereact/datatable'
-import { Column } from 'primereact/column'
-import { Button } from 'primereact/button'
-import { IconField } from 'primereact/iconfield'
-import { InputIcon } from 'primereact/inputicon'
-import { InputText } from 'primereact/inputtext'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card } from 'primereact/card'
-import { NewUserForm } from '../components/NewUserForm'
+import { NewUserForm } from '../components/NewUserLDAPForm'
 import type { User } from '../types/userType'
-import { getProducts } from '../../arcgisServices/apis/arcgisServiceApi'
+import { UserTable } from '../components/UserTable'
 
 export const Userpage = () => {
-  const [globalFilterValue, setGlobalFilterValue] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [products, setProducts] = useState<User[]>([])
 
   const handleCreateProduct = async (user: User) => {
-    console.log(user.name)
+    console.log(user)
   }
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const products = await getProducts()
-      setProducts(products)
-    }
-    fetchProducts()
-  })
 
-  const customers = [
+  const data: User[] = [
     {
-      id: '1',
-      name: 'Amy Elsner',
-      country: { name: 'Australia', code: 'AU' },
-      company: 'Sons of Silva',
-      status: 'active',
-      age: 48,
+      id: 1,
+      username: 'ACM01',
+      profile: 'EPFPIExternos',
+      team: 'A', // add a value for team
+      type: '100', // add a value for type
+      blocked: true, // add a value for block
     },
     {
-      id: '1',
-      name: 'Amy Elsner',
-      country: { name: 'Australia', code: 'AU' },
-      company: 'Sons of Silva',
-      status: 'active',
-      age: 48,
+      id: 2,
+      username: 'Analisis Comercial',
+      profile: 'EPFPExternos_Calidda ',
+      team: 'B', // add a value for team
+      type: '100', // add a value for type
+      blocked: false, // add a value for block
     },
     {
-      id: '1',
-      name: 'Amy Elsner',
-      country: { name: 'Australia', code: 'AU' },
-      company: 'Sons of Silva',
-      status: 'active',
-      age: 48,
+      id: 3,
+      username: 'Analisis Superficial',
+      profile: 'EPFPExternos_Calidda ',
+      team: 'B', // add a value for team
+      type: '200', // add a value for type
+      blocked: false, // add a value for block
     },
   ]
 
-  const renderHeader = () => {
-    return (
-      <div className="flex justify-content-between">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={(e) => setGlobalFilterValue(e.target.value)}
-            placeholder="Palabra clave"
-          />
-        </IconField>
-        <Button
-          onClick={() => setIsModalOpen(true)}
-          type="button"
-          icon="pi pi-plus"
-          label="Nuevo usuario"
-        />
-      </div>
-    )
-  }
-
   return (
     <>
-      {JSON.stringify(products)}
+      {/* {JSON.stringify(products)} */}
       <Card title="Usuarios">
-        <DataTable
-          header={renderHeader()}
-          value={customers}
-          paginator
-          rows={5}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          tableStyle={{ minWidth: '50rem' }}
-        >
-          <Column field="name" header="Name" style={{ width: '25%' }}></Column>
-          <Column
-            field="country.name"
-            header="Country"
-            style={{ width: '25%' }}
-          ></Column>
-          <Column
-            field="company"
-            header="Company"
-            style={{ width: '25%' }}
-          ></Column>
-          <Column
-            field="age"
-            header="Representative"
-            style={{ width: '25%' }}
-          ></Column>
-        </DataTable>
+        <UserTable data={data} onAddClick={() => setIsModalOpen(true)} />
       </Card>
 
       <NewUserForm

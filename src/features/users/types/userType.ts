@@ -1,8 +1,10 @@
+import type { Checkbox } from "primereact/checkbox"
+
 export interface User {
-  id: string
-  name: string
-  country: { name: string; code: string }
-  company: string
-  status: string
-  age: number
+  id: number
+  username: string
+  profile: string
+  team?: string
+  type?: string
+  blocked?: boolean
 }

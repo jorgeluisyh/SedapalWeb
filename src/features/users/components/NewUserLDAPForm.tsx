@@ -30,7 +30,7 @@ export const NewUserForm = ({
   }
   return (
     <Dialog
-      header="Nuevo Producto"
+      header="Nuevo Usuario LDAP"
       visible={isModalOpen}
       maximizable
       style={{ width: '50vw' }}
@@ -43,30 +43,30 @@ export const NewUserForm = ({
         <div className="flex flex-column gap-2 mb-4">
           <label htmlFor="tinametle">Title</label>
           <InputText
-            {...register('name', { required: true })}
-            invalid={errors?.name !== undefined}
+            {...register('username', { required: true })}
+            invalid={errors?.username !== undefined}
           />
-          <small className="p-error" hidden={errors?.name === undefined}>
+          <small className="p-error" hidden={errors?.username === undefined}>
             Ingrese nombre del producto
           </small>
         </div>
         <div className="flex flex-column gap-2 mb-4">
           <label htmlFor="title">Category</label>
           <InputText
-            {...register('company', { required: true })}
-            invalid={errors?.company !== undefined}
+            {...register('profile', { required: true })}
+            invalid={errors?.profile !== undefined}
           />
-          <small className="p-error" hidden={errors?.company === undefined}>
+          <small className="p-error" hidden={errors?.profile === undefined}>
             Ingrese nombre de la categoria
           </small>
         </div>
         <div className="flex flex-column gap-2 mb-4">
           <label htmlFor="price">Price</label>
           <InputText
-            {...register('age', { required: true })}
-            invalid={errors?.age !== undefined}
+            {...register('team', { required: true })}
+            invalid={errors?.team !== undefined}
           />
-          <small className="p-error" hidden={errors?.age === undefined}>
+          <small className="p-error" hidden={errors?.team === undefined}>
             Ingrese precio del producto
           </small>
         </div>
