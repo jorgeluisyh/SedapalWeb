@@ -8,7 +8,7 @@ export default defineConfig(({mode})=>{
     plugins: [react()],
   base: env.VITE_BASE_PATH,
   build: {
-    outDir: 'D:/borrar',  // Carpeta de salida dentro de dist
+    outDir: 'D:/sedapalwebApp',  // Carpeta de salida dentro de dist
   },
 
   }
