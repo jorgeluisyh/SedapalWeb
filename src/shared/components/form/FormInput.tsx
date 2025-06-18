@@ -5,6 +5,7 @@ interface FormInputProps {
   name: string
   label: string
   control: Control<any>
+  value?: string
   errors: FieldErrors<any>
   rules?: object
   placeholder?: string
@@ -14,6 +15,7 @@ export const FormInput = ({
   name,
   label,
   control,
+  value = '',
   errors,
   rules = {},
   placeholder = '',
@@ -25,6 +27,7 @@ export const FormInput = ({
         name={name}
         control={control}
         rules={rules}
+        defaultValue={value}
         render={({ field }) => (
           <InputText
             id={name}

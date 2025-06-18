@@ -1,28 +1,24 @@
 import { axiosInstance } from "../../../shared/http/axiosInstance";
-import type { ArcGisService } from "../types/arcgisServiceType";
+import type { WmsService } from "../types/wmsServiceType";
 
 
-export const getArcgisServices = async (): Promise<ArcGisService[]> => {
+export const getWmsServices = async (): Promise<WmsService[]> => {
     const response = await axiosInstance.get("/api/Servicios/serviciosmapa");
     return response.data;
 }
 
-export const postArcgisService = async (data: ArcGisService) => {
+export const postWmsService = async (data: WmsService) => {
     const response = await axiosInstance.post("/api/Servicios/serviciosmapa", data);
     return response.data;
 }
 
-export const updateArcgisService = async (id: number, data: ArcGisService) => {
+export const updateWmsService = async (id: number, data: WmsService) => {
     const response = await axiosInstance.put(`/api/Servicios/serviciosmapa/${id}`, data);
     return response.data;
 }
 
-export const deleteArcgisService = async (id: number) => {
+export const deleteWmsService = async (id: number) => {
     const response = await axiosInstance.delete(`/api/Servicios/serviciosmapa/${id}`);
     return response.data;
 }
 
-export const getProducts = async () => {
-    const response = await axiosInstance.get("/products");
-    return response.data;
-}

@@ -3,8 +3,8 @@ import styles from './TopHeader.module.css'
 import { useRef } from 'react'
 import { Menu } from 'primereact/menu'
 import { useTheme } from '../../../shared/hooks/useTheme'
-
 import type { MenuItem } from 'primereact/menuitem'
+import { removeAuthToken } from '../../../shared/utils/auth'
 
 interface TopHeaderProps {
   onCollapse: () => void
@@ -25,6 +25,13 @@ export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
         {
           label: 'Export',
           icon: 'pi pi-upload',
+        },
+        {
+          label: 'Cerrar Sesión',
+          icon: 'pi pi-sign-out',
+          command: () => {
+            removeAuthToken()
+          },
         },
       ],
     },

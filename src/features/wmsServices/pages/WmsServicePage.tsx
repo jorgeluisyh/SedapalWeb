@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card'
 import type { WmsService } from '../types/wmsServiceType'
 import { WmsServiceTable } from '../components/WmsServiceTable'
 import { NewWmsServiceForm } from '../components/NewWmsServiceForm'
+import { getWmsServices } from '../apis/wmsServiceApi'
 
 export const WmsServicePage = () => {
+  const [wmsServices, setWmsServices] = useState<WmsService[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   //   const [statuses] = useState(['Cacheado', 'Dinámico', 'MXD'])
@@ -14,25 +16,36 @@ export const WmsServicePage = () => {
     console.log(arcGisService.nombre)
   }
 
-  const data = [
-    {
-      id: 1,
-      nombre: 'SIGCAP',
-      url: 'http://sigcap.no-ip.org:8082/geoserver/wms',
-      descripcion: 'Servicio WMS SIGCAP',
-    },
-    {
-      id: 2,
-      nombre: 'GEOSERVIDOR',
-      url: 'http://websig.senamhi.gob.pe/wms/?wms=WMS_CLASIFICACION_CLIMATICA',
-      descripcion: 'Servicio WMS GEOSERVIDOR',
-    },
-  ]
+  // const data = [
+  //   {
+  //     id: 1,
+  //     nombre: 'SIGCAP',
+  //     url: 'http://sigcap.no-ip.org:8082/geoserver/wms',
+  //     descripcion: 'Servicio WMS SIGCAP',
+  //   },
+  //   {
+  //     id: 2,
+  //     nombre: 'GEOSERVIDOR',
+  //     url: 'http://websig.senamhi.gob.pe/wms/?wms=WMS_CLASIFICACION_CLIMATICA',
+  //     descripcion: 'Servicio WMS GEOSERVIDOR',
+  //   },
+  // ]
+
+  useEffect(() => {
+    const fetchWmsServices = async () => {
+      const wmsServices = await getWmsServices()
+      setWmsServices(wmsServices)
+    }
+    fetchWmsServices()
+  })
 
   return (
     <>
       <Card title="Servicios WMS">
-        <WmsServiceTable data={data} onAddClick={() => setIsModalOpen(true)} />
+        <WmsServiceTable
+          data={wmsServices}
+          onAddClick={() => setIsModalOpen(true)}
+        />
       </Card>
 
       <NewWmsServiceForm

@@ -9,6 +9,7 @@ interface NewArcgisServiceFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: ArcGisService) => Promise<void>
+  handleClose: () => void
 }
 
 export const NewArcgisServiceForm = ({
@@ -26,6 +27,7 @@ export const NewArcgisServiceForm = ({
   })
 
   const onSubmitNewProduct = async (data: ArcGisService) => {
+    console.log(data)
     await onSubmit(data)
     reset()
   }

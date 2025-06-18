@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../components/LoginForm'
-import { login } from '../apis/loginApi'
+import { authenticateUser } from '../apis/loginApi'
 import Cookies from 'js-cookie'
 import { Card } from 'primereact/card'
 import styles from './LoginPage.module.css'
@@ -22,11 +22,7 @@ export const LoginPage = () => {
       console.log('Enviando datos de inicio de sesión:', data)
       // Simulamos un retraso de 1.5 segundos para que se vea el loading
       await new Promise((resolve) => setTimeout(resolve, 5000))
-      const response = await login(data)
-
-      if (!response.success) {
-        throw new Error(response.message || 'Credenciales incorrectas')
-      }
+      const response = await authenticateUser(data)
 
       Cookies.set('auth_token', response.token)
       localStorage.setItem(
