@@ -5,19 +5,17 @@ import { FormInput } from '../../../shared/components/form/FormInput'
 import type { ArcGisService } from '../types/arcgisServiceType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
-interface NewArcgisServiceFormProps {
-  isModalOpen: boolean
-  onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+interface UpdateArcgisServiceFormProps {
   onSubmit: (data: ArcGisService) => Promise<void>
   currentService?: ArcGisService | null
+  handleClose: () => void
 }
 
-export const NewArcgisServiceForm = ({
-  isModalOpen,
+export const UpdateArcgisServiceForm = ({
   currentService,
-  onIsModalOpen,
+  handleClose,
   onSubmit,
-}: NewArcgisServiceFormProps) => {
+}: UpdateArcgisServiceFormProps) => {
   const {
     control,
     handleSubmit,
@@ -41,13 +39,12 @@ export const NewArcgisServiceForm = ({
 
   return (
     <Dialog
-      header="Nuevo Servicio ArcGIS"
-      visible={isModalOpen}
+      header="Actualizar Servicio"
+      visible={true}
       maximizable
       style={{ width: '50vw' }}
       onHide={() => {
-        if (!isModalOpen) return
-        onIsModalOpen(false)
+        handleClose()
       }}
     >
       <form onSubmit={handleSubmit(onSubmitNewProduct)}>
@@ -64,6 +61,7 @@ export const NewArcgisServiceForm = ({
           name="descripcion"
           label="Descripción"
           control={control}
+          value={currentService?.descripcion}
           errors={errors}
           rules={{ required: 'Ingrese la descripción del servicio' }}
         />
@@ -72,6 +70,7 @@ export const NewArcgisServiceForm = ({
           name="url"
           label="URL/Ruta MXDs"
           control={control}
+          value={currentService?.urlServicioMapa}
           errors={errors}
           rules={{ required: 'Ingrese URL del servicio' }}
         />
@@ -80,6 +79,7 @@ export const NewArcgisServiceForm = ({
           name="cacheado"
           label="Tipo"
           control={control}
+          value={currentService?.cacheado.toString()}
           errors={errors}
           rules={{ required: 'Defina tipo del servicio' }}
         />
@@ -100,11 +100,14 @@ export const NewArcgisServiceForm = ({
             label="Cerrar"
             severity="secondary"
             outlined
-            onClick={() => onIsModalOpen(false)}
+            onClick={() => {
+              handleClose()
+              console.log('cerrar buton')
+            }}
           />
           <Button
             disabled={!isValid || isSubmitting}
-            label="Crear Servicio"
+            label="Actualizar Servicio"
             type="submit"
             icon="pi pi-plus"
             loading={isSubmitting}

@@ -10,6 +10,8 @@ import { Button } from 'primereact/button'
 interface Props {
   data: ArcGisService[]
   onAddClick: () => void
+  onUpdateClick: (arcGisService: ArcGisService | null) => void
+  onDeleteClick: (arcGisService: ArcGisService) => void
 }
 
 interface Filter {
@@ -21,7 +23,12 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
+export const ArcgisServiceTable = ({
+  data,
+  onAddClick,
+  onUpdateClick,
+  onDeleteClick,
+}: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -40,19 +47,20 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
     setGlobalFilterValue(value)
   }
 
-  const actionBodyTemplate = (rowData: ArcGisService) => {
+  const actionBodyTemplate = (row: ArcGisService) => {
     return (
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-pencil"
-          onClick={() => console.log(rowData)} // Llamamos a la función de edición pasando el servicio
+          // onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
+          onClick={() => onUpdateClick(row)}
           severity="info"
           text
           size="small"
         />
         <Button
           icon="pi pi-trash"
-          onClick={() => console.log(rowData)} // Llamamos a la función de eliminación pasando el ID
+          onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
           severity="danger"
           text
           size="small"
@@ -67,6 +75,7 @@ export const ArcgisServiceTable = ({ data, onAddClick }: Props) => {
         <ArcgisServiceTableHeader
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
+          // onAddClick={onAddClick}
           onAddClick={onAddClick}
         />
       }
