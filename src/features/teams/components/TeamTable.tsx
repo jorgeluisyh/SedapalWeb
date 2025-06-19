@@ -2,12 +2,13 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
-import { WmsServiceTableHeader } from './WmsServiceTableHeader'
-import type { WmsService } from '../types/wmsServiceType'
+import { TeamTableHeader } from './TeamTableHeader'
+import type { TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
+import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 
 interface Props {
-  data: WmsService[]
+  data: TeamType[]
   onAddClick: () => void
 }
 
@@ -19,7 +20,7 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const WmsServiceTable = ({ data, onAddClick }: Props) => {
+export const TeamTable = ({ data, onAddClick }: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -30,7 +31,7 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
-  const actionBodyTemplate = (row: WmsService) => {
+  const actionBodyTemplate = (row: TeamType) => {
     return (
       <div className="flex justify-content-center ">
         <Button
@@ -53,6 +54,11 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
     )
   }
 
+  const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: TeamType) => {
+    rowDataCheck.blocked = e.checked ?? true
+    // Realizar la actualización de estado o lo que sea necesario
+  }
+
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     let _filters = { ...filters }
@@ -64,7 +70,7 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
   return (
     <DataTable
       header={
-        <WmsServiceTableHeader
+        <TeamTableHeader
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
           onAddClick={onAddClick}
@@ -86,14 +92,28 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
         style={{ width: '5%' }}
       />
       <Column field="nombre" header="Nombre" filter sortable />
+      <Column field="correo" header="Correo" filter sortable />
+
       <Column
-        field="url"
-        header="URL"
+        field="descripcion"
+        header="Descripción"
         filter
         sortable
         style={{ width: '35%' }}
       />
-      <Column field="descripcion" header="Descripción" filter sortable />
+      <Column field="gerencia" header="Gerencia" filter sortable />
+      <Column field="centroServicio" header="Centro Servicio" filter sortable />
+      <Column
+        field="blocked"
+        header="Bloqueado"
+        style={{ width: '25%' }}
+        body={(rowDataCheck) => (
+          <Checkbox
+            checked={rowDataCheck.blocked}
+            onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
+          />
+        )}
+      />
       <Column
         body={actionBodyTemplate}
         header="Acciones"

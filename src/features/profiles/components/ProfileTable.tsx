@@ -4,6 +4,7 @@ import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { ProfileTableHeader } from './ProfileTableHeader'
 import type { Profile } from '../types/profileType'
+import { Button } from 'primereact/button'
 
 interface Props {
   data: Profile[]
@@ -26,6 +27,29 @@ export const ProfileTable = ({ data, onAddClick }: Props) => {
   })
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
+
+  const actionBodyTemplate = (row: Profile) => {
+    return (
+      <div className="flex justify-content-center ">
+        <Button
+          icon="pi pi-pencil"
+          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
+          // onClick={() => onUpdateClick(row)}
+          severity="info"
+          text
+          size="small"
+        />
+        <Button
+          icon="pi pi-trash"
+          onClick={() => console.log(row)}
+          // onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
+          severity="danger"
+          text
+          size="small"
+        />
+      </div>
+    )
+  }
 
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -72,6 +96,11 @@ export const ProfileTable = ({ data, onAddClick }: Props) => {
         filter
         sortable
         style={{ width: '55%' }}
+      />
+      <Column
+        body={actionBodyTemplate}
+        header="Acciones"
+        style={{ width: '15%' }}
       />
     </DataTable>
   )

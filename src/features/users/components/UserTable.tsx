@@ -5,6 +5,7 @@ import { useState, type ChangeEvent } from 'react'
 import { UserTableHeader } from './UserTableHeader'
 import type { User } from '../types/userType'
 import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
+import { Button } from 'primereact/button'
 
 interface Props {
   data: User[]
@@ -41,6 +42,27 @@ export const UserTable = ({
     _filters['global'].value = value
     setFilters(_filters)
     setGlobalFilterValue(value)
+  }
+
+  const actionBodyTemplate = (row: User) => {
+    return (
+      <div className="flex justify-content-center ">
+        <Button
+          icon="pi pi-pencil"
+          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el usuario
+          severity="info"
+          text
+          size="small"
+        />
+        <Button
+          icon="pi pi-trash"
+          onClick={() => console.log(row)} // Llamamos a la función de eliminación pasando el ID
+          severity="danger"
+          text
+          size="small"
+        />
+      </div>
+    )
   }
 
   const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: User) => {
@@ -112,6 +134,11 @@ export const UserTable = ({
             onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
           />
         )}
+      />
+      <Column
+        body={actionBodyTemplate}
+        header="Acciones"
+        style={{ width: '15%' }}
       />
     </DataTable>
   )

@@ -29,7 +29,7 @@ export const Sidebar = () => {
         {
           label: 'Equipos',
           icon: 'pi pi-briefcase',
-          command: () => navigate('/dashboard/perfiles'),
+          command: () => navigate('/dashboard/equipos'),
         },
       ],
     },

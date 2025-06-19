@@ -5,6 +5,7 @@ import { ProfilePage } from '../features/profiles/pages/ProfilePage'
 import { ArcgisServicePage } from '../features/arcgisServices/pages/ArcgisServicePage'
 import { WmsServicePage } from '../features/wmsServices/pages/WmsServicePage'
 import { isAuthenticated } from '../shared/utils/auth'
+import { TeamPage } from '../features/teams/pages/TeamPage'
 
 export const PrivateRoute: RouteObject[] = [
   {
@@ -19,6 +20,10 @@ export const PrivateRoute: RouteObject[] = [
       {
         path: 'perfiles',
         element: <ProfilePage />,
+      },
+      {
+        path: 'equipos',
+        element: <TeamPage />,
       },
       {
         path: 'arcgisServices',
