@@ -9,12 +9,10 @@ interface NewArcgisServiceFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: ArcGisService) => Promise<void>
-  currentService?: ArcGisService | null
 }
 
 export const NewArcgisServiceForm = ({
   isModalOpen,
-  currentService,
   onIsModalOpen,
   onSubmit,
 }: NewArcgisServiceFormProps) => {
@@ -27,7 +25,7 @@ export const NewArcgisServiceForm = ({
     mode: 'onBlur',
   })
 
-  const onSubmitNewProduct = async (data: ArcGisService) => {
+  const onSubmitNewElement = async (data: ArcGisService) => {
     console.log(data)
     await onSubmit(data)
     reset()
@@ -50,12 +48,11 @@ export const NewArcgisServiceForm = ({
         onIsModalOpen(false)
       }}
     >
-      <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+      <form onSubmit={handleSubmit(onSubmitNewElement)}>
         <FormInput
           name="nombreServicioMapa"
           label="Nombre"
           control={control}
-          value={currentService?.nombreServicioMapa}
           errors={errors}
           rules={{ required: 'Ingrese nombre del servicio' }}
         />
@@ -76,22 +73,14 @@ export const NewArcgisServiceForm = ({
           rules={{ required: 'Ingrese URL del servicio' }}
         />
 
-        <FormInput
-          name="cacheado"
-          label="Tipo"
-          control={control}
-          errors={errors}
-          rules={{ required: 'Defina tipo del servicio' }}
-        />
         <FormDropdown
           name="cacheado"
           label="Tipo"
           control={control}
-          value={currentService?.cacheado}
           errors={errors}
           options={cacheadoOptions}
-          rules={{ required: 'This field is required' }} // Puedes agregar reglas como required, minLength, etc.
-          placeholder="Select an option"
+          rules={{ required: 'Defina tipo del servicio' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione un tipo"
         />
 
         <div className="flex justify-content-center gap-4">

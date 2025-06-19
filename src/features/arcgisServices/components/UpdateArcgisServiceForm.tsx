@@ -23,10 +23,10 @@ export const UpdateArcgisServiceForm = ({
     formState: { errors, isValid, isSubmitting },
   } = useForm<ArcGisService>({
     mode: 'onBlur',
+    defaultValues: currentService,
   })
 
-  const onSubmitNewProduct = async (data: ArcGisService) => {
-    // data.idServicioMapa = currentService.idServicioMapa
+  const onSubmitUpdateElement = async (data: ArcGisService) => {
     await onSubmit(data)
     reset()
   }
@@ -47,12 +47,19 @@ export const UpdateArcgisServiceForm = ({
         handleClose()
       }}
     >
-      <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+      <form onSubmit={handleSubmit(onSubmitUpdateElement)}>
+        <FormInput
+          name="idServicioMapa"
+          label="ID"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese ID del servicio' }}
+          hidden={true}
+        />
         <FormInput
           name="nombreServicioMapa"
           label="Nombre"
           control={control}
-          value={currentService?.nombreServicioMapa}
           errors={errors}
           rules={{ required: 'Ingrese nombre del servicio' }}
         />
@@ -61,7 +68,6 @@ export const UpdateArcgisServiceForm = ({
           name="descripcion"
           label="Descripción"
           control={control}
-          value={currentService?.descripcion}
           errors={errors}
           rules={{ required: 'Ingrese la descripción del servicio' }}
         />
@@ -70,28 +76,18 @@ export const UpdateArcgisServiceForm = ({
           name="urlServicioMapa"
           label="URL/Ruta MXDs"
           control={control}
-          value={currentService?.urlServicioMapa}
           errors={errors}
           rules={{ required: 'Ingrese URL del servicio' }}
         />
 
-        <FormInput
-          name="cacheado"
-          label="Tipo"
-          control={control}
-          value={currentService?.cacheado.toString()}
-          errors={errors}
-          rules={{ required: 'Defina tipo del servicio' }}
-        />
         <FormDropdown
           name="cacheado"
           label="Tipo"
           control={control}
-          value={currentService?.cacheado}
           errors={errors}
           options={cacheadoOptions}
-          rules={{ required: 'This field is required' }} // Puedes agregar reglas como required, minLength, etc.
-          placeholder="Select an option"
+          rules={{ required: 'Defina tipo de servicio' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione un tipo"
         />
 
         <div className="flex justify-content-center gap-4">

@@ -10,7 +10,6 @@ interface FormDropdownProps {
   name: string
   label: string
   control: Control<any>
-  value?: any
   errors: FieldErrors<any>
   options: Option[]
   rules?: object
@@ -21,7 +20,6 @@ export const FormDropdown = ({
   name,
   label,
   control,
-  value = null,
   errors,
   options,
   rules = {},
@@ -39,7 +37,6 @@ export const FormDropdown = ({
           <Dropdown
             id={name}
             {...field}
-            value={field.value ?? value}
             options={options}
             placeholder={placeholder}
             className={errors[name] ? 'p-invalid' : ''}

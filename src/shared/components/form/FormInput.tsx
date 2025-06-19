@@ -5,29 +5,28 @@ interface FormInputProps {
   name: string
   label: string
   control: Control<any>
-  value?: string
   errors: FieldErrors<any>
   rules?: object
   placeholder?: string
+  hidden?: boolean
 }
 
 export const FormInput = ({
   name,
   label,
   control,
-  value = '',
   errors,
   rules = {},
   placeholder = '',
+  hidden = false,
 }: FormInputProps) => {
   return (
-    <div className="flex flex-column gap-2 mb-4">
+    <div className={hidden ? 'hidden' : 'flex flex-column gap-2 mb-4'}>
       <label htmlFor={name}>{label}</label>
       <Controller
         name={name}
         control={control}
         rules={rules}
-        defaultValue={value}
         render={({ field }) => (
           <InputText
             id={name}
