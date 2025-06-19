@@ -12,5 +12,5 @@ export const isAuthenticated = () : boolean => {
     console.log("viendo cookies")
   const token = Cookies.get('auth_token')
   console.log(token)
-  return token !== undefined 
+  return token == undefined 
 }

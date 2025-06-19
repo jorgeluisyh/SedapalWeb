@@ -26,7 +26,7 @@ export const UpdateArcgisServiceForm = ({
   })
 
   const onSubmitNewProduct = async (data: ArcGisService) => {
-    data.idServicioMapa = currentService.idServicioMapa
+    // data.idServicioMapa = currentService.idServicioMapa
     await onSubmit(data)
     reset()
   }

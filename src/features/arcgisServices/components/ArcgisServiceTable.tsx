@@ -94,6 +94,7 @@ export const ArcgisServiceTable = ({
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
+      <Column field="idServicioMapa" header="ID" style={{ display: 'none' }} />
       <Column
         sortable
         field="nombreServicioMapa"
