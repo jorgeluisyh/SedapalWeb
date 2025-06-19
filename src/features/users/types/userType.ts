@@ -1,5 +1,3 @@
-import type { Checkbox } from "primereact/checkbox"
-
 export interface User {
   id: number
   username: string

@@ -1,14 +1,28 @@
 import { useState } from 'react'
 import { Card } from 'primereact/card'
 import { NewUserForm } from '../components/NewUserLDAPForm'
+import { NewUserExternalForm } from '../components/NewUserExternalForm'
+import type { NewUserExternal } from '../types/newUserExternalType'
 import type { User } from '../types/userType'
+import { EditMultipleUsersForm } from '../components/EditMultipleUsersForm'
 import { UserTable } from '../components/UserTable'
+// import type { EditMultipleUsers } from '../types/editMultipleUsersType'
 
 export const Userpage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpenExternal, setIsModalOpenExternal] = useState(false)
+  const [isModalOpenMultiple, setIsModalOpenMultiple] = useState(false)
 
   const handleCreateProduct = async (user: User) => {
     console.log(user)
+  }
+
+  const handleCreateNewExternalUser = async (user: NewUserExternal) => {
+    console.log(user)
+  }
+
+  const handleEditMultipleUsers = async (users: User) => {
+    console.log(users)
   }
 
   const data: User[] = [
@@ -42,13 +56,31 @@ export const Userpage = () => {
     <>
       {/* {JSON.stringify(products)} */}
       <Card title="Usuarios">
-        <UserTable data={data} onAddClick={() => setIsModalOpen(true)} />
+        <UserTable
+          data={data}
+          onAddClick={() => setIsModalOpen(true)}
+          onAddExternalClick={() => setIsModalOpenExternal(true)}
+          onAddMultipleClick={() => setIsModalOpenMultiple(true)}
+        />
       </Card>
 
       <NewUserForm
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateProduct}
+        onHide={() => console.log('Modal hidden')} // Add this prop
+      />
+      <NewUserExternalForm
+        isModalOpen={isModalOpenExternal}
+        onIsModalOpen={setIsModalOpenExternal}
+        onSubmit={handleCreateNewExternalUser}
+        onHide={() => console.log('Modal hidden')} // Add this prop
+      />
+      <EditMultipleUsersForm
+        isModalOpen={isModalOpenMultiple}
+        onIsModalOpen={setIsModalOpenMultiple}
+        onSubmit={handleEditMultipleUsers}
+        onHide={() => console.log('Modal hidden')} // Add this prop
       />
     </>
   )
