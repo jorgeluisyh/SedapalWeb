@@ -98,7 +98,6 @@ export const UpdateArcgisServiceForm = ({
             outlined
             onClick={() => {
               handleClose()
-              console.log('cerrar buton')
             }}
           />
           <Button

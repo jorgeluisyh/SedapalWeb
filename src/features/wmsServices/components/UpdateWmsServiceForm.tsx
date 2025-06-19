@@ -81,12 +81,11 @@ export const UpdateWmsServiceForm = ({
             outlined
             onClick={() => {
               handleClose()
-              console.log('cerrar buton')
             }}
           />
           <Button
             disabled={!isValid || isSubmitting}
-            label="Crear Servicio"
+            label="Actualizar Servicio"
             type="submit"
             icon="pi pi-plus"
             loading={isSubmitting}

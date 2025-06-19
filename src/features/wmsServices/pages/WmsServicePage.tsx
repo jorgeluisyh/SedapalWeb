@@ -28,6 +28,8 @@ export const WmsServicePage = () => {
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await postWmsService(wmsService)
         toast.current?.show({
@@ -50,6 +52,8 @@ export const WmsServicePage = () => {
       message: `¿Estás seguro de que deseas editar el servicio : ${wmsService.nombreServicioWMS}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await updateWmsService(
           wmsService.idServicioWMS,
@@ -57,9 +61,9 @@ export const WmsServicePage = () => {
         )
         handleCloseUpdateForm()
         toast.current?.show({
-          severity: 'info',
-          summary: 'Cancel',
-          detail: 'Se canceló la operación',
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Se editó el servicio',
           life: 3000,
         })
         console.log(response.message)
@@ -78,6 +82,8 @@ export const WmsServicePage = () => {
       message: `¿Estás seguro de que deseas eliminar el servicio: ${wmsService.nombreServicioWMS}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await deleteWmsService(wmsService.idServicioWMS)
         console.log(response.message)

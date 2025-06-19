@@ -30,6 +30,8 @@ export const ArcgisServicePage = () => {
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await postArcgisService(arcGisService)
         toast.current?.show({
@@ -54,6 +56,8 @@ export const ArcgisServicePage = () => {
       message: `¿Estás seguro de que deseas editar el servicio : ${arcGisService.nombreServicioMapa}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await updateArcgisService(
           arcGisService.idServicioMapa,
@@ -84,6 +88,8 @@ export const ArcgisServicePage = () => {
       message: `¿Estás seguro de que deseas eliminar el servicio: ${arcGisService.nombreServicioMapa}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
       accept: async () => {
         const response = await deleteArcgisService(arcGisService.idServicioMapa)
         console.log(response.message)
