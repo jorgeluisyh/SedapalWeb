@@ -74,7 +74,6 @@ export const ArcgisServiceTable = ({
         <ArcgisServiceTableHeader
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
-          // onAddClick={onAddClick}
           onAddClick={onAddClick}
         />
       }

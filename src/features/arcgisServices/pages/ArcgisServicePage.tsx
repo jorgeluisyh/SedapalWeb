@@ -61,9 +61,9 @@ export const ArcgisServicePage = () => {
         )
         handleCloseUpdateForm()
         toast.current?.show({
-          severity: 'info',
-          summary: 'Cancel',
-          detail: 'Se canceló la operación',
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Se editó el servicio ',
           life: 3000,
         })
         console.log(response.message)
@@ -106,64 +106,64 @@ export const ArcgisServicePage = () => {
     })
   }
 
-  const initialData: ArcGisService[] = [
-    {
-      idServicioMapa: 1,
-      nombreServicioMapa: 'SGIO',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/SGIO/MapServer',
-      cacheado: 1,
-      descripcion: 'Servicio de SGIO',
-    },
-    {
-      idServicioMapa: 2,
-      nombreServicioMapa: 'Análisis Redesmd',
-      urlServicioMapa:
-        '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Analisis Redes.mxd',
-      cacheado: 2,
-      descripcion: 'Análisis Redes',
-    },
-    {
-      idServicioMapa: 3,
-      nombreServicioMapa: 'ANFmd',
-      urlServicioMapa:
-        '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Evaluacion Sectores.mxd',
-      cacheado: 3,
-      descripcion: 'Mapa del Agua No Facturada',
-    },
-    {
-      idServicioMapa: 4,
-      nombreServicioMapa: 'Catastro Comercial',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/CatastroComercial/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Catastro Comercial',
-    },
-    {
-      idServicioMapa: 5,
-      nombreServicioMapa: 'AguaPotable',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/AguaPotable/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Agua Potable',
-    },
-    {
-      idServicioMapa: 6,
-      nombreServicioMapa: 'Satélite ESRI',
-      urlServicioMapa:
-        'http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
-      cacheado: 1,
-      descripcion: 'Servicio de Imágenes de Satélite',
-    },
-    {
-      idServicioMapa: 7,
-      nombreServicioMapa: 'Alcantarillado',
-      urlServicioMapa:
-        'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/Alcantarillado/MapServer',
-      cacheado: 2,
-      descripcion: 'Servicio de Alcantarillado',
-    },
-  ]
+  // const initialData: ArcGisService[] = [
+  //   {
+  //     idServicioMapa: 1,
+  //     nombreServicioMapa: 'SGIO',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/SGIO/MapServer',
+  //     cacheado: 1,
+  //     descripcion: 'Servicio de SGIO',
+  //   },
+  //   {
+  //     idServicioMapa: 2,
+  //     nombreServicioMapa: 'Análisis Redesmd',
+  //     urlServicioMapa:
+  //       '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Analisis Redes.mxd',
+  //     cacheado: 2,
+  //     descripcion: 'Análisis Redes',
+  //   },
+  //   {
+  //     idServicioMapa: 3,
+  //     nombreServicioMapa: 'ANFmd',
+  //     urlServicioMapa:
+  //       '\\\\srvsigfs300.sedapal.com.pe\\Giscorporativo\\Desktop\\Recursos\\Produccion\\MXD\\Evaluacion Sectores.mxd',
+  //     cacheado: 3,
+  //     descripcion: 'Mapa del Agua No Facturada',
+  //   },
+  //   {
+  //     idServicioMapa: 4,
+  //     nombreServicioMapa: 'Catastro Comercial',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/CatastroComercial/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Catastro Comercial',
+  //   },
+  //   {
+  //     idServicioMapa: 5,
+  //     nombreServicioMapa: 'AguaPotable',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/AguaPotable/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Agua Potable',
+  //   },
+  //   {
+  //     idServicioMapa: 6,
+  //     nombreServicioMapa: 'Satélite ESRI',
+  //     urlServicioMapa:
+  //       'http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
+  //     cacheado: 1,
+  //     descripcion: 'Servicio de Imágenes de Satélite',
+  //   },
+  //   {
+  //     idServicioMapa: 7,
+  //     nombreServicioMapa: 'Alcantarillado',
+  //     urlServicioMapa:
+  //       'http://gisprdsgp.sedapal.com.pe/arcgis/rest/services/Alcantarillado/MapServer',
+  //     cacheado: 2,
+  //     descripcion: 'Servicio de Alcantarillado',
+  //   },
+  // ]
 
   useEffect(() => {
     const fetchArcgisServices = async () => {
