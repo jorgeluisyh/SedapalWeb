@@ -67,7 +67,7 @@ export const UpdateArcgisServiceForm = ({
         />
 
         <FormInput
-          name="url"
+          name="urlServicioMapa"
           label="URL/Ruta MXDs"
           control={control}
           value={currentService?.urlServicioMapa}
