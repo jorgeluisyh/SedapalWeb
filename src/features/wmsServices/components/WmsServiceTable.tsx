@@ -9,6 +9,8 @@ import { Button } from 'primereact/button'
 interface Props {
   data: WmsService[]
   onAddClick: () => void
+  onUpdateClick: (arcGisService: WmsService | null) => void
+  onDeleteClick: (arcGisService: WmsService) => void
 }
 
 interface Filter {
@@ -19,7 +21,12 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const WmsServiceTable = ({ data, onAddClick }: Props) => {
+export const WmsServiceTable = ({
+  data,
+  onAddClick,
+  onUpdateClick,
+  onDeleteClick,
+}: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -30,35 +37,33 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
-  const actionBodyTemplate = (row: WmsService) => {
-    return (
-      <div className="flex justify-content-center ">
-        <Button
-          icon="pi pi-pencil"
-          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
-          // onClick={() => onUpdateClick(row)}
-          severity="info"
-          text
-          size="small"
-        />
-        <Button
-          icon="pi pi-trash"
-          onClick={() => console.log(row)}
-          // onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
-          severity="danger"
-          text
-          size="small"
-        />
-      </div>
-    )
-  }
-
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     let _filters = { ...filters }
     _filters['global'].value = value
     setFilters(_filters)
     setGlobalFilterValue(value)
+  }
+
+  const actionBodyTemplate = (row: WmsService) => {
+    return (
+      <div className="flex justify-content-center ">
+        <Button
+          icon="pi pi-pencil"
+          onClick={() => onUpdateClick(row)} // Llamamos a la función de edición pasando el servicio
+          severity="info"
+          text
+          size="small"
+        />
+        <Button
+          icon="pi pi-trash"
+          onClick={() => onDeleteClick(row)}
+          severity="danger"
+          text
+          size="small"
+        />
+      </div>
+    )
   }
 
   return (
@@ -85,15 +90,25 @@ export const WmsServiceTable = ({ data, onAddClick }: Props) => {
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
-      <Column field="nombre" header="Nombre" filter sortable />
+      <Column field="idServicioWMS" header="ID" style={{ display: 'none' }} />
       <Column
-        field="url"
+        field="nombreServicioWMS"
+        header="Nombre"
+        sortable
+        style={{ width: '20%' }}
+      />
+      <Column
+        field="urlServicioWMS"
         header="URL"
-        filter
         sortable
         style={{ width: '35%' }}
       />
-      <Column field="descripcion" header="Descripción" filter sortable />
+      <Column
+        field="descripcion"
+        header="Descripción"
+        sortable
+        style={{ width: '20%' }}
+      />
       <Column
         body={actionBodyTemplate}
         header="Acciones"

@@ -1,6 +1,6 @@
 export interface WmsService {
-  id: number
-  nombre: string
-  url: string
+  idServicioWMS: number
+  nombreServicioWMS: string
+  urlServicioWMS: string
   descripcion: string
 }

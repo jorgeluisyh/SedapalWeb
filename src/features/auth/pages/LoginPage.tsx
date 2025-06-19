@@ -1,4 +1,3 @@
-// src/pages/LoginPage.tsx
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../components/LoginForm'
@@ -21,7 +20,7 @@ export const LoginPage = () => {
 
       console.log('Enviando datos de inicio de sesión:', data)
       // Simulamos un retraso de 1.5 segundos para que se vea el loading
-      await new Promise((resolve) => setTimeout(resolve, 5000))
+      await new Promise((resolve) => setTimeout(resolve, 2500))
       const response = await authenticateUser(data)
 
       Cookies.set('auth_token', response.token)

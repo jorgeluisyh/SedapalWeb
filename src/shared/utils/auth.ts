@@ -10,5 +10,5 @@ export const removeAuthToken  = () => {
 
 export const isAuthenticated = () : boolean => {
   const token = Cookies.get('auth_token')
-  return token == undefined 
+  return token !== undefined 
 }

@@ -24,14 +24,14 @@ export const NewWmsServiceForm = ({
     mode: 'onBlur',
   })
 
-  const onSubmitNewProduct = async (data: WmsService) => {
+  const onSubmitNewElement = async (data: WmsService) => {
     await onSubmit(data)
     reset()
   }
 
   return (
     <Dialog
-      header="Crear Servicio WMS"
+      header="Nuevo Servicio WMS"
       visible={isModalOpen}
       maximizable
       style={{ width: '50vw' }}
@@ -40,9 +40,9 @@ export const NewWmsServiceForm = ({
         onIsModalOpen(false)
       }}
     >
-      <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+      <form onSubmit={handleSubmit(onSubmitNewElement)}>
         <FormInput
-          name="nombre"
+          name="nombreServicioWMS"
           label="Nombre"
           control={control}
           errors={errors}
@@ -58,7 +58,7 @@ export const NewWmsServiceForm = ({
         />
 
         <FormInput
-          name="url"
+          name="urlServicioWMS"
           label="URL"
           control={control}
           errors={errors}

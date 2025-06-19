@@ -52,7 +52,6 @@ export const ArcgisServiceTable = ({
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-pencil"
-          // onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
           onClick={() => onUpdateClick(row)}
           severity="info"
           text

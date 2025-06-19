@@ -33,9 +33,9 @@ export const ArcgisServicePage = () => {
       accept: async () => {
         const response = await postArcgisService(arcGisService)
         toast.current?.show({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'servicio agregado correctamente',
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Servicio agregado correctamente',
           life: 3000,
         })
         setRefresh(!refresh)
@@ -177,7 +177,7 @@ export const ArcgisServicePage = () => {
     <>
       <Card title="Servicios ArcGIS Server y MXDs">
         <ArcgisServiceTable
-          data={initialData}
+          data={arcgisServices}
           onAddClick={() => {
             setIsModalOpen(true)
           }}
