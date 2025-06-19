@@ -9,6 +9,8 @@ import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 interface Props {
   data: User[]
   onAddClick: () => void
+  onAddExternalClick?: () => void
+  onAddMultipleClick?: () => void
 }
 
 interface Filter {
@@ -19,7 +21,12 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const UserTable = ({ data, onAddClick }: Props) => {
+export const UserTable = ({
+  data,
+  onAddClick,
+  onAddExternalClick,
+  onAddMultipleClick,
+}: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     username: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -48,6 +55,8 @@ export const UserTable = ({ data, onAddClick }: Props) => {
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
           onAddClick={onAddClick}
+          onAddExternalClick={onAddExternalClick}
+          onAddMultipleClick={onAddMultipleClick}
         />
       }
       value={data}

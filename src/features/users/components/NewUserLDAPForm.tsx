@@ -3,11 +3,16 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { useForm } from 'react-hook-form'
 import type { User } from '../types/userType'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import { Dropdown } from 'primereact/dropdown'
+import { useState } from 'react'
 
 interface NewUserFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: User) => Promise<void>
+  onHide: () => void
 }
 
 export const NewUserForm = ({
@@ -15,76 +20,142 @@ export const NewUserForm = ({
   onIsModalOpen,
   onSubmit,
 }: NewUserFormProps) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<User>({
-    mode: 'onBlur',
-  })
+  const { handleSubmit, reset } = useForm<User>({ mode: 'onBlur' })
 
+  const [searchValue, setSearchValue] = useState('')
+  const [selectedUser, setSelectedUser] = useState<any>(null)
+  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  const [selectedEquipo, setSelectedEquipo] = useState<string | null>(null)
   const onSubmitNewProduct = async (data: User) => {
     await onSubmit(data)
     reset()
   }
+
+  const buscarUsuario = () => {
+    // Aquí iría la lógica para buscar usuarios por LDAP
+    console.log('Buscando usuario:', searchValue)
+  }
+  const usuariosEncontrados = [
+    { usuario: 'user1', nombres: 'Juan Perez' },
+    { usuario: 'user2', nombres: 'Maria Lopez' },
+  ] // Aquí deberías cargar los resultados del LDAP
+  const perfiles = [
+    { label: 'Admin', value: 'admin' },
+    { label: 'Editor', value: 'editor' },
+  ]
+  const equipos = [
+    { label: 'Equipo A', value: 'a' },
+    { label: 'Equipo B', value: 'b' },
+  ]
+  const footer = (
+    <div className="flex justify-content-end gap-2">
+      <Button
+        label="Agregar"
+        icon="pi pi-check"
+        onClick={() => console.log('Agregar usuario')}
+        disabled={!selectedUser || !selectedPerfil || !selectedEquipo}
+        className="p-button-sm p-button-primary"
+      />
+      <Button
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="secondary"
+        onClick={() => onIsModalOpen(false)}
+        className="p-button-sm"
+      />
+    </div>
+  )
   return (
     <Dialog
-      header="Nuevo Usuario LDAP"
+      header="Agregar Usuario"
       visible={isModalOpen}
       maximizable
-      style={{ width: '50vw' }}
+      style={{ width: '35vw' }}
       onHide={() => {
         if (!isModalOpen) return
         onIsModalOpen(false)
       }}
+      footer={footer}
     >
       <form onSubmit={handleSubmit(onSubmitNewProduct)}>
-        <div className="flex flex-column gap-2 mb-4">
-          <label htmlFor="tinametle">Title</label>
+        {/* Búsqueda */}
+        <div className="flex align-items-center gap-4 mb-3">
+          <label
+            htmlFor="buscarUsuario"
+            className="p-text-bold"
+            style={{ width: '100px' }}
+          >
+            Usuario:
+          </label>
           <InputText
-            {...register('username', { required: true })}
-            invalid={errors?.username !== undefined}
-          />
-          <small className="p-error" hidden={errors?.username === undefined}>
-            Ingrese nombre del producto
-          </small>
-        </div>
-        <div className="flex flex-column gap-2 mb-4">
-          <label htmlFor="title">Category</label>
-          <InputText
-            {...register('profile', { required: true })}
-            invalid={errors?.profile !== undefined}
-          />
-          <small className="p-error" hidden={errors?.profile === undefined}>
-            Ingrese nombre de la categoria
-          </small>
-        </div>
-        <div className="flex flex-column gap-2 mb-4">
-          <label htmlFor="price">Price</label>
-          <InputText
-            {...register('team', { required: true })}
-            invalid={errors?.team !== undefined}
-          />
-          <small className="p-error" hidden={errors?.team === undefined}>
-            Ingrese precio del producto
-          </small>
-        </div>
-        <div className="flex justify-content-center gap-4">
-          <Button
-            type="button"
-            label="cerrar"
-            severity="secondary"
-            outlined
-            onClick={() => onIsModalOpen(false)}
+            id="buscarUsuario"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="p-inputtext-sm"
+            style={{ width: '80%' }}
           />
           <Button
-            disabled={!isValid || isSubmitting}
-            label="Create Product"
-            type="submit"
-            icon="pi pi-plus"
-            loading={isSubmitting}
+            icon="pi pi-search"
+            onClick={buscarUsuario}
+            className="p-button-sm"
           />
+        </div>
+
+        {/* Tabla de resultados */}
+        <div className="p-1 border-1 border-round mb-4">
+          <h4>Usuarios encontrados en LDAP</h4>
+          <DataTable
+            value={usuariosEncontrados}
+            selectionMode="single"
+            onSelectionChange={(e) => setSelectedUser(e.value)}
+            className="p-datatable-sm"
+          >
+            <Column field="usuario" header="Usuario" />
+            <Column field="nombres" header="Nombres" />
+          </DataTable>
+        </div>
+
+        {/* Datos del nuevo usuario */}
+        <div className="mb-3">
+          <h4>Datos específicos del nuevo usuario</h4>
+          <div className="grid">
+            <div className="col-4 flex align-items-center ">
+              Usuario Seleccionado:
+            </div>
+            <div className="col-8">
+              <InputText
+                value={selectedUser?.usuario || ''}
+                disabled
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            <div className="col-4 flex align-items-center p-mb-2">
+              Perfiles:
+            </div>
+            <div className="col-8">
+              <Dropdown
+                value={selectedPerfil}
+                options={perfiles}
+                onChange={(e) => setSelectedPerfil(e.value)}
+                placeholder="Seleccione"
+                className="p-dropdown-sm"
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            <div className="col-4 flex align-items-center p-mb-2">Equipos:</div>
+            <div className="col-8">
+              <Dropdown
+                value={selectedEquipo}
+                options={equipos}
+                onChange={(e) => setSelectedEquipo(e.value)}
+                placeholder="Seleccione"
+                className="p-dropdown-sm"
+                style={{ width: '100%' }}
+              />
+            </div>
+          </div>
         </div>
       </form>
     </Dialog>
