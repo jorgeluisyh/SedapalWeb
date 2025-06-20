@@ -24,7 +24,7 @@ export const Sidebar = () => {
         {
           label: 'Mapas',
           icon: 'pi pi-map',
-          command: () => navigate('/dashboard/perfiles'),
+          command: () => navigate('/dashboard/mapas'),
         },
         {
           label: 'Equipos',
@@ -54,7 +54,7 @@ export const Sidebar = () => {
         {
           label: 'Usuarios',
           icon: 'pi pi-calendar-clock',
-          command: () => navigate('/dashboard/users'),
+          command: () => navigate('/dashboard/history'),
         },
       ],
     },

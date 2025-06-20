@@ -3,6 +3,8 @@ import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
 import type { TeamType } from '../types/teamType'
+import { Dropdown } from 'primereact/dropdown'
+import { useState } from 'react'
 
 interface NewTeamFormProps {
   isModalOpen: boolean
@@ -29,6 +31,13 @@ export const NewTeamForm = ({
     reset()
   }
 
+  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+
+  const perfiles = [
+    { label: 'Admin', value: 'admin' },
+    { label: 'Editor', value: 'editor' },
+    { label: 'Viewer', value: 'viewer' },
+  ]
   return (
     <Dialog
       header="Agregar Equipo"
@@ -46,7 +55,7 @@ export const NewTeamForm = ({
           label="Nombre:"
           control={control}
           errors={errors}
-          rules={{ required: 'Ingrese nombre del servicio' }}
+          rules={{ required: 'Ingrese nombre del equipo' }}
         />
 
         <FormInput
@@ -54,17 +63,43 @@ export const NewTeamForm = ({
           label="Correo"
           control={control}
           errors={errors}
-          rules={{ required: 'Ingrese URL del servicio' }}
+          rules={{ required: 'Ingrese correo del equipo' }}
         />
         <FormInput
           name="descripcion"
           label="Descripción"
           control={control}
           errors={errors}
-          rules={{ required: 'Ingrese la descripción del servicio' }}
+          rules={{ required: 'Ingrese la descripción' }}
         />
-
-        <div className="flex justify-content-center gap-4">
+        <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
+        <div className="col-8" style={{ width: '100%' }}>
+          <Dropdown
+            value={selectedPerfil}
+            options={perfiles}
+            onChange={(e) => setSelectedPerfil(e.value)}
+            placeholder="Seleccione"
+            className="p-dropdown-sm"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div className="col-4 flex align-items-center p-mb-2">
+          Centro de Servicio:
+        </div>
+        <div className="col-8" style={{ width: '100%' }}>
+          <Dropdown
+            value={selectedPerfil}
+            options={perfiles}
+            onChange={(e) => setSelectedPerfil(e.value)}
+            placeholder="Seleccione"
+            className="p-dropdown-sm"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div
+          className="flex justify-content-center gap-4"
+          style={{ marginTop: '20px' }}
+        >
           <Button
             type="button"
             label="Cancelar"
