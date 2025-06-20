@@ -6,17 +6,21 @@ import { useForm } from 'react-hook-form'
 import type { Profile } from '../types/profileType'
 import { InputText } from 'primereact/inputtext'
 
-interface NewProfileFormProps {
-  isModalOpen: boolean
-  onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+interface UpdateProfileFormProps {
+  // isModalOpen: boolean
+  currentService: Profile
+  // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: Profile) => Promise<void>
+  handleClose: () => void
 }
 
-export const NewProfileForm = ({
-  isModalOpen,
-  onIsModalOpen,
+export const UpdateProfileForm = ({
+  currentService,
+  // isModalOpen,
+  // onIsModalOpen,
+  handleClose,
   onSubmit,
-}: NewProfileFormProps) => {
+}: UpdateProfileFormProps) => {
   const {
     // control,
     handleSubmit,
@@ -25,6 +29,7 @@ export const NewProfileForm = ({
     register,
   } = useForm<Profile>({
     mode: 'onBlur',
+    defaultValues: currentService,
   })
 
   const onSubmitNewProduct = async (data: Profile) => {
@@ -35,12 +40,11 @@ export const NewProfileForm = ({
   return (
     <Dialog
       header="Crear Perfil"
-      visible={isModalOpen}
+      visible={true}
       maximizable
       style={{ width: '60vw' }}
       onHide={() => {
-        if (!isModalOpen) return
-        onIsModalOpen(false)
+        handleClose()
       }}
     >
       <form
@@ -238,11 +242,11 @@ export const NewProfileForm = ({
             label="Cerrar"
             severity="secondary"
             outlined
-            onClick={() => onIsModalOpen(false)}
+            onClick={() => handleClose()}
           />
           <Button
             disabled={!isValid || isSubmitting}
-            label="Guardar"
+            label="Actualizar Perfil"
             type="submit"
             icon="pi pi-save"
             loading={isSubmitting}

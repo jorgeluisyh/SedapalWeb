@@ -123,7 +123,7 @@ export const WmsServicePage = () => {
       setWmsServices(wmsServices)
     }
     fetchWmsServices()
-  })
+  }, [refresh])
 
   return (
     <>

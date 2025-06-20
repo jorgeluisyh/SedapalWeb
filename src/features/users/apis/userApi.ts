@@ -3,21 +3,21 @@ import type { User } from "../types/userType";
 
 
 export const getUsers = async (): Promise<User[]> => {
-    const response = await axiosInstance.get("/api/Servicios/users");
+    const response = await axiosInstance.get("/api/Usuarios");
     return response.data;
 }
 
 export const postUsers = async (data: User) => {
-    const response = await axiosInstance.post("/api/Servicios/users", data);
+    const response = await axiosInstance.post("/api/Usuarios", data);
     return response.data;
 }
 
 export const updateUsers = async (id: number, data: User) => {
-    const response = await axiosInstance.put(`/api/Servicios/users/${id}`, data);
+    const response = await axiosInstance.put(`/api/Usuarios/${id}`, data);
     return response.data;
 }
 
 export const deleteUsers = async (id: number) => {
-    const response = await axiosInstance.delete(`/api/Servicios/users/${id}`);
+    const response = await axiosInstance.delete(`/api/Usuarios/${id}`);
     return response.data;
 }

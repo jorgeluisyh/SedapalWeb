@@ -9,6 +9,8 @@ import { Button } from 'primereact/button'
 interface Props {
   data: Profile[]
   onAddClick: () => void
+  onUpdateClick: (arcGisService: Profile | null) => void
+  onDeleteClick: (arcGisService: Profile) => void
 }
 
 interface Filter {
@@ -19,7 +21,12 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const ProfileTable = ({ data, onAddClick }: Props) => {
+export const ProfileTable = ({
+  data,
+  onAddClick,
+  onUpdateClick,
+  onDeleteClick,
+}: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -33,16 +40,16 @@ export const ProfileTable = ({ data, onAddClick }: Props) => {
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-pencil"
-          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
-          // onClick={() => onUpdateClick(row)}
+          // onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
+          onClick={() => onUpdateClick(row)}
           severity="info"
           text
           size="small"
         />
         <Button
           icon="pi pi-trash"
-          onClick={() => console.log(row)}
-          // onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
+          // onClick={() => console.log(row)}
+          onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
           severity="danger"
           text
           size="small"
