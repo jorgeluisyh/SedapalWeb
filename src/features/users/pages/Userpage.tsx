@@ -27,7 +27,7 @@ export const Userpage = () => {
 
   const data: User[] = [
     {
-      id: 1,
+      id_Usuario: 1,
       username: 'ACM01',
       profile: 'EPFPIExternos',
       team: 'A', // add a value for team
@@ -35,7 +35,7 @@ export const Userpage = () => {
       blocked: true, // add a value for block
     },
     {
-      id: 2,
+      id_Usuario: 2,
       username: 'Analisis Comercial',
       profile: 'EPFPExternos_Calidda ',
       team: 'B', // add a value for team
@@ -43,7 +43,7 @@ export const Userpage = () => {
       blocked: false, // add a value for block
     },
     {
-      id: 3,
+      id_Usuario: 3,
       username: 'Analisis Superficial',
       profile: 'EPFPExternos_Calidda ',
       team: 'B', // add a value for team

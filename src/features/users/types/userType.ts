@@ -1,5 +1,5 @@
 export interface User {
-  id: number
+  id_Usuario: number
   username: string
   profile: string
   team?: string
