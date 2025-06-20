@@ -2,12 +2,12 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
-import { MapTableHeader } from './MapTableHeader'
-import type { MapType } from '../types/mapType'
+import { UserHistoryTableHeader } from './UserHistoryTableHeader'
+import type { UserHistoryType } from '../types/userHistoryType'
 import { Button } from 'primereact/button'
 
 interface Props {
-  data: MapType[]
+  data: UserHistoryType[]
   onAddClick: () => void
 }
 
@@ -19,31 +19,24 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const MapTable = ({ data, onAddClick }: Props) => {
+export const UserHistoryTable = ({ data, onAddClick }: Props) => {
   const [filters, setFilters] = useState<Filters>({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    descripcion: { value: null, matchMode: FilterMatchMode.IN },
+    user: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    profile: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    team: { value: null, matchMode: FilterMatchMode.IN },
+    global: { value: '', matchMode: FilterMatchMode.CONTAINS },
   })
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
-  const actionBodyTemplate = (row: MapType) => {
+  const actionBodyTemplate = (row: UserHistoryType) => {
     return (
       <div className="flex justify-content-center ">
         <Button
-          icon="pi pi-pencil"
+          icon="pi pi-address-book"
           onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
           // onClick={() => onUpdateClick(row)}
           severity="info"
-          text
-          size="small"
-        />
-        <Button
-          icon="pi pi-trash"
-          onClick={() => console.log(row)}
-          // onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
-          severity="danger"
           text
           size="small"
         />
@@ -62,7 +55,7 @@ export const MapTable = ({ data, onAddClick }: Props) => {
   return (
     <DataTable
       header={
-        <MapTableHeader
+        <UserHistoryTableHeader
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
           onAddClick={onAddClick}
@@ -71,8 +64,8 @@ export const MapTable = ({ data, onAddClick }: Props) => {
       value={data}
       filters={filters}
       paginator
-      rows={5}
-      rowsPerPageOptions={[5, 10, 25, 50]}
+      rows={10}
+      rowsPerPageOptions={[10, 25, 50]}
       tableStyle={{ minWidth: '50rem' }}
       size="small"
       removableSort
@@ -83,15 +76,35 @@ export const MapTable = ({ data, onAddClick }: Props) => {
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
-      <Column field="mapName" header="Nombre Napa" filter sortable />
       <Column
-        field="descripcion"
-        header="Descripción"
+        field="user"
+        header="Usuario"
+        style={{ width: '20%' }}
         filter
         sortable
-        style={{ width: '35%' }}
       />
-
+      <Column
+        field="profile"
+        header="Perfil"
+        filter
+        sortable
+        style={{ width: '25%' }}
+      />
+      <Column
+        field="team"
+        header="Equipo"
+        filter
+        sortable
+        style={{ width: '25%' }}
+      />
+      <Column
+        field="type"
+        header="Tipo"
+        filter
+        sortable
+        style={{ width: '25%' }}
+      />
+      <Column field="blocked" header="Bloqueado" style={{ width: '25%' }} />
       <Column
         body={actionBodyTemplate}
         header="Acciones"
