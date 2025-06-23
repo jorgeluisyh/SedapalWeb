@@ -6,6 +6,9 @@ import { authenticateUser } from '../apis/loginApi'
 import { Card } from 'primereact/card'
 import styles from './LoginPage.module.css'
 import { setAuthToken } from '../../../shared/utils/auth'
+import { ProgressSpinner } from 'primereact/progressspinner'
+import { useAuth } from '../../../contexts/AuthContext'
+
 // las paginas consumen las apis
 //los componentes reciben informacion
 
@@ -13,6 +16,7 @@ export const LoginPage = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const { login } = useAuth()
 
   const handleSubmit = async (data: { username: string; password: string }) => {
     try {
@@ -24,22 +28,13 @@ export const LoginPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 2500))
       const response = await authenticateUser(data)
 
-      // Cookies.set('auth_token', response.token)
-      setAuthToken(response.token)
-
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          username: data.username,
-          token: response.token,
-        })
-      )
+      login(response.token)
       navigate('/')
     } catch (error) {
       console.log(error)
 
       setError('Ocurrió un error al iniciar sesión')
-      setTimeout(() => setError(''), 5000)
+      setTimeout(() => setError(''), 3000)
     } finally {
       setLoading(false)
     }
@@ -54,17 +49,10 @@ export const LoginPage = () => {
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
             <p>Verificando credenciales...</p>
             {/* Puedes añadir un spinner aquí */}
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                margin: '20px auto',
-                border: '4px solid #f3f3f3',
-                borderTop: '4px solid #3498db',
-                borderRadius: '50%',
-                animation: 'spin 1s linear infinite',
-              }}
-            ></div>
+            <ProgressSpinner
+              style={{ width: '50px', height: '50px' }}
+              strokeWidth="4"
+            />
           </div>
         )}
       </Card>

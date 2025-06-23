@@ -1,18 +1,43 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+// src/routes/RootRoute.tsx
+import { createBrowserRouter } from 'react-router-dom'
 import { PrivateRoute } from './PrivateRoute'
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage'
+import { Userpage } from '../features/users/pages/Userpage'
+import { ProfilePage } from '../features/profiles/pages/ProfilePage'
+import { ArcgisServicePage } from '../features/arcgisServices/pages/ArcgisServicePage'
+import { WmsServicePage } from '../features/wmsServices/pages/WmsServicePage'
+import { TeamPage } from '../features/teams/pages/TeamPage'
+import { MapPage } from '../features/maps/pages/MapPage'
+import { UserHistoryPage } from '../features/usersHistory/pages/UserHistoryPage'
 import { LoginPage } from '../features/auth/pages/LoginPage'
-import { isAuthenticated } from '../shared/utils/auth'
 
 export const router = createBrowserRouter(
   [
-    ...PrivateRoute,
     {
       path: '/',
-      element: isAuthenticated() ? <DashboardPage /> : <Navigate to="/login" />,
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: '',
+          element: <DashboardPage />,
+        },
+        {
+          path: 'dashboard',
+          element: <DashboardPage />,
+          children: [
+            { path: 'users', element: <Userpage /> },
+            { path: 'perfiles', element: <ProfilePage /> },
+            { path: 'mapas', element: <MapPage /> },
+            { path: 'equipos', element: <TeamPage /> },
+            { path: 'arcgisServices', element: <ArcgisServicePage /> },
+            { path: 'wmsServices', element: <WmsServicePage /> },
+            { path: 'history', element: <UserHistoryPage /> },
+          ],
+        },
+      ],
     },
     {
-      path: '/login/',
+      path: '/login',
       element: <LoginPage />,
     },
   ],

@@ -7,11 +7,14 @@ import './index.css' /*
 import 'primereact/resources/themes/lara-light-blue/theme.css' */
 import 'primeicons/primeicons.css'
 import '/node_modules/primeflex/primeflex.css'
+import { AuthProvider } from './contexts/AuthContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PrimeReactProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </PrimeReactProvider>
   </StrictMode>
 )

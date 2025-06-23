@@ -4,7 +4,8 @@ import { useRef } from 'react'
 import { Menu } from 'primereact/menu'
 import { useTheme } from '../../../shared/hooks/useTheme'
 import type { MenuItem } from 'primereact/menuitem'
-import { removeAuthToken } from '../../../shared/utils/auth'
+import { useAuth } from '../../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 interface TopHeaderProps {
   onCollapse: () => void
@@ -13,6 +14,8 @@ interface TopHeaderProps {
 export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
   const menuRight = useRef<Menu>(null)
   const { toggleTheme, theme } = useTheme()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
 
   const items: MenuItem[] = [
     {
@@ -30,7 +33,8 @@ export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
           label: 'Cerrar Sesión',
           icon: 'pi pi-sign-out',
           command: () => {
-            removeAuthToken()
+            logout()
+            navigate('/login')
           },
         },
       ],
@@ -87,4 +91,7 @@ export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
       />
     </header>
   )
+}
+function logout() {
+  throw new Error('Function not implemented.')
 }
