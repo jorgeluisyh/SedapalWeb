@@ -2,9 +2,9 @@ import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 // import type { MapType } from '../types/mapType'
 import { InputText } from 'primereact/inputtext'
-import { ListBox } from 'primereact/listbox'
 import { useState } from 'react'
 import { Button } from 'primereact/button'
+import { DualListBox } from '../../../shared/components/form/DualListBox'
 
 interface NewMapFormProps {
   isModalOpen: boolean
@@ -41,46 +41,6 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
     'Supervisor Edicion ArcSDEmx',
   ])
 
-  const handleItemClick = (item: string, fromList: string) => {
-    if (fromList === 'disponibles') {
-      // Eliminar del primer ListBox (disponibles)
-      setServiciosDisponibles(serviciosDisponibles.filter((i) => i !== item))
-      // Agregar al segundo ListBox (seleccionados)
-      setServiciosSeleccionados([...serviciosSeleccionados, item])
-    } else if (fromList === 'seleccionados') {
-      // Eliminar del segundo ListBox (seleccionados)
-      setServiciosSeleccionados(
-        serviciosSeleccionados.filter((i) => i !== item)
-      )
-      // Agregar de nuevo al primer ListBox (disponibles)
-      setServiciosDisponibles([...serviciosDisponibles, item])
-    }
-  }
-
-  const lefListboxValueTemplate = (option: string) => {
-    return (
-      <div
-        className="flex justify-content-between align-items-center"
-        onClick={() => handleItemClick(option, 'disponibles')}
-      >
-        <div>{option}</div>
-        <i className="pi pi-angle-right mr-2"></i>
-      </div>
-    )
-  }
-
-  const rightListboxValueTemplate = (option: string) => {
-    return (
-      <div
-        className="flex align-items-center"
-        onClick={() => handleItemClick(option, 'seleccionados')}
-      >
-        <i className="pi pi-angle-left mr-2"></i>
-        <div>{option}</div>
-      </div>
-    )
-  }
-
   return (
     <Dialog
       header="Crear Mapa"
@@ -115,31 +75,14 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
           />
         </div>
 
-        <div className="grid">
-          <div className="col-6">
-            <h5>Servicios y/o MXDs disponibles</h5>
-            <ListBox
-              value={serviciosDisponibles}
-              onChange={() => {}}
-              options={serviciosDisponibles}
-              style={{ height: '200px', overflow: 'auto' }}
-              itemTemplate={lefListboxValueTemplate}
-              emptyMessage="No hay servicios disponibles"
-            />
-          </div>
-
-          <div className="col-6">
-            <h5>Servicios y/o MXDs seleccionados</h5>
-            <ListBox
-              value={serviciosSeleccionados}
-              onChange={() => {}}
-              options={serviciosSeleccionados}
-              style={{ height: '200px', overflow: 'auto' }}
-              itemTemplate={rightListboxValueTemplate}
-              emptyMessage="No hay servicios disponibles"
-            />
-          </div>
-        </div>
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Servicios y/o MXDs disponibles"
+          tituloSeleccionados="Servicios y/o MXDs seleccionados"
+        />
       </div>
       {/* Botones de acción */}
       <div className="flex justify-content-center gap-4 mt-4">

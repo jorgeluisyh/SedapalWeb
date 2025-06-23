@@ -22,25 +22,6 @@ export const ProfilePage = () => {
 
   const handleCloseUpdateForm = () => setselectedService(null)
 
-  // const handleCreateProduct = async (profile: Profile) => {
-  //   //create tu metodo para guardar usuario con un api bicho
-  //   console.log(profile.nombrePerfil)
-  // }
-
-  // const data = [
-  //   {
-  //     idPerfil: 1,
-  //     nombrePerfil: 'Alta Asistida Suministros',
-  //     descripcion: 'Alta Asistida Suministros - Editor',
-  //   },
-  //   {
-  //     idPerfil: 2,
-  //     nombrePerfil: 'Analisis Comercial',
-  //     descripcion:
-  //       'Web Perfil Analista - Temáticos de la Información del Catastro Comercial ',
-  //   },
-  // ]
-
   const handleCreateService = async (profile: Profile) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el servicio?',

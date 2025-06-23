@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 // import { FormInput } from '../../../shared/components/form/FormInput'
 import type { Profile } from '../types/profileType'
 import { InputText } from 'primereact/inputtext'
+import { useState } from 'react'
+import { DualListBox } from '../../../shared/components/form/DualListBox'
 
 interface NewProfileFormProps {
   isModalOpen: boolean
@@ -26,6 +28,26 @@ export const NewProfileForm = ({
   } = useForm<Profile>({
     mode: 'onBlur',
   })
+
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
+    string[]
+  >([])
+  const [serviciosDisponibles, setServiciosDisponibles] = useState([
+    'SGIO',
+    'Análisis Redesmx',
+    'ANFmxd',
+    'Catastro Comercial',
+    'AguaPotable',
+    'Satélite ESRI',
+    'Alcantarillado',
+    'Curvas de Nivel',
+    'Red Vial',
+    'Mapa Base',
+    'TIN',
+    'Consulta Redesmx',
+    'Gestión Comercialmx',
+    'Supervisor Edicion ArcSDEmx',
+  ])
 
   const onSubmitNewProduct = async (data: Profile) => {
     await onSubmit(data)
@@ -92,144 +114,42 @@ export const NewProfileForm = ({
             )}
           </div>
         </div>
-
-        {/* Divisiones para los listados de elementos */}
-        <div className="grid grid-nogutter">
-          {/* Sección de Funciones */}
-          <div className="col-6">
-            <h5>Funciones Disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '5px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de funciones se agregará aquí */}
-            </div>
-          </div>
-          <div className="col-6">
-            <h5>Funciones asignadas</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de funciones se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Funciones Disponibles"
+          tituloSeleccionados="Funciones Asignadas"
+        />
 
         {/* Divisiones para los listados de mapas */}
-        <div className="grid grid-nogutter">
-          {/* Sección de mapas disponibles */}
-          <div className="col-6">
-            <h5>Mapas Disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '5px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de mapas se agregará aquí */}
-            </div>
-          </div>
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Mapas Disponibles"
+          tituloSeleccionados="Mapas Asignados"
+        />
 
-          {/* Sección de Mapas asignados*/}
-          <div className="col-6">
-            <h5>Mapas asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de mapas se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Zonas Disponibles"
+          tituloSeleccionados="Zonas Asignadas"
+        />
 
-        {/* Divisiones para los listados de zonas */}
-        <div className="grid grid-nogutter mt-4">
-          {/* Sección de Zonas */}
-          <div className="col-6">
-            <h5>Zonas disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de zonas se agregará aquí */}
-            </div>
-          </div>
-
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Zonas asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-        </div>
-
-        {/* Divisiones para los listados de permisos */}
-        <div className="grid grid-nogutter mt-4">
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Permisos disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Permisos asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '200px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Permisos Disponibles"
+          tituloSeleccionados="Permisos Asignados"
+        />
 
         {/* Botones de acción */}
         <div className="flex justify-content-center gap-4 mt-4">
