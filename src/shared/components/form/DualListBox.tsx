@@ -53,7 +53,7 @@ export const DualListBox = ({
   return (
     <div className="grid">
       <div className="col-6">
-        <h5>{tituloDisponibles}</h5>
+        <h5 className="mb-2">{tituloDisponibles}</h5>
         <ListBox
           value={disponibles}
           options={disponibles}
@@ -64,7 +64,7 @@ export const DualListBox = ({
         />
       </div>
       <div className="col-6">
-        <h5>{tituloSeleccionados}</h5>
+        <h5 className="mb-2">{tituloSeleccionados}</h5>
         <ListBox
           value={seleccionados}
           options={seleccionados}

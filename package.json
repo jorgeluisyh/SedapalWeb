@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.10.0",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.6",

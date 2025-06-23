@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../components/LoginForm'
 import { authenticateUser } from '../apis/loginApi'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 import { Card } from 'primereact/card'
 import styles from './LoginPage.module.css'
+import { setAuthToken } from '../../../shared/utils/auth'
 // las paginas consumen las apis
 //los componentes reciben informacion
 
@@ -23,7 +24,9 @@ export const LoginPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 2500))
       const response = await authenticateUser(data)
 
-      Cookies.set('auth_token', response.token)
+      // Cookies.set('auth_token', response.token)
+      setAuthToken(response.token)
+
       localStorage.setItem(
         'user',
         JSON.stringify({
@@ -31,7 +34,7 @@ export const LoginPage = () => {
           token: response.token,
         })
       )
-      navigate('/dashboard')
+      navigate('/')
     } catch (error) {
       console.log(error)
 

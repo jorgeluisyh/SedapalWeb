@@ -20,3 +20,14 @@ axiosInstance.interceptors.request.use(
       return Promise.reject(error);
     }
   );
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      Cookies.remove('auth_token');
+      window.location.href = '/login'; // redirección forzada
+    }
+    return Promise.reject(error);
+  }
+);
