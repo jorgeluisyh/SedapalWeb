@@ -57,6 +57,30 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
     }
   }
 
+  const lefListboxValueTemplate = (option: string) => {
+    return (
+      <div
+        className="flex justify-content-between align-items-center"
+        onClick={() => handleItemClick(option, 'disponibles')}
+      >
+        <div>{option}</div>
+        <i className="pi pi-angle-right mr-2"></i>
+      </div>
+    )
+  }
+
+  const rightListboxValueTemplate = (option: string) => {
+    return (
+      <div
+        className="flex align-items-center"
+        onClick={() => handleItemClick(option, 'seleccionados')}
+      >
+        <i className="pi pi-angle-left mr-2"></i>
+        <div>{option}</div>
+      </div>
+    )
+  }
+
   return (
     <Dialog
       header="Crear Mapa"
@@ -97,18 +121,10 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
             <ListBox
               value={serviciosDisponibles}
               onChange={() => {}}
-              multiple
               options={serviciosDisponibles}
               style={{ height: '200px', overflow: 'auto' }}
-              listStyle={{ maxHeight: '200px' }}
-              itemTemplate={(item: string) => (
-                <div
-                  onClick={() => handleItemClick(item, 'disponibles')}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {item}
-                </div>
-              )}
+              itemTemplate={lefListboxValueTemplate}
+              emptyMessage="No hay servicios disponibles"
             />
           </div>
 
@@ -117,18 +133,10 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
             <ListBox
               value={serviciosSeleccionados}
               onChange={() => {}}
-              multiple
               options={serviciosSeleccionados}
               style={{ height: '200px', overflow: 'auto' }}
-              listStyle={{ maxHeight: '200px' }}
-              itemTemplate={(item: string) => (
-                <div
-                  onClick={() => handleItemClick(item, 'seleccionados')}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {item}
-                </div>
-              )}
+              itemTemplate={rightListboxValueTemplate}
+              emptyMessage="No hay servicios disponibles"
             />
           </div>
         </div>
