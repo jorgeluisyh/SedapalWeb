@@ -6,17 +6,17 @@ import type { TeamType } from '../types/teamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 
-interface NewTeamFormProps {
+interface UpdateTeamFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: TeamType) => Promise<void>
 }
 
-export const NewTeamForm = ({
+export const UpdateTeamForm = ({
   isModalOpen,
   onIsModalOpen,
   onSubmit,
-}: NewTeamFormProps) => {
+}: UpdateTeamFormProps) => {
   const {
     control,
     handleSubmit,
