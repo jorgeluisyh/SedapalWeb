@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode';
+import { truncateSync } from 'node:fs';
 
 interface JwtPayload {
   exp: number;
@@ -28,3 +29,7 @@ export const isAuthenticated = (): boolean => {
     return false;
   }
 };
+
+// export const isAuthenticated = ():boolean => {
+//   return true
+// };

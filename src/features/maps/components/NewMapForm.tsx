@@ -5,6 +5,7 @@ import { InputText } from 'primereact/inputtext'
 import { useState } from 'react'
 import { Button } from 'primereact/button'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
+import LayerPicker from './LayerPicker'
 
 interface NewMapFormProps {
   isModalOpen: boolean
@@ -46,7 +47,7 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
       header="Crear Mapa"
       visible={isModalOpen}
       maximizable
-      style={{ width: '40vw' }}
+      style={{ width: '60vw' }}
       onHide={() => {
         if (!isModalOpen) return
         onIsModalOpen(false)
@@ -75,14 +76,15 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
           />
         </div>
 
-        <DualListBox
+        {/* <DualListBox
           disponibles={serviciosDisponibles}
           seleccionados={serviciosSeleccionados}
           setDisponibles={setServiciosDisponibles}
           setSeleccionados={setServiciosSeleccionados}
           tituloDisponibles="Servicios y/o MXDs disponibles"
           tituloSeleccionados="Servicios y/o MXDs seleccionados"
-        />
+        /> */}
+        <LayerPicker></LayerPicker>
       </div>
       {/* Botones de acción */}
       <div className="flex justify-content-center gap-4 mt-4">
