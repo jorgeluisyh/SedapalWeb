@@ -5,14 +5,17 @@ import { FormInput } from '../../../shared/components/form/FormInput'
 import type { TeamType } from '../types/teamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
+import type { AreasType } from '../types/areasType'
 
 interface NewTeamFormProps {
+  areas: AreasType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: TeamType) => Promise<void>
 }
 
 export const NewTeamForm = ({
+  areas,
   isModalOpen,
   onIsModalOpen,
   onSubmit,
@@ -34,9 +37,9 @@ export const NewTeamForm = ({
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
 
   const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-    { label: 'Viewer', value: 'viewer' },
+    { name: 'Admin', extra: 'admin' },
+    { name: 'Editor', extra: 'editor' },
+    { name: 'Viewer', extra: 'viewer' },
   ]
   return (
     <Dialog

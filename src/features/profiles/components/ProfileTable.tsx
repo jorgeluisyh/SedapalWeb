@@ -91,7 +91,7 @@ export const ProfileTable = ({
         style={{ width: '5%' }}
       />
       <Column
-        field="nombre"
+        field="nombrePerfil"
         header="Nombre Perfil"
         style={{ width: '40%' }}
         filter
