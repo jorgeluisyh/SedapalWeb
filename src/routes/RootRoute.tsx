@@ -1,5 +1,5 @@
 // src/routes/RootRoute.tsx
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { PrivateRoute } from './PrivateRoute'
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage'
 import { Userpage } from '../features/users/pages/Userpage'
@@ -10,6 +10,15 @@ import { TeamPage } from '../features/teams/pages/TeamPage'
 import { MapPage } from '../features/maps/pages/MapPage'
 import { UserHistoryPage } from '../features/usersHistory/pages/UserHistoryPage'
 import { LoginPage } from '../features/auth/pages/LoginPage'
+import { useAuth } from '../contexts/AuthContext'
+
+const LoginRedirect = () => {
+  const { authenticated } = useAuth()
+  if (authenticated) {
+    return <Navigate to="/" />
+  }
+  return <LoginPage />
+}
 
 export const router = createBrowserRouter(
   [
@@ -38,7 +47,7 @@ export const router = createBrowserRouter(
     },
     {
       path: '/login',
-      element: <LoginPage />,
+      element: <LoginRedirect />,
     },
   ],
   {
