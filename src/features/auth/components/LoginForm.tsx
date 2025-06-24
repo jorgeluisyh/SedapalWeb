@@ -33,6 +33,7 @@ export const LoginForm = ({ onLogin, loading }: LoginFormProps) => {
               value={usernameValue}
               onChange={(e) => setUsernameValue(e.target.value)}
               required
+              autoComplete="off"
             />
           </div>
 

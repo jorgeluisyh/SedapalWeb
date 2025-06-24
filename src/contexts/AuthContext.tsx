@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react'
-import type { AuthContextType } from './types/AuthContextType'
+import type { AuthContextType } from './types/authContextType'
 import {
   isAuthenticated,
   removeAuthToken,
