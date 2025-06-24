@@ -3,7 +3,7 @@ export interface TeamType {
   nombre: string
   correo: string
   descripcion: string
-  bloqueado?: boolean
+  bloqueado: number
   gerencia: string
   idGerencia?: number
   centroServicio?: string

@@ -4,11 +4,19 @@ import type { TeamType } from '../types/teamType'
 import { TeamTable } from '../components/TeamTable'
 import { NewTeamForm } from '../components/NewTeamForm'
 import { confirmDialog } from 'primereact/confirmdialog'
-import { deleteTeam, getTeam, postTeam, updateTeam } from '../apis/teamApi'
+import {
+  deleteTeam,
+  getTeam,
+  postTeam,
+  updateTeam,
+  getAreas,
+} from '../apis/teamApi'
 import { Toast } from 'primereact/toast'
 import { UpdateTeamForm } from '../components/UpdateTeamForm'
+import type { AreasType } from '../types/areasType'
 
 export const TeamPage = () => {
+  const [areas, setAreas] = useState<AreasType[] | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
@@ -117,9 +125,11 @@ export const TeamPage = () => {
     const fetchWmsServices = async () => {
       const team = await getTeam()
       setTeam(team)
+      const areas = await getAreas()
+      setAreas(areas)
     }
     fetchWmsServices()
-  })
+  }, [refresh])
 
   return (
     <>
@@ -138,6 +148,7 @@ export const TeamPage = () => {
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateTeam}
+        areas={areas}
       />
       <UpdateTeamForm
         isModalOpen={!!selectedTeam}

@@ -8,7 +8,7 @@ import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 
 interface NewTeamFormProps {
-  areas: AreasType[]
+  areas: AreasType[] | null
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: TeamType) => Promise<void>
@@ -79,7 +79,10 @@ export const NewTeamForm = ({
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
             value={selectedPerfil}
-            options={perfiles}
+            options={areas?.map((area) => ({
+              label: area.name,
+              value: area.id,
+            }))}
             onChange={(e) => setSelectedPerfil(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"

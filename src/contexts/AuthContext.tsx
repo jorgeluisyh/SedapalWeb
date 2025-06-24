@@ -18,7 +18,7 @@ export const useAuth = () => {
 
 // Este componente será el proveedor de datos de autenticación
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [authenticated, setAuthenticated] = useState(false)
+  const [authenticated, setAuthenticated] = useState(true)
 
   // Cuando inicia la app, preguntamos si ya está logueado
   useEffect(() => {
