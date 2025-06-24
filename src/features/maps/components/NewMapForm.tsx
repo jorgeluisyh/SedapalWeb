@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { InputText } from 'primereact/inputtext'
 import { useState } from 'react'
 import { Button } from 'primereact/button'
-import { DualListBox } from '../../../shared/components/form/DualListBox'
 import LayerPicker from './LayerPicker'
 
 interface NewMapFormProps {
@@ -22,25 +21,25 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
 
   const [mapName, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
-  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
-    string[]
-  >([])
-  const [serviciosDisponibles, setServiciosDisponibles] = useState([
-    'SGIO',
-    'Análisis Redesmx',
-    'ANFmxd',
-    'Catastro Comercial',
-    'AguaPotable',
-    'Satélite ESRI',
-    'Alcantarillado',
-    'Curvas de Nivel',
-    'Red Vial',
-    'Mapa Base',
-    'TIN',
-    'Consulta Redesmx',
-    'Gestión Comercialmx',
-    'Supervisor Edicion ArcSDEmx',
-  ])
+  // const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
+  //   string[]
+  // >([])
+  // const [serviciosDisponibles, setServiciosDisponibles] = useState([
+  //   'SGIO',
+  //   'Análisis Redesmx',
+  //   'ANFmxd',
+  //   'Catastro Comercial',
+  //   'AguaPotable',
+  //   'Satélite ESRI',
+  //   'Alcantarillado',
+  //   'Curvas de Nivel',
+  //   'Red Vial',
+  //   'Mapa Base',
+  //   'TIN',
+  //   'Consulta Redesmx',
+  //   'Gestión Comercialmx',
+  //   'Supervisor Edicion ArcSDEmx',
+  // ])
 
   return (
     <Dialog

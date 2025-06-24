@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode';
-import { truncateSync } from 'node:fs';
 
 interface JwtPayload {
   exp: number;
