@@ -15,25 +15,25 @@ export const TeamPage = () => {
   const [team, setTeam] = useState<TeamType[]>([])
   const [selectedTeam, setselectedService] = useState<TeamType | null>(null)
 
-  const data = [
-    {
-      idEquipo: 1,
-      nombre: 'EA-C',
-      correo: 'http://sigcap.no-ip.org:8082/geoserver/wms',
-      descripcion: 'Servicio WMS SIGCAP',
-      gerencia: 'Gerencia 1',
-      centroServicio: 'Centro Servicio 1',
-    },
-    {
-      idEquipo: 2,
-      nombre: 'EA-N',
-      correo:
-        'http://websig.senamhi.gob.pe/wms/?wms=WMS_CLASIFICACION_CLIMATICA',
-      descripcion: 'Servicio WMS GEOSERVIDOR',
-      gerencia: 'Gerencia 2',
-      centroServicio: 'Centro Servicio 2',
-    },
-  ]
+  // const data = [
+  //   {
+  //     idEquipo: 1,
+  //     nombre: 'EA-C',
+  //     correo: 'http://sigcap.no-ip.org:8082/geoserver/wms',
+  //     descripcion: 'Servicio WMS SIGCAP',
+  //     gerencia: 'Gerencia 1',
+  //     centroServicio: 'Centro Servicio 1',
+  //   },
+  //   {
+  //     idEquipo: 2,
+  //     nombre: 'EA-N',
+  //     correo:
+  //       'http://websig.senamhi.gob.pe/wms/?wms=WMS_CLASIFICACION_CLIMATICA',
+  //     descripcion: 'Servicio WMS GEOSERVIDOR',
+  //     gerencia: 'Gerencia 2',
+  //     centroServicio: 'Centro Servicio 2',
+  //   },
+  // ]
 
   const handleCloseUpdateForm = () => setselectedService(null)
 

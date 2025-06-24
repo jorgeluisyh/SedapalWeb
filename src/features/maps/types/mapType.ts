@@ -1,6 +1,6 @@
 export interface MapType {
-  id?: number
-  mapName: string
+  idMapa: number
+  nombreMapa: string
   descripcion: string
   servicios?: string[];
 }
