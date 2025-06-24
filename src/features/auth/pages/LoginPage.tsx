@@ -5,7 +5,6 @@ import { authenticateUser } from '../apis/loginApi'
 // import Cookies from 'js-cookie'
 import { Card } from 'primereact/card'
 import styles from './LoginPage.module.css'
-import { setAuthToken } from '../../../shared/utils/auth'
 import { ProgressSpinner } from 'primereact/progressspinner'
 import { useAuth } from '../../../contexts/AuthContext'
 
