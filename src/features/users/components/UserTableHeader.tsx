@@ -22,16 +22,16 @@ export const UserTableHeader = ({
   return (
     <div className="flex flex-column md:flex-row justify-content-between gap-2">
       {/* <div className="flex justify-content-between"> */}
+      <IconField iconPosition="left">
+        <InputIcon className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          onChange={onGlobalFilterChange}
+          placeholder="Palabra clave"
+        />
+      </IconField>
+      {/* </div> */}
       <div className="flex flex-wrap gap-2 justify-content-end mt-2">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-            placeholder="Palabra clave"
-          />
-        </IconField>
-        {/* </div> */}
         <Button
           onClick={onAddClick}
           type="button"
