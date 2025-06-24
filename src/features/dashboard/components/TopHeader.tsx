@@ -92,6 +92,3 @@ export const TopHeader = ({ onCollapse }: TopHeaderProps) => {
     </header>
   )
 }
-function logout() {
-  throw new Error('Function not implemented.')
-}
