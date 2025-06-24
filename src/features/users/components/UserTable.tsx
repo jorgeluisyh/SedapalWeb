@@ -12,6 +12,8 @@ interface Props {
   onAddClick: () => void
   onAddExternalClick?: () => void
   onAddMultipleClick?: () => void
+  onUpdateClick: (users: User | null) => void
+  onDeleteClick: (users: User) => void
 }
 
 interface Filter {
@@ -25,6 +27,8 @@ interface Filters {
 export const UserTable = ({
   data,
   onAddClick,
+  onUpdateClick,
+  onDeleteClick,
   onAddExternalClick,
   onAddMultipleClick,
 }: Props) => {
@@ -49,14 +53,14 @@ export const UserTable = ({
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-pencil"
-          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el usuario
+          onClick={() => onUpdateClick(row)} // Llamamos a la función de edición pasando el usuario
           severity="info"
           text
           size="small"
         />
         <Button
           icon="pi pi-trash"
-          onClick={() => console.log(row)} // Llamamos a la función de eliminación pasando el ID
+          onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
           severity="danger"
           text
           size="small"
@@ -66,7 +70,7 @@ export const UserTable = ({
   }
 
   const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: User) => {
-    rowDataCheck.blocked = e.checked ?? true
+    rowDataCheck.bloqueado = e.checked ? 1 : 0
     // Realizar la actualización de estado o lo que sea necesario
   }
 
@@ -97,35 +101,35 @@ export const UserTable = ({
         style={{ width: '5%' }}
       />
       <Column
-        field="username"
+        field="nombre"
         header="Usuario"
         style={{ width: '30%' }}
         filter
         sortable
       />
       <Column
-        field="profile"
+        field="perfil"
         header="Perfil"
         filter
         sortable
         style={{ width: '25%' }}
       />
       <Column
-        field="team"
+        field="equipo"
         header="Equipo"
         filter
         sortable
         style={{ width: '25%' }}
       />
       <Column
-        field="type"
+        field="tipo"
         header="Tipo"
         filter
         sortable
         style={{ width: '25%' }}
       />
       <Column
-        field="blocked"
+        field="bloqueado"
         header="Bloqueado"
         style={{ width: '25%' }}
         body={(rowDataCheck) => (

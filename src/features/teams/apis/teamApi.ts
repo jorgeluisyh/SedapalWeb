@@ -3,21 +3,21 @@ import type { TeamType } from "../types/teamType";
 
 
 export const getTeam = async (): Promise<TeamType[]> => {
-    const response = await axiosInstance.get("/api/Servicios/servicioswms");
+    const response = await axiosInstance.get("/api/Equipos");
     return response.data;
 }
 
 export const postTeam = async (data: TeamType) => {
-    const response = await axiosInstance.post("/api/Servicios/servicioswms", data);
+    const response = await axiosInstance.post("/api/Equipos", data);
     return response.data;
 }
 
 export const updateTeam = async (id: number, data: TeamType) => {
-    const response = await axiosInstance.put(`/api/Servicios/servicioswms/${id}`, data);
+    const response = await axiosInstance.put(`/api/Equipos/${id}`, data);
     return response.data;
 }
 
 export const deleteTeam = async (id: number) => {
-    const response = await axiosInstance.delete(`/api/Servicios/servicioswms/${id}`);
+    const response = await axiosInstance.delete(`/api/Equipos/${id}`);
     return response.data;
 }

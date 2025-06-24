@@ -1,8 +1,11 @@
 export interface User {
-  id_Usuario: number
-  username: string
-  profile: string
-  team?: string
-  type?: string
-  blocked?: boolean
+  idUsuario: number
+  nombre?: string
+  idEquipo?: number
+  tipo?: number
+  bloqueado?: number
+  admin?: number
+  perfil?: string
+  equipo?: string
+  tipoUsuario?: string
 }

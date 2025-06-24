@@ -10,6 +10,8 @@ import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 interface Props {
   data: TeamType[]
   onAddClick: () => void
+  onUpdateClick: (team: TeamType | null) => void
+  onDeleteClick: (team: TeamType) => void
 }
 
 interface Filter {
@@ -20,7 +22,12 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const TeamTable = ({ data, onAddClick }: Props) => {
+export const TeamTable = ({
+  data,
+  onAddClick,
+  onUpdateClick,
+  onDeleteClick,
+}: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -36,7 +43,7 @@ export const TeamTable = ({ data, onAddClick }: Props) => {
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-pencil"
-          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
+          onClick={() => onUpdateClick(row)} // Llamamos a la función de edición pasando el servicio
           // onClick={() => onUpdateClick(row)}
           severity="info"
           text
@@ -44,7 +51,7 @@ export const TeamTable = ({ data, onAddClick }: Props) => {
         />
         <Button
           icon="pi pi-trash"
-          onClick={() => console.log(row)}
+          onClick={() => onDeleteClick(row)}
           // onClick={() => onDeleteClick(row)} // Llamamos a la función de eliminación pasando el ID
           severity="danger"
           text
@@ -55,7 +62,7 @@ export const TeamTable = ({ data, onAddClick }: Props) => {
   }
 
   const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: TeamType) => {
-    rowDataCheck.blocked = e.checked ?? true
+    rowDataCheck.bloqueado = e.checked
     // Realizar la actualización de estado o lo que sea necesario
   }
 

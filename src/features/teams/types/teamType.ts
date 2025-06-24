@@ -1,9 +1,10 @@
 export interface TeamType {
-  id: number
+  idEquipo: number
   nombre: string
   correo: string
   descripcion: string
+  bloqueado?: boolean
   gerencia: string
-  centroServicio: string
-  blocked?: boolean
+  idGerencia?: number
+  centroServicio?: string
 }
