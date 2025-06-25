@@ -5,14 +5,20 @@ import { FormInput } from '../../../shared/components/form/FormInput'
 import type { TeamType } from '../types/teamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
+import type { AreasType } from '../types/areasType'
+import type { CentersType } from '../types/centersType'
 
 interface UpdateTeamFormProps {
+  areas: AreasType[] | null
+  centers: CentersType[] | null
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: TeamType) => Promise<void>
 }
 
 export const UpdateTeamForm = ({
+  areas,
+  centers,
   isModalOpen,
   onIsModalOpen,
   onSubmit,
@@ -33,11 +39,11 @@ export const UpdateTeamForm = ({
 
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
 
-  const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-    { label: 'Viewer', value: 'viewer' },
-  ]
+  // const perfiles = [
+  //   { label: 'Admin', value: 'admin' },
+  //   { label: 'Editor', value: 'editor' },
+  //   { label: 'Viewer', value: 'viewer' },
+  // ]
   return (
     <Dialog
       header="Agregar Equipo"
@@ -76,7 +82,10 @@ export const UpdateTeamForm = ({
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
             value={selectedPerfil}
-            options={perfiles}
+            options={areas?.map((area) => ({
+              label: area.name,
+              value: area.id,
+            }))}
             onChange={(e) => setSelectedPerfil(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"
@@ -89,7 +98,10 @@ export const UpdateTeamForm = ({
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
             value={selectedPerfil}
-            options={perfiles}
+            options={centers?.map((center) => ({
+              label: center.name,
+              value: center.id,
+            }))}
             onChange={(e) => setSelectedPerfil(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"

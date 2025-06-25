@@ -10,13 +10,16 @@ import {
   postTeam,
   updateTeam,
   getAreas,
+  getCenters,
 } from '../apis/teamApi'
 import { Toast } from 'primereact/toast'
 import { UpdateTeamForm } from '../components/UpdateTeamForm'
 import type { AreasType } from '../types/areasType'
+import type { CentersType } from '../types/centersType'
 
 export const TeamPage = () => {
   const [areas, setAreas] = useState<AreasType[] | null>(null)
+  const [centers, setCenters] = useState<CentersType[] | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
@@ -123,10 +126,15 @@ export const TeamPage = () => {
 
   useEffect(() => {
     const fetchWmsServices = async () => {
+      //Llamamos a la API para obtener los equipos
       const team = await getTeam()
       setTeam(team)
+      //Llamamos a la API para obtener las áreas de gerencias
       const areas = await getAreas()
       setAreas(areas)
+      //Llamamos a la API para obtener los centros de servicio
+      const centers = await getCenters()
+      setCenters(centers)
     }
     fetchWmsServices()
   }, [refresh])
@@ -149,11 +157,14 @@ export const TeamPage = () => {
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateTeam}
         areas={areas}
+        centers={centers}
       />
       <UpdateTeamForm
         isModalOpen={!!selectedTeam}
         onIsModalOpen={handleCloseUpdateForm}
         onSubmit={handleUpdateTeam}
+        areas={areas}
+        centers={centers}
       />
     </>
   )

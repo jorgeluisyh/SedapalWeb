@@ -6,9 +6,11 @@ import type { TeamType } from '../types/teamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
+import type { CentersType } from '../types/centersType'
 
 interface NewTeamFormProps {
   areas: AreasType[] | null
+  centers: CentersType[] | null
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: TeamType) => Promise<void>
@@ -16,6 +18,7 @@ interface NewTeamFormProps {
 
 export const NewTeamForm = ({
   areas,
+  centers,
   isModalOpen,
   onIsModalOpen,
   onSubmit,
@@ -36,11 +39,11 @@ export const NewTeamForm = ({
 
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
 
-  const perfiles = [
-    { name: 'Admin', extra: 'admin' },
-    { name: 'Editor', extra: 'editor' },
-    { name: 'Viewer', extra: 'viewer' },
-  ]
+  // const perfiles = [
+  //   { name: 'Admin', extra: 'admin' },
+  //   { name: 'Editor', extra: 'editor' },
+  //   { name: 'Viewer', extra: 'viewer' },
+  // ]
   return (
     <Dialog
       header="Agregar Equipo"
@@ -95,7 +98,10 @@ export const NewTeamForm = ({
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
             value={selectedPerfil}
-            options={perfiles}
+            options={centers?.map((center) => ({
+              label: center.name,
+              value: center.id,
+            }))}
             onChange={(e) => setSelectedPerfil(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"
