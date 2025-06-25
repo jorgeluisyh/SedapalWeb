@@ -5,7 +5,10 @@ import { useState, type ChangeEvent } from 'react'
 import { TeamTableHeader } from './TeamTableHeader'
 import type { TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
-import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
+// import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
+import { FormCheckbox } from '../../../shared/components/form/FormCheckbox' // Ajusta la ruta según sea necesario
+import { useForm } from 'react-hook-form'
+// import type { CheckboxChangeEvent } from 'primereact/checkbox'
 
 interface Props {
   data: TeamType[]
@@ -35,7 +38,10 @@ export const TeamTable = ({
     cacheado: { value: null, matchMode: FilterMatchMode.IN },
     descripcion: { value: null, matchMode: FilterMatchMode.IN },
   })
-
+  const {
+    control,
+    formState: { errors },
+  } = useForm()
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
   const actionBodyTemplate = (row: TeamType) => {
@@ -61,10 +67,10 @@ export const TeamTable = ({
     )
   }
 
-  const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: TeamType) => {
-    rowDataCheck.bloqueado = Number(e.checked)
-    // Realizar la actualización de estado o lo que sea necesario
-  }
+  // Función para actualizar el estado del checkbox
+  // const onCheckBoxChange = (e: any, rowData: TeamType) => {
+  //   rowData.bloqueado = e.checked ? 1 : 0 // Convertir el valor a 1 o 0
+  // }
 
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -104,20 +110,27 @@ export const TeamTable = ({
       <Column
         field="descripcion"
         header="Descripción"
-        filter
+        // filter
         sortable
         style={{ width: '35%' }}
       />
-      <Column field="gerencia" header="Gerencia" filter sortable />
-      <Column field="centroServicio" header="Centro Servicio" filter sortable />
+      <Column field="gerencia" header="Gerencia" sortable />
+      <Column field="centroServicio" header="Centro Servicio" sortable />
       <Column
         field="bloqueado"
         header="Bloqueado"
         style={{ width: '25%' }}
         body={(rowDataCheck) => (
-          <Checkbox
-            checked={rowDataCheck.blocked === 1}
-            onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
+          // <Checkbox
+          //   checked={rowDataCheck.blocked === 1}
+          //   onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
+          // />
+          <FormCheckbox
+            name={`bloqueado_${rowDataCheck.idEquipo}`} // Asegúrate de que el nombre sea único, por ejemplo, usando el id
+            label="Bloqueado"
+            control={control} // assuming you have a control object from react-hook-form
+            errors={errors} // assuming you have an errors object from react-hook-form
+            rules={{ required: 'Este campo es obligatorio' }} // Si es necesario agregar reglas de validación
           />
         )}
       />

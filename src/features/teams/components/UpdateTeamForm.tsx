@@ -3,12 +3,13 @@ import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
 // import type { TeamType } from '../types/teamType'
-import { Dropdown } from 'primereact/dropdown'
-import { useState } from 'react'
+// import { Dropdown } from 'primereact/dropdown'
+// import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
 import type { UpdateTeamType } from '../types/updateTeamType'
 import type { TeamType } from '../types/teamType'
+import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
 interface UpdateTeamFormProps {
   areas: AreasType[] | null
@@ -42,8 +43,8 @@ export const UpdateTeamForm = ({
     reset()
   }
 
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
-  const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
+  // const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  // const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
 
   // const perfiles = [
   //   { label: 'Admin', value: 'admin' },
@@ -83,7 +84,37 @@ export const UpdateTeamForm = ({
           errors={errors}
           rules={{ required: 'Ingrese la descripción' }}
         />
-        <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
+
+        <FormDropdown
+          name="gerencia"
+          label="Gerencia:"
+          control={control}
+          errors={errors}
+          options={
+            areas?.map((area) => ({
+              label: area.name,
+              value: area.id,
+            })) ?? []
+          }
+          rules={{ required: 'Defina la Gerencia' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione una generencia"
+        />
+
+        <FormDropdown
+          name="centroServicio"
+          label="Centro de Servicio:"
+          control={control}
+          errors={errors}
+          options={
+            centers?.map((center) => ({
+              label: center.name,
+              value: center.id,
+            })) ?? []
+          }
+          rules={{ required: 'Defina el centor de servicio' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione un centor de servicio"
+        />
+        {/* <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
             value={selectedPerfil}
@@ -112,7 +143,7 @@ export const UpdateTeamForm = ({
             className="p-dropdown-sm"
             style={{ width: '100%' }}
           />
-        </div>
+        </div> */}
         <div
           className="flex justify-content-center gap-4"
           style={{ marginTop: '20px' }}
