@@ -1,18 +1,18 @@
 import { axiosInstance } from "../../../shared/http/axiosInstance";
-import type { MapType } from "../types/mapType";
+import type { Map } from "../types/mapType";
 
 
-export const getMaps = async (): Promise<MapType[]> => {
+export const getMaps = async (): Promise<Map[]> => {
     const response = await axiosInstance.get("/api/Mapas");
     return response.data;
 }
 
-export const postMaps = async (data: MapType) => {
+export const postMaps = async (data: Map) => {
     const response = await axiosInstance.post("/api/Mapas", data);
     return response.data;
 }
 
-export const updateMaps = async (id: number, data: MapType) => {
+export const updateMaps = async (id: number, data: Map) => {
     const response = await axiosInstance.put(`/api/Mapas/${id}`, data);
     return response.data;
 }

@@ -29,6 +29,7 @@ export const FormInput = ({
         rules={rules}
         render={({ field }) => (
           <InputText
+            autoComplete="off"
             id={name}
             {...field}
             placeholder={placeholder}

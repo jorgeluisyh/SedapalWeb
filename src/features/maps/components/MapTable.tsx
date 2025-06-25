@@ -3,14 +3,14 @@ import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { MapTableHeader } from './MapTableHeader'
-import type { MapType } from '../types/mapType'
+import type { Map } from '../types/mapType'
 import { Button } from 'primereact/button'
 
 interface Props {
-  data: MapType[]
+  data: Map[]
   onAddClick: () => void
-  onUpdateClick: (mapType: MapType | null) => void
-  onDeleteClick: (mapType: MapType) => void
+  onUpdateClick: (mapType: Map | null) => void
+  onDeleteClick: (mapType: Map) => void
 }
 
 interface Filter {
@@ -35,7 +35,7 @@ export const MapTable = ({
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
-  const actionBodyTemplate = (row: MapType) => {
+  const actionBodyTemplate = (row: Map) => {
     return (
       <div className="flex justify-content-center ">
         <Button

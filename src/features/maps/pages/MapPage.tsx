@@ -1,40 +1,55 @@
 import { useEffect, useRef, useState } from 'react'
 import { Card } from 'primereact/card'
-import type { MapType } from '../types/mapType'
+import type { Map } from '../types/mapType'
 import { MapTable } from '../components/MapTable'
 import { NewMapForm } from '../components/NewMapForm'
 import { deleteMaps, getMaps, postMaps, updateMaps } from '../apis/mapApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
 import { UpdateMapForm } from '../components/UpdateMapForm'
+import type { ServiceMap } from '../types/serviceType'
 
 export const MapPage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [maps, setMaps] = useState<MapType[]>([])
-  const [selectedService, setselectedService] = useState<MapType | null>(null)
+  const [maps, setMaps] = useState<Map[]>([])
+  const [selectedService, setselectedService] = useState<Map | null>(null)
   // const handleCreateProduct = async (mapType: MapType) => {
   //   //create tu metodo para guardar usuario con un api bicho
   //   console.log(mapType.nombreMapa)
   // }
 
-  // const data = [
-  //   {
-  //     idMapa: 1,
-  //     nombreMapa: 'EA-C',
-  //     descripcion: 'mapa WMS SIGCAP',
-  //   },
-  //   {
-  //     idMapa: 2,
-  //     nombreMapa: 'EA-N',
-  //     descripcion: 'mapa WMS GEOSERVIDOR',
-  //   },
-  // ]
+  const [availableItems] = useState<ServiceMap[]>([
+    {
+      idServicioMapa: 1,
+      nombreServicioMapa: 'Mapa Administrador',
+    },
+    {
+      idServicioMapa: 2,
+      nombreServicioMapa: 'Mapa Usuario',
+    },
+    {
+      idServicioMapa: 3,
+      nombreServicioMapa: 'Mapa Editor',
+    },
+    {
+      idServicioMapa: 4,
+      nombreServicioMapa: 'Mapa Analista',
+    },
+    {
+      idServicioMapa: 5,
+      nombreServicioMapa: 'Mapa Moderador',
+    },
+    {
+      idServicioMapa: 6,
+      nombreServicioMapa: 'Mapa Visualizador',
+    },
+  ])
 
   const handleCloseUpdateForm = () => setselectedService(null)
 
-  const handleCreateMap = async (maps: MapType) => {
+  const handleCreateMap = async (maps: Map) => {
     // crear dialogo para confirmar si se debe enviar usuario
 
     await confirmDialog({
@@ -60,7 +75,7 @@ export const MapPage = () => {
     })
   }
 
-  const handleUpdateMap = async (maps: MapType) => {
+  const handleUpdateMap = async (maps: Map) => {
     await confirmDialog({
       message: `¿Estás seguro de que deseas editar el mapa : ${maps.nombreMapa}?`,
       header: 'Confirmación',
@@ -86,7 +101,7 @@ export const MapPage = () => {
     })
   }
 
-  const handleDeleteMaps = async (maps: MapType) => {
+  const handleDeleteMaps = async (maps: Map) => {
     console.log('eliminar')
     await confirmDialog({
       message: `¿Estás seguro de que deseas eliminar el mapa: ${maps.nombreMapa}?`,
@@ -126,14 +141,15 @@ export const MapPage = () => {
         <MapTable
           data={maps}
           onAddClick={() => setIsModalOpen(true)}
-          onUpdateClick={(maps: MapType | null) => {
+          onUpdateClick={(maps: Map | null) => {
             setselectedService(maps)
           }}
-          onDeleteClick={(maps: MapType) => handleDeleteMaps(maps)}
+          onDeleteClick={(maps: Map) => handleDeleteMaps(maps)}
         />
       </Card>
 
       <NewMapForm
+        availableItems={availableItems}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateMap}

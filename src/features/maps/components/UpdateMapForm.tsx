@@ -1,15 +1,15 @@
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
-import type { MapType } from '../types/mapType'
+import type { Map } from '../types/mapType'
 import { InputText } from 'primereact/inputtext'
 import { useState } from 'react'
 import { Button } from 'primereact/button'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
 
 interface UpdateMapFormProps {
-  onSubmit: (data: MapType) => Promise<void>
+  onSubmit: (data: Map) => Promise<void>
   isModalOpen: boolean
-  currentService: MapType
+  currentService: Map
   handleClose: () => void
   // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   // onSubmit: (data: any) => Promise<void>
@@ -22,7 +22,7 @@ export const UpdateMapForm = ({
 UpdateMapFormProps) => {
   const {
     formState: { isValid, isSubmitting },
-  } = useForm<MapType>({
+  } = useForm<Map>({
     mode: 'onBlur',
     defaultValues: currentService,
   })

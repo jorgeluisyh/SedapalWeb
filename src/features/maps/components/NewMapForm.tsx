@@ -1,45 +1,44 @@
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
-// import type { MapType } from '../types/mapType'
-import { InputText } from 'primereact/inputtext'
-import { useState } from 'react'
+
 import { Button } from 'primereact/button'
-import LayerPicker from './LayerPicker'
+import type { Map } from '../types/mapType'
+import { FormInput } from '../../../shared/components/form/FormInput'
+import type { ServiceMap } from '../types/serviceType'
+import { LayerSelector } from './LayerSelector'
 
 interface NewMapFormProps {
+  availableItems: ServiceMap[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: any) => Promise<void>
 }
 
-export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
+export const NewMapForm = ({
+  availableItems,
+  isModalOpen,
+  onIsModalOpen,
+  onSubmit,
+}: NewMapFormProps) => {
   const {
-    formState: { isValid, isSubmitting },
-  } = useForm({
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<Map>({
     mode: 'onBlur',
   })
 
-  const [mapName, setNombre] = useState('')
-  const [descripcion, setDescripcion] = useState('')
-  // const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
-  //   string[]
-  // >([])
-  // const [serviciosDisponibles, setServiciosDisponibles] = useState([
-  //   'SGIO',
-  //   'Análisis Redesmx',
-  //   'ANFmxd',
-  //   'Catastro Comercial',
-  //   'AguaPotable',
-  //   'Satélite ESRI',
-  //   'Alcantarillado',
-  //   'Curvas de Nivel',
-  //   'Red Vial',
-  //   'Mapa Base',
-  //   'TIN',
-  //   'Consulta Redesmx',
-  //   'Gestión Comercialmx',
-  //   'Supervisor Edicion ArcSDEmx',
-  // ])
+  const onSubmitNewElement = async (data: Map) => {
+    console.log(data)
+    await onSubmit(data)
+    reset()
+  }
+
+  const handleAssignedItemsChange = (assignedItems: ServiceMap[]) => {
+    setValue('servicios', assignedItems) // Actualiza los perfiles en el formulario
+  }
 
   return (
     <Dialog
@@ -52,56 +51,41 @@ export const NewMapForm = ({ isModalOpen, onIsModalOpen }: NewMapFormProps) => {
         onIsModalOpen(false)
       }}
     >
-      <div className="flex flex-column gap-3">
-        <div className="flex flex-column">
-          <label htmlFor="nombre" className="p-text-bold">
-            Nombre del mapa:
-          </label>
-          <InputText
-            id="nombre"
-            value={mapName}
-            onChange={(e) => setNombre(e.target.value)}
+      <form onSubmit={handleSubmit(onSubmitNewElement)}>
+        <FormInput
+          name="nombreMapa"
+          label="Nombre del Mapa:"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese nombre del mapa' }}
+        />
+        <FormInput
+          name="descripcion"
+          label="Descripción:"
+          control={control}
+          errors={errors}
+        />
+        <LayerSelector
+          availableItems={availableItems}
+          onAssignedItemsChange={handleAssignedItemsChange}
+        ></LayerSelector>
+        <div className="flex justify-content-center gap-4 mt-4">
+          <Button
+            type="button"
+            label="Cerrar"
+            severity="secondary"
+            outlined
+            onClick={() => onIsModalOpen(false)}
+          />
+          <Button
+            disabled={!isValid || isSubmitting}
+            label="Guardar"
+            type="submit"
+            icon="pi pi-save"
+            loading={isSubmitting}
           />
         </div>
-
-        <div className="flex flex-column">
-          <label htmlFor="descripcion" className="p-text-bold">
-            Descripción:
-          </label>
-          <InputText
-            id="descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-        </div>
-
-        {/* <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
-          tituloDisponibles="Servicios y/o MXDs disponibles"
-          tituloSeleccionados="Servicios y/o MXDs seleccionados"
-        /> */}
-        <LayerPicker></LayerPicker>
-      </div>
-      {/* Botones de acción */}
-      <div className="flex justify-content-center gap-4 mt-4">
-        <Button
-          type="button"
-          label="Cerrar"
-          severity="secondary"
-          outlined
-          onClick={() => onIsModalOpen(false)}
-        />
-        <Button
-          disabled={!isValid || isSubmitting}
-          label="Guardar"
-          type="submit"
-          icon="pi pi-save"
-          loading={isSubmitting}
-        />
-      </div>
+      </form>
     </Dialog>
   )
 }
