@@ -70,7 +70,7 @@ export const UserTable = ({
   }
 
   const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: User) => {
-    rowDataCheck.bloqueado = e.checked ? 1 : 0
+    rowDataCheck.bloqueado = Number(e.checked)
     // Realizar la actualización de estado o lo que sea necesario
   }
 
@@ -134,7 +134,7 @@ export const UserTable = ({
         style={{ width: '25%' }}
         body={(rowDataCheck) => (
           <Checkbox
-            checked={rowDataCheck.blocked}
+            checked={rowDataCheck.bloqueado === 1}
             onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
           />
         )}

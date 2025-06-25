@@ -62,7 +62,7 @@ export const TeamTable = ({
   }
 
   const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: TeamType) => {
-    rowDataCheck.bloqueado = e.checked
+    rowDataCheck.bloqueado = Number(e.checked)
     // Realizar la actualización de estado o lo que sea necesario
   }
 
@@ -111,12 +111,12 @@ export const TeamTable = ({
       <Column field="gerencia" header="Gerencia" filter sortable />
       <Column field="centroServicio" header="Centro Servicio" filter sortable />
       <Column
-        field="blocked"
+        field="bloqueado"
         header="Bloqueado"
         style={{ width: '25%' }}
         body={(rowDataCheck) => (
           <Checkbox
-            checked={rowDataCheck.blocked}
+            checked={rowDataCheck.blocked === 1}
             onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
           />
         )}

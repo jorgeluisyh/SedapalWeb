@@ -2,25 +2,29 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
-import type { TeamType } from '../types/teamType'
+// import type { TeamType } from '../types/teamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
+import type { UpdateTeamType } from '../types/updateTeamType'
+import type { TeamType } from '../types/teamType'
 
 interface UpdateTeamFormProps {
   areas: AreasType[] | null
   centers: CentersType[] | null
-  isModalOpen: boolean
-  onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: TeamType) => Promise<void>
+  currentService: TeamType
+  handleClose: () => void
+  // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  onSubmit: (data: UpdateTeamType) => Promise<void>
 }
 
 export const UpdateTeamForm = ({
   areas,
   centers,
-  isModalOpen,
-  onIsModalOpen,
+  currentService,
+  handleClose,
+  // onIsModalOpen,
   onSubmit,
 }: UpdateTeamFormProps) => {
   const {
@@ -28,16 +32,18 @@ export const UpdateTeamForm = ({
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<TeamType>({
+  } = useForm<UpdateTeamType>({
     mode: 'onBlur',
+    defaultValues: currentService,
   })
 
-  const onSubmitNewProduct = async (data: TeamType) => {
+  const onSubmitUpdateElement = async (data: UpdateTeamType) => {
     await onSubmit(data)
     reset()
   }
 
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
 
   // const perfiles = [
   //   { label: 'Admin', value: 'admin' },
@@ -46,16 +52,15 @@ export const UpdateTeamForm = ({
   // ]
   return (
     <Dialog
-      header="Agregar Equipo"
-      visible={isModalOpen}
+      header="Editar Equipo"
+      visible={true}
       maximizable
       style={{ width: '35vw' }}
       onHide={() => {
-        if (!isModalOpen) return
-        onIsModalOpen(false)
+        handleClose()
       }}
     >
-      <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+      <form onSubmit={handleSubmit(onSubmitUpdateElement)}>
         <FormInput
           name="nombre"
           label="Nombre:"
@@ -97,12 +102,12 @@ export const UpdateTeamForm = ({
         </div>
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
-            value={selectedPerfil}
+            value={selectedCenter}
             options={centers?.map((center) => ({
               label: center.name,
               value: center.id,
             }))}
-            onChange={(e) => setSelectedPerfil(e.value)}
+            onChange={(e) => setSelectedCenter(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"
             style={{ width: '100%' }}
@@ -117,11 +122,13 @@ export const UpdateTeamForm = ({
             label="Cancelar"
             severity="secondary"
             outlined
-            onClick={() => onIsModalOpen(false)}
+            onClick={() => {
+              handleClose()
+            }}
           />
           <Button
             disabled={!isValid || isSubmitting}
-            label="Agregar"
+            label="Actualizar"
             type="submit"
             icon="pi pi-plus"
             loading={isSubmitting}

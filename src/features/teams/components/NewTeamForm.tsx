@@ -2,7 +2,8 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
-import type { TeamType } from '../types/teamType'
+// import type { TeamType } from '../types/teamType'
+import type { InsertTeamType } from '../types/insertTeamType'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
@@ -13,7 +14,7 @@ interface NewTeamFormProps {
   centers: CentersType[] | null
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: TeamType) => Promise<void>
+  onSubmit: (data: InsertTeamType) => Promise<void>
 }
 
 export const NewTeamForm = ({
@@ -28,16 +29,17 @@ export const NewTeamForm = ({
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<TeamType>({
+  } = useForm<InsertTeamType>({
     mode: 'onBlur',
   })
 
-  const onSubmitNewProduct = async (data: TeamType) => {
+  const onSubmitNewProduct = async (data: InsertTeamType) => {
     await onSubmit(data)
     reset()
   }
 
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  const [selectedArea, setSelectedArea] = useState<string | null>(null)
+  const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
 
   // const perfiles = [
   //   { name: 'Admin', extra: 'admin' },
@@ -81,12 +83,12 @@ export const NewTeamForm = ({
         <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
-            value={selectedPerfil}
+            value={selectedArea}
             options={areas?.map((area) => ({
               label: area.name,
               value: area.id,
             }))}
-            onChange={(e) => setSelectedPerfil(e.value)}
+            onChange={(e) => setSelectedArea(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"
             style={{ width: '100%' }}
@@ -97,12 +99,12 @@ export const NewTeamForm = ({
         </div>
         <div className="col-8" style={{ width: '100%' }}>
           <Dropdown
-            value={selectedPerfil}
+            value={selectedCenter}
             options={centers?.map((center) => ({
               label: center.name,
               value: center.id,
             }))}
-            onChange={(e) => setSelectedPerfil(e.value)}
+            onChange={(e) => setSelectedCenter(e.value)}
             placeholder="Seleccione"
             className="p-dropdown-sm"
             style={{ width: '100%' }}
