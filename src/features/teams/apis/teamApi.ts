@@ -24,6 +24,11 @@ export const deleteTeam = async (id: number) => {
 }
 
 export const getAreas = async (): Promise<AreasType[]> => {
+    const response = await axiosInstance.get("/api/Lista/Areas");
+    return response.data;
+}
+
+export const getCenters = async (): Promise<AreasType[]> => {
     const response = await axiosInstance.get("/api/Lista/Centros");
     return response.data;
 }
