@@ -3,6 +3,7 @@ import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Badge } from 'primereact/badge'
 import type { ServiceMap } from '../types/serviceType'
+import { InputText } from 'primereact/inputtext'
 
 interface LayerSelectorProps {
   availableItems: ServiceMap[]
@@ -13,6 +14,23 @@ export const LayerSelector = ({
   onAssignedItemsChange,
 }: LayerSelectorProps) => {
   const [assignedItems, setAssignedItems] = useState<ServiceMap[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const filteredItems = availableItems.filter(
+    (service: ServiceMap) =>
+      service.nombreServicioMapa
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      service.nombreServicioMapa
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+  )
+  availableItems = filteredItems
+  // const newAvailableItems = filteredItems.filter(
+  //   (service) =>
+  //     !assignedItems.find(
+  //       (assigned) => assigned.idServicioMapa === service.idServicioMapa
+  //     )
+  // )
 
   const addItem = (item: ServiceMap) => {
     if (!assignedItems.find((p) => p.idServicioMapa === item.idServicioMapa)) {
@@ -77,7 +95,7 @@ export const LayerSelector = ({
   const assignedHeaderTemplate = () => {
     return (
       <div className="flex items-center gap-2  m-0">
-        <p className=" text-2xl font-bold m-0">Perfiles Asignados</p>
+        <p className=" text-2xl font-bold m-0">Mapas Asignados</p>
         <Badge value={assignedItems.length} severity="info" />
       </div>
     )
@@ -86,19 +104,32 @@ export const LayerSelector = ({
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-semibold">Configuración de Perfiles</h1>
+        <h1 className="text-2xl font-semibold">
+          Configuración de Servicios de Mapa
+        </h1>
         <p className="text-muted-foreground">
-          Selecciona y ordena los perfiles que se asignarán al usuario
+          Selecciona y ordena los servicios que se asignarán al mapa
         </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-2">
-        {/* Perfiles Disponibles */}
-        <Card title="Perfiles Disponibles">
+        {/* Mapas Disponibles */}
+        <Card
+          title="Servicios Disponibles"
+          className="m-0 h-96 overflow-y-auto"
+        >
+          <div className="relative">
+            <InputText
+              placeholder="Buscar servicios..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
           <div className="space-y-3">
             {getAvailableItems().length === 0 ? (
               <div className="text-center py-6 text-gray-500">
-                <p>Todos los perfiles han sido asignados</p>
+                <p>Todos los servicios han sido asignados</p>
               </div>
             ) : (
               getAvailableItems().map((item) => (
@@ -131,14 +162,15 @@ export const LayerSelector = ({
           </div>
         </Card>
 
-        {/* Perfiles Asignados */}
-        <Card title={assignedHeaderTemplate()} className="m-0">
+        {/* Mapas Asignados */}
+        <Card
+          title={assignedHeaderTemplate()}
+          className="m-0 h-20 overflow-y-auto"
+        >
           {assignedItems.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <p>No hay perfiles asignados</p>
-              <p className="text-sm">
-                Agrega perfiles desde la lista disponible
-              </p>
+              <p>No hay mapas asignados</p>
+              <p className="text-sm">Agrega mapas desde la lista disponible</p>
             </div>
           ) : (
             assignedItems.map((item, index) => (
@@ -192,27 +224,6 @@ export const LayerSelector = ({
           )}
         </Card>
       </div>
-
-      {/* {assignedItems.length > 0 && (
-        <>
-          <Separator />
-          <div className="flex justify-between items-center">
-            <div className="space-y-1">
-              <h3 className="font-medium">Resumen de Configuración</h3>
-              <p className="text-sm text-muted-foreground">
-                {assignedItems.length} perfil(es) configurado(s) para el
-                usuario
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setAssignedItems([])}>
-                Limpiar Todo
-              </Button>
-              <Button>Guardar Configuración</Button>
-            </div>
-          </div>
-        </>
-      )} */}
     </div>
   )
 }

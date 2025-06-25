@@ -1,6 +1,6 @@
 export interface ServiceMap {
   idServicioMapa: number
-  nombreServicioMapa?: string
+  nombreServicioMapa: string
   posicion?: number
   visible?: number
 }
