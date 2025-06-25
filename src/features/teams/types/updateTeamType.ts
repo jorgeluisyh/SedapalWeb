@@ -1,4 +1,5 @@
-export interface InsertTeamType {
+export interface UpdateTeamType {
+    idEquipo: number
   nombre: string
   correo: string
   descripcion: string

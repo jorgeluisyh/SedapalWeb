@@ -1,6 +1,8 @@
 import { axiosInstance } from "../../../shared/http/axiosInstance";
 import type { TeamType } from "../types/teamType";
 import type { AreasType } from "../types/areasType";
+import type { InsertTeamType } from "../types/insertTeamType";
+import type { UpdateTeamType } from "../types/updateTeamType";
 
 
 export const getTeam = async (): Promise<TeamType[]> => {
@@ -8,13 +10,13 @@ export const getTeam = async (): Promise<TeamType[]> => {
     return response.data;
 }
 
-export const postTeam = async (data: TeamType) => {
-    const response = await axiosInstance.post("/api/Equipos", data);
+export const postTeam = async (data: InsertTeamType) => {
+    const response = await axiosInstance.post("/api/Equipos/InsertarEquipo", data);
     return response.data;
 }
 
-export const updateTeam = async (id: number, data: TeamType) => {
-    const response = await axiosInstance.put(`/api/Equipos/${id}`, data);
+export const updateTeam = async (id: number, data: UpdateTeamType) => {
+    const response = await axiosInstance.put(`/api/Equipos/EditarEquipo/${id}`, data);
     return response.data;
 }
 
@@ -24,6 +26,11 @@ export const deleteTeam = async (id: number) => {
 }
 
 export const getAreas = async (): Promise<AreasType[]> => {
+    const response = await axiosInstance.get("/api/Lista/Areas");
+    return response.data;
+}
+
+export const getCenters = async (): Promise<AreasType[]> => {
     const response = await axiosInstance.get("/api/Lista/Centros");
     return response.data;
 }

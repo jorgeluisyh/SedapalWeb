@@ -10,18 +10,23 @@ import {
   postTeam,
   updateTeam,
   getAreas,
+  getCenters,
 } from '../apis/teamApi'
 import { Toast } from 'primereact/toast'
 import { UpdateTeamForm } from '../components/UpdateTeamForm'
 import type { AreasType } from '../types/areasType'
+import type { CentersType } from '../types/centersType'
+import type { InsertTeamType } from '../types/insertTeamType'
+import type { UpdateTeamType } from '../types/updateTeamType'
 
 export const TeamPage = () => {
   const [areas, setAreas] = useState<AreasType[] | null>(null)
+  const [centers, setCenters] = useState<CentersType[] | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [team, setTeam] = useState<TeamType[]>([])
-  const [selectedTeam, setselectedService] = useState<TeamType | null>(null)
+  const [selectedTeam, setselectedTeam] = useState<TeamType | null>(null)
 
   // const data = [
   //   {
@@ -43,9 +48,9 @@ export const TeamPage = () => {
   //   },
   // ]
 
-  const handleCloseUpdateForm = () => setselectedService(null)
+  const handleCloseUpdateForm = () => setselectedTeam(null)
 
-  const handleCreateTeam = async (teamType: TeamType) => {
+  const handleCreateTeam = async (teamType: InsertTeamType) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el equipo?',
       header: 'Confirmación',
@@ -69,7 +74,7 @@ export const TeamPage = () => {
     })
   }
 
-  const handleUpdateTeam = async (teamType: TeamType) => {
+  const handleUpdateTeam = async (teamType: UpdateTeamType) => {
     confirmDialog({
       message: `¿Estás seguro de que deseas editar el equipo : ${teamType.nombre}?`,
       header: 'Confirmación',
@@ -122,13 +127,18 @@ export const TeamPage = () => {
   }
 
   useEffect(() => {
-    const fetchWmsServices = async () => {
+    const fetchTeamsAPIs = async () => {
+      //Llamamos a la API para obtener los equipos
       const team = await getTeam()
       setTeam(team)
+      //Llamamos a la API para obtener las áreas de gerencias
       const areas = await getAreas()
       setAreas(areas)
+      //Llamamos a la API para obtener los centros de servicio
+      const centers = await getCenters()
+      setCenters(centers)
     }
-    fetchWmsServices()
+    fetchTeamsAPIs()
   }, [refresh])
 
   return (
@@ -138,7 +148,7 @@ export const TeamPage = () => {
           data={team}
           onAddClick={() => setIsModalOpen(true)}
           onUpdateClick={(teamType: TeamType | null) => {
-            setselectedService(teamType)
+            setselectedTeam(teamType)
           }}
           onDeleteClick={(teamType: TeamType) => handleDeleteTeam(teamType)}
         />
@@ -149,12 +159,18 @@ export const TeamPage = () => {
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateTeam}
         areas={areas}
+        centers={centers}
       />
-      <UpdateTeamForm
-        isModalOpen={!!selectedTeam}
-        onIsModalOpen={handleCloseUpdateForm}
-        onSubmit={handleUpdateTeam}
-      />
+      {selectedTeam && (
+        <UpdateTeamForm
+          // isModalOpen={!!selectedTeam}
+          handleClose={handleCloseUpdateForm}
+          onSubmit={handleUpdateTeam}
+          currentService={selectedTeam}
+          areas={areas}
+          centers={centers}
+        />
+      )}
     </>
   )
 }

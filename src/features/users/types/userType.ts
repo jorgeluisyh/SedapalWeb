@@ -3,7 +3,7 @@ export interface User {
   nombre?: string
   idEquipo?: number
   tipo?: number
-  bloqueado?: number
+  bloqueado: number
   admin?: number
   perfil?: string
   equipo?: string
