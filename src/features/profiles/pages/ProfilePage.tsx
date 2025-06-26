@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Card } from 'primereact/card'
-import type { FunctionType, Profile } from '../types/profileType'
+import type {
+  FunctionType,
+  PermissionsType,
+  Profile,
+  ProjectType,
+} from '../types/profileType'
 import { ProfileTable } from '../components/ProfileTable'
 import { NewProfileForm } from '../components/NewProfileForm'
 import {
@@ -11,6 +16,8 @@ import {
   getFunctions,
   getMaps,
   getCenters,
+  getPermissions,
+  getProjects,
 } from '../apis/profileApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
@@ -25,7 +32,8 @@ export const ProfilePage = () => {
   const [functions, setFunctions] = useState<FunctionType[]>([])
   const [maps, setMaps] = useState<Map[]>([])
   const [centers, setCenters] = useState<CentersType[]>([])
-
+  const [permissions, setPermissions] = useState<PermissionsType[]>([])
+  const [projects, setProjects] = useState<ProjectType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProfile, setselectedProfile] = useState<Profile | null>(null)
 
@@ -174,6 +182,10 @@ export const ProfilePage = () => {
       setMaps(maps)
       const centers = await getCenters()
       setCenters(centers)
+      const permissions = await getPermissions()
+      setPermissions(permissions)
+      const projects = await getProjects()
+      setProjects(projects)
     }
     fetchProfiles()
   }, [refresh])
@@ -196,12 +208,19 @@ export const ProfilePage = () => {
         availableFunctions={functions}
         availableMaps={maps}
         availableCenters={centers}
+        availableProjects={projects}
+        availablePermissions={permissions}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateProfile}
       />
       {selectedProfile && (
         <UpdateProfileForm
+          availableFunctions={functions}
+          availableMaps={maps}
+          availableCenters={centers}
+          availableProjects={projects}
+          availablePermissions={permissions}
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateProfile}
           currentService={selectedProfile}

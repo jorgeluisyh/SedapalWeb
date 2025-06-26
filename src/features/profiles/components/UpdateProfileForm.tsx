@@ -1,13 +1,24 @@
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
-// import { useForm, register } from 'react-hook-form';
-// import { FormInput } from '../../../shared/components/form/FormInput'
-import type { Profile } from '../types/profileType'
+import type {
+  FunctionType,
+  PermissionsType,
+  Profile,
+  ProjectType,
+} from '../types/profileType'
+import type { Map } from '../../maps/types/mapType'
 import { InputText } from 'primereact/inputtext'
+import type { CentersType } from '../../teams/types/centersType'
+import { useState } from 'react'
+import { DualListBox } from '../../../shared/components/form/DualListBox'
 
 interface UpdateProfileFormProps {
-  // isModalOpen: boolean
+  availableFunctions: FunctionType[]
+  availableMaps: Map[]
+  availableCenters: CentersType[]
+  availablePermissions: PermissionsType[]
+  availableProjects: ProjectType[]
   currentService: Profile
   // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: Profile) => Promise<void>
@@ -15,6 +26,11 @@ interface UpdateProfileFormProps {
 }
 
 export const UpdateProfileForm = ({
+  availableFunctions,
+  availableMaps,
+  availableCenters,
+  availablePermissions,
+  availableProjects,
   currentService,
   // isModalOpen,
   // onIsModalOpen,
@@ -36,6 +52,32 @@ export const UpdateProfileForm = ({
     await onSubmit(data)
     reset()
   }
+
+  const [funcionesSeleccionados, setFuncionesSeleccionados] = useState<
+    FunctionType[]
+  >([])
+  const [funcionesDisponibles, setFuncionesDisponibles] =
+    useState<FunctionType[]>(availableFunctions)
+
+  const [mapasDisponibles, setMapsDisponibles] = useState<Map[]>(availableMaps)
+  const [mapasSeleccionados, setMapasSeleccionados] = useState<Map[]>([])
+
+  const [centersDisponibles, setCentersDisponibles] =
+    useState<CentersType[]>(availableCenters)
+  const [centersSeleccionados, setCentersSeleccionados] =
+    useState<CentersType[]>(availableCenters)
+
+  const [permisosDisponibles, setPermisosDisponibles] =
+    useState<PermissionsType[]>(availablePermissions)
+  const [permisosSeleccionados, setPermisosSeleccionados] = useState<
+    PermissionsType[]
+  >([])
+
+  const [proyectosDisponibles, setProyectosDisponibles] =
+    useState<ProjectType[]>(availableProjects)
+  const [proyectosSeleccionados, setProyectosSeleccionados] = useState<
+    ProjectType[]
+  >([])
 
   return (
     <Dialog
@@ -97,143 +139,59 @@ export const UpdateProfileForm = ({
           </div>
         </div>
 
-        {/* Divisiones para los listados de elementos */}
-        <div className="grid grid-nogutter">
-          {/* Sección de Funciones */}
-          <div className="col-6">
-            <h5>Funciones Disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '5px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de funciones se agregará aquí */}
-            </div>
-          </div>
-          <div className="col-6">
-            <h5>Funciones asignadas</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de funciones se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        {/* Divisiones para los listados de Funciones */}
+        <DualListBox
+          disponibles={funcionesDisponibles}
+          seleccionados={funcionesSeleccionados}
+          setDisponibles={setFuncionesDisponibles}
+          setSeleccionados={setFuncionesSeleccionados}
+          tituloDisponibles="Funciones Disponibles"
+          tituloSeleccionados="Funciones Asignadas"
+          labelFieldName="nombreFuncion"
+        ></DualListBox>
 
-        {/* Divisiones para los listados de mapas */}
-        <div className="grid grid-nogutter">
-          {/* Sección de mapas disponibles */}
-          <div className="col-6">
-            <h5>Mapas Disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '5px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de mapas se agregará aquí */}
-            </div>
-          </div>
+        {/* Divisiones para los listados de Mapas */}
+        <DualListBox
+          disponibles={mapasDisponibles}
+          seleccionados={mapasSeleccionados}
+          setDisponibles={setMapsDisponibles}
+          setSeleccionados={setMapasSeleccionados}
+          tituloDisponibles="Mapas Disponibles"
+          tituloSeleccionados="Mapas Asignados"
+          labelFieldName="nombreMapa"
+        />
+        {/* Divisiones para los listados de Zonas */}
+        <DualListBox
+          disponibles={centersDisponibles}
+          seleccionados={centersSeleccionados}
+          setDisponibles={setCentersDisponibles}
+          setSeleccionados={setCentersSeleccionados}
+          tituloDisponibles="Zonas Disponibles"
+          tituloSeleccionados="Zonas Asignadas"
+          labelFieldName="name"
+        />
 
-          {/* Sección de Mapas asignados*/}
-          <div className="col-6">
-            <h5>Mapas asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de mapas se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        {/* Divisiones para los listados de Permisos */}
+        <DualListBox
+          disponibles={permisosDisponibles}
+          seleccionados={permisosSeleccionados}
+          setDisponibles={setPermisosDisponibles}
+          setSeleccionados={setPermisosSeleccionados}
+          tituloDisponibles="Permisos Disponibles"
+          tituloSeleccionados="Permisos Asignados"
+          labelFieldName="nombre"
+        />
 
-        {/* Divisiones para los listados de zonas */}
-        <div className="grid grid-nogutter mt-4">
-          {/* Sección de Zonas */}
-          <div className="col-6">
-            <h5>Zonas disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de zonas se agregará aquí */}
-            </div>
-          </div>
-
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Zonas asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-        </div>
-
-        {/* Divisiones para los listados de permisos */}
-        <div className="grid grid-nogutter mt-4">
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Permisos disponibles</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '150px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-
-          {/* Sección de Permisos */}
-          <div className="col-6">
-            <h5>Permisos asignados</h5>
-            <div
-              className="p-shadow-2"
-              style={{
-                height: '200px',
-                overflowY: 'auto',
-                padding: '10px',
-                border: '1px solid #ddd',
-              }}
-            >
-              {/* Listado de permisos se agregará aquí */}
-            </div>
-          </div>
-        </div>
+        {/* Divisiones para los listados de Tipos de Edicion */}
+        <DualListBox
+          disponibles={proyectosDisponibles}
+          seleccionados={proyectosSeleccionados}
+          setDisponibles={setProyectosDisponibles}
+          setSeleccionados={setProyectosSeleccionados}
+          tituloDisponibles="Tipos de Edicion Disponibles"
+          tituloSeleccionados="Tipos de Edicion Asignados"
+          labelFieldName="name"
+        />
 
         {/* Botones de acción */}
         <div className="flex justify-content-center gap-4 mt-4">
