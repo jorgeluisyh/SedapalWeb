@@ -3,12 +3,12 @@ import { Card } from 'primereact/card'
 import type { Map } from '../types/mapType'
 import { MapTable } from '../components/MapTable'
 import { NewMapForm } from '../components/NewMapForm'
-import { deleteMaps, getMaps, postMaps, updateMaps } from '../apis/mapApi'
+import { deleteMap, getMaps, postMap, updateMap } from '../apis/mapApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
-import { UpdateMapForm } from '../components/UpdateMapForm'
 import type { ServiceMap } from '../types/serviceType'
 import { getArcgisServices } from '../../arcgisServices/apis/arcgisServiceApi'
+import { UpdateMapForm } from '../components/UpdateMapForm'
 
 export const MapPage = () => {
   const toast = useRef<Toast>(null)
@@ -51,7 +51,7 @@ export const MapPage = () => {
 
   const handleCloseUpdateForm = () => setselectedService(null)
 
-  const handleCreateMap = async (maps: Map) => {
+  const handleCreateMap = async (map: Map) => {
     // crear dialogo para confirmar si se debe enviar usuario
 
     await confirmDialog({
@@ -61,7 +61,7 @@ export const MapPage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await postMaps(maps)
+        const response = await postMap(map)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -72,20 +72,20 @@ export const MapPage = () => {
         console.log(response.message)
       },
       reject: () => {
-        console.log('No se envió el mapa' + maps.nombreMapa)
+        console.log('No se envió el mapa' + map.nombreMapa)
       },
     })
   }
 
-  const handleUpdateMap = async (maps: Map) => {
+  const handleUpdateMap = async (map: Map) => {
     await confirmDialog({
-      message: `¿Estás seguro de que deseas editar el mapa : ${maps.nombreMapa}?`,
+      message: `¿Estás seguro de que deseas editar el mapa : ${map.nombreMapa}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await updateMaps(maps.idMapa, maps)
+        const response = await updateMap(map)
         handleCloseUpdateForm()
         toast.current?.show({
           severity: 'success',
@@ -98,7 +98,7 @@ export const MapPage = () => {
       },
       reject: () => {
         handleCloseUpdateForm()
-        console.log('No se editó el mapa' + maps.nombreMapa)
+        console.log('No se editó el mapa' + map.nombreMapa)
       },
     })
   }
@@ -112,7 +112,7 @@ export const MapPage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await deleteMaps(maps.idMapa)
+        const response = await deleteMap(maps.idMapa)
         console.log(response.message)
         toast.current?.show({
           severity: 'success',
@@ -145,10 +145,11 @@ export const MapPage = () => {
         <MapTable
           data={maps}
           onAddClick={() => setIsModalOpen(true)}
-          onUpdateClick={(maps: Map | null) => {
-            setselectedService(maps)
+          onUpdateClick={(map: Map | null) => {
+            setselectedService(map)
+            console.log(map)
           }}
-          onDeleteClick={(maps: Map) => handleDeleteMaps(maps)}
+          onDeleteClick={(map: Map) => handleDeleteMaps(map)}
         />
       </Card>
 
@@ -160,10 +161,10 @@ export const MapPage = () => {
       />
       {selectedService && (
         <UpdateMapForm
+          availableItems={arcgisServices}
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateMap}
           currentService={selectedService}
-          isModalOpen={false}
         />
       )}
       <ConfirmDialog />

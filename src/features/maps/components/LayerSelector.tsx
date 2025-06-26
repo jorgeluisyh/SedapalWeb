@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Badge } from 'primereact/badge'
@@ -7,10 +7,12 @@ import { InputText } from 'primereact/inputtext'
 
 interface LayerSelectorProps {
   availableItems: ServiceMap[]
+  currentAssignedItems?: ServiceMap[]
   onAssignedItemsChange: (assignedItems: ServiceMap[]) => void
 }
 export const LayerSelector = ({
   availableItems,
+  currentAssignedItems = [],
   onAssignedItemsChange,
 }: LayerSelectorProps) => {
   const [assignedItems, setAssignedItems] = useState<ServiceMap[]>([])
@@ -25,12 +27,9 @@ export const LayerSelector = ({
         .includes(searchTerm.toLowerCase())
   )
   availableItems = filteredItems
-  // const newAvailableItems = filteredItems.filter(
-  //   (service) =>
-  //     !assignedItems.find(
-  //       (assigned) => assigned.idServicioMapa === service.idServicioMapa
-  //     )
-  // )
+  useEffect(() => {
+    setAssignedItems(currentAssignedItems)
+  }, [currentAssignedItems])
 
   const addItem = (item: ServiceMap) => {
     if (!assignedItems.find((p) => p.idServicioMapa === item.idServicioMapa)) {
