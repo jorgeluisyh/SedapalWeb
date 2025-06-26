@@ -1,24 +1,27 @@
 import { ListBox } from 'primereact/listbox'
 
-interface DualListBoxProps {
-  disponibles: string[]
-  seleccionados: string[]
-  setDisponibles: (items: string[]) => void
-  setSeleccionados: (items: string[]) => void
+// Definimos la interfaz DualListBoxProps con tipo genérico T
+interface DualListBoxProps<T> {
+  disponibles: T[]
+  seleccionados: T[]
+  setDisponibles: (items: T[]) => void
+  setSeleccionados: (items: T[]) => void
+  labelFieldName: keyof T
   tituloDisponibles?: string
   tituloSeleccionados?: string
 }
 
-export const DualListBox = ({
+export const DualListBox = <T extends unknown>({
   disponibles,
   seleccionados,
   setDisponibles,
   setSeleccionados,
+  labelFieldName,
   tituloDisponibles = 'Disponibles',
   tituloSeleccionados = 'Seleccionados',
-}: DualListBoxProps) => {
+}: DualListBoxProps<T>) => {
   const handleItemClick = (
-    item: string,
+    item: T,
     fromList: 'disponibles' | 'seleccionados'
   ) => {
     if (fromList === 'disponibles') {
@@ -30,23 +33,24 @@ export const DualListBox = ({
     }
   }
 
-  const itemTemplateDisponibles = (option: string) => (
+  const itemTemplateDisponibles = (option: T) => (
     <div
       className="flex justify-content-between align-items-center"
       onClick={() => handleItemClick(option, 'disponibles')}
     >
-      <div>{option}</div>
+      <div>{(option as any)[labelFieldName]}</div>{' '}
       <i className="pi pi-angle-right mr-2"></i>
     </div>
   )
 
-  const itemTemplateSeleccionados = (option: string) => (
+  const itemTemplateSeleccionados = (option: T) => (
     <div
       className="flex align-items-center"
       onClick={() => handleItemClick(option, 'seleccionados')}
     >
       <i className="pi pi-angle-left mr-2"></i>
-      <div>{option}</div>
+      <div>{(option as any)[labelFieldName]}</div>{' '}
+      {/* Renderizamos la opción */}
     </div>
   )
 

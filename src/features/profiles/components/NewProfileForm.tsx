@@ -5,12 +5,13 @@ import { useForm } from 'react-hook-form'
 import type { Map } from '../../maps/types/mapType'
 import type { FunctionType, Profile } from '../types/profileType'
 import { InputText } from 'primereact/inputtext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
 import { DualListBoxProfileFunctions } from './DualListBoxProfileFunctions'
 import { DualListBoxProfileMaps } from './DualListBoxProfileMaps'
 import { DualListBoxProfileZones } from './DualListBoxProfileZones'
 import type { CentersType } from '../../teams/types/centersType'
+import { getFunctions } from '../apis/profileApi'
 
 interface NewProfileFormProps {
   availableFunctions: FunctionType[]
@@ -57,6 +58,12 @@ export const NewProfileForm = ({
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
     string[]
   >([])
+
+  useEffect(() => {
+    setFuncionesDisponibles(availableFunctions)
+    setMapsDisponibles(availableMaps)
+    setCentersDisponibles(availableCenters)
+  }, [availableFunctions])
 
   const [serviciosDisponibles, setServiciosDisponibles] = useState([
     'SGIO',
@@ -137,32 +144,35 @@ export const NewProfileForm = ({
           </div>
         </div>
         {/* Divisiones para los listados de Funciones */}
-        <DualListBoxProfileFunctions
+        <DualListBox
           disponibles={funcionesDisponibles}
           seleccionados={funcionesSeleccionados}
           setDisponibles={setFuncionesDisponibles}
           setSeleccionados={setFuncionesSeleccionados}
           tituloDisponibles="Funciones Disponibles"
           tituloSeleccionados="Funciones Asignadas"
-        />
+          labelFieldName="nombreFuncion"
+        ></DualListBox>
 
         {/* Divisiones para los listados de Mapas */}
-        <DualListBoxProfileMaps
+        <DualListBox
           disponibles={mapasDisponibles}
           seleccionados={mapasSeleccionados}
           setDisponibles={setMapsDisponibles}
           setSeleccionados={setMapasSeleccionados}
           tituloDisponibles="Mapas Disponibles"
           tituloSeleccionados="Mapas Asignados"
+          labelFieldName="nombreMapa"
         />
         {/* Divisiones para los listados de Zonas */}
-        <DualListBoxProfileZones
+        <DualListBox
           disponibles={centersDisponibles}
           seleccionados={centersSeleccionados}
           setDisponibles={setCentersDisponibles}
           setSeleccionados={setCentersSeleccionados}
           tituloDisponibles="Zonas Disponibles"
           tituloSeleccionados="Zonas Asignadas"
+          labelFieldName="name"
         />
 
         {/* Divisiones para los listados de Permisos */}
