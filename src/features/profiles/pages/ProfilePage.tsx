@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Card } from 'primereact/card'
-import type { Profile } from '../types/profileType'
+import type { FunctionType, Profile } from '../types/profileType'
 import { ProfileTable } from '../components/ProfileTable'
 import { NewProfileForm } from '../components/NewProfileForm'
 import {
@@ -8,21 +8,30 @@ import {
   postProfile,
   updateProfile,
   deleteProfile,
+  getFunctions,
+  getMaps,
+  getCenters,
 } from '../apis/profileApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
 import { UpdateProfileForm } from '../components/UpdateProfileForm'
+import type { Map } from '../../maps/types/mapType'
+import type { CentersType } from '../../teams/types/centersType'
 
 export const ProfilePage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [profile, setProfile] = useState<Profile[]>([])
+  const [functions, setFunctions] = useState<FunctionType[]>([])
+  const [maps, setMaps] = useState<Map[]>([])
+  const [centers, setCenters] = useState<CentersType[]>([])
+
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedService, setselectedService] = useState<Profile | null>(null)
+  const [selectedProfile, setselectedProfile] = useState<Profile | null>(null)
 
-  const handleCloseUpdateForm = () => setselectedService(null)
+  const handleCloseUpdateForm = () => setselectedProfile(null)
 
-  const handleCreateService = async (profile: Profile) => {
+  const handleCreateProfile = async (profile: Profile) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
@@ -46,7 +55,7 @@ export const ProfilePage = () => {
     })
   }
 
-  const handleUpdateService = async (profile: Profile) => {
+  const handleUpdateProfile = async (profile: Profile) => {
     confirmDialog({
       message: `¿Estás seguro de que deseas editar el perfil : ${profile.nombrePerfil}?`,
       header: 'Confirmación',
@@ -72,7 +81,7 @@ export const ProfilePage = () => {
     })
   }
 
-  const handleDeleteService = async (profile: Profile) => {
+  const handleDeleteProfile = async (profile: Profile) => {
     console.log('eliminar')
     confirmDialog({
       message: `¿Estás seguro de que deseas eliminar el perfil: ${profile.nombrePerfil}?`,
@@ -98,12 +107,75 @@ export const ProfilePage = () => {
     })
   }
 
+  // const availableFunctions = [
+  //   {
+  //     idFuncion: 1,
+  //     nombreFuncion: 'SGIO- Ayesa',
+  //     descripcion: 'Sistema de Gestión Integral de Operaciones',
+  //   },
+  //   {
+  //     idFuncion: 2,
+  //     nombreFuncion: 'Análisis Redesmx Julio',
+  //     descripcion: 'Análisis de Redes de Telecomunicaciones',
+  //   },
+  //   {
+  //     idFuncion: 3,
+  //     nombreFuncion: 'ANFmxd Ayesa',
+  //     descripcion: 'Modelo de Datos ANF',
+  //   },
+  // ]
+
+  // const availableMaps = [
+  //   {
+  //     idMapa: 108,
+  //     descripcion: 'Nuevo Mapa de inserccion',
+  //     nombreMapa: 'Nuevo Mapa',
+  //     servicios: [
+  //       {
+  //         idServicioMapa: 5,
+  //         nombreServicioMapa: 'AguaPotable',
+  //         posicion: 1,
+  //         visible: 1,
+  //       },
+  //       {
+  //         idServicioMapa: 4,
+  //         nombreServicioMapa: 'Catastro Comercial',
+  //         posicion: 2,
+  //         visible: 0,
+  //       },
+  //     ],
+  //   },
+  // ]
+
+  // const availableCenters = [
+  //   {
+  //     id: 'AO-7',
+  //     name: 'CSO BREÑA',
+  //     extra: '336',
+  //   },
+  //   {
+  //     id: 'AO-8',
+  //     name: 'CSO SURQUILLO',
+  //     extra: '337',
+  //   },
+  //   {
+  //     id: 'AO-9',
+  //     name: 'LIMA',
+  //     extra: '338',
+  //   },
+  // ]
   useEffect(() => {
-    const fetchWmsServices = async () => {
+    const fetchProfiles = async () => {
       const profile = await getProfile()
       setProfile(profile)
+      const functions = await getFunctions()
+      setFunctions(functions)
+      const maps = await getMaps()
+      setMaps(maps)
+      const centers = await getCenters()
+      setCenters(centers)
     }
-    fetchWmsServices()
+    fetchProfiles()
   }, [refresh])
 
   return (
@@ -115,21 +187,24 @@ export const ProfilePage = () => {
             setIsModalOpen(true)
           }}
           onUpdateClick={(profile: Profile | null) => {
-            setselectedService(profile)
+            setselectedProfile(profile)
           }}
-          onDeleteClick={(profile: Profile) => handleDeleteService(profile)}
+          onDeleteClick={(profile: Profile) => handleDeleteProfile(profile)}
         />
       </Card>
       <NewProfileForm
+        availableFunctions={functions}
+        availableMaps={maps}
+        availableCenters={centers}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
-        onSubmit={handleCreateService}
+        onSubmit={handleCreateProfile}
       />
-      {selectedService && (
+      {selectedProfile && (
         <UpdateProfileForm
           handleClose={handleCloseUpdateForm}
-          onSubmit={handleUpdateService}
-          currentService={selectedService}
+          onSubmit={handleUpdateProfile}
+          currentService={selectedProfile}
         />
       )}
       <ConfirmDialog />

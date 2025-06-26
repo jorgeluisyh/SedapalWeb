@@ -5,9 +5,9 @@ import { useState, type ChangeEvent } from 'react'
 import { TeamTableHeader } from './TeamTableHeader'
 import type { TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
-// import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
-import { FormCheckbox } from '../../../shared/components/form/FormCheckbox' // Ajusta la ruta según sea necesario
 import { useForm } from 'react-hook-form'
+import { InputSwitch } from 'primereact/inputswitch'
+import type { UpdateTeamType } from '../types/updateTeamType'
 // import type { CheckboxChangeEvent } from 'primereact/checkbox'
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   onAddClick: () => void
   onUpdateClick: (team: TeamType | null) => void
   onDeleteClick: (team: TeamType) => void
+  onSwichtClick: (team: UpdateTeamType) => void
 }
 
 interface Filter {
@@ -30,6 +31,7 @@ export const TeamTable = ({
   onAddClick,
   onUpdateClick,
   onDeleteClick,
+  onSwichtClick,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -67,10 +69,18 @@ export const TeamTable = ({
     )
   }
 
-  // Función para actualizar el estado del checkbox
-  // const onCheckBoxChange = (e: any, rowData: TeamType) => {
-  //   rowData.bloqueado = e.checked ? 1 : 0 // Convertir el valor a 1 o 0
-  // }
+  const checkedBodyTemplate = (row: UpdateTeamType) => {
+    return (
+      // <ToggleButton
+      //   checked={row.bloqueado === 1}
+      //   onChange={(row) => console.log(row)}
+      // />
+      <InputSwitch
+        checked={row.bloqueado === 1}
+        onChange={(e) => onSwichtClick(row)} // Llamamos a la función de cambio de estado
+      />
+    )
+  }
 
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -120,19 +130,7 @@ export const TeamTable = ({
         field="bloqueado"
         header="Bloqueado"
         style={{ width: '25%' }}
-        body={(rowDataCheck) => (
-          // <Checkbox
-          //   checked={rowDataCheck.blocked === 1}
-          //   onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
-          // />
-          <FormCheckbox
-            name={`bloqueado_${rowDataCheck.idEquipo}`} // Asegúrate de que el nombre sea único, por ejemplo, usando el id
-            label="Bloqueado"
-            control={control} // assuming you have a control object from react-hook-form
-            errors={errors} // assuming you have an errors object from react-hook-form
-            rules={{ required: 'Este campo es obligatorio' }} // Si es necesario agregar reglas de validación
-          />
-        )}
+        body={checkedBodyTemplate}
       />
       <Column
         body={actionBodyTemplate}

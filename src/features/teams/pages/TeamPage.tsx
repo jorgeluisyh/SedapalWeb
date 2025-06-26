@@ -126,6 +126,66 @@ export const TeamPage = () => {
     })
   }
 
+  const handleSwitchTeam = async (teamType: UpdateTeamType) => {
+    console.log('se modifico bloqueo')
+    console.log(teamType)
+    teamType.bloqueado = teamType.bloqueado === 1 ? 0 : 1 // Cambia el estado de bloqueado
+    console.log(teamType)
+    const response = await updateTeam(teamType.idEquipo, teamType)
+    console.log(response.message)
+    toast.current?.show({
+      severity: 'success',
+      summary: 'Confirmed',
+      detail: 'Se eliminó el equipo',
+      life: 3000,
+    })
+    setRefresh(!refresh)
+    console.log('Se eliminó el equipo ' + teamType.nombre)
+  }
+
+  const team1 = [
+    {
+      idEquipo: 1,
+      nombre: 'Equipo A',
+      correo: 'equipoA@empresa.com',
+      descripcion: 'Equipo encargado del soporte técnico.',
+      bloqueado: 0,
+      gerencia: 'Gerencia de TI',
+      idGerencia: 101,
+      centroServicio: 'Centro 1',
+    },
+    {
+      idEquipo: 2,
+      nombre: 'Equipo B',
+      correo: 'equipoB@empresa.com',
+      descripcion: 'Equipo encargado del desarrollo de software.',
+      bloqueado: 1,
+      gerencia: 'Gerencia de Desarrollo',
+      idGerencia: 102,
+      centroServicio: 'Centro 2',
+    },
+    {
+      idEquipo: 3,
+      nombre: 'Equipo C',
+      correo: 'equipoC@empresa.com',
+      descripcion: 'Equipo encargado de la administración de bases de datos.',
+      bloqueado: 0,
+      gerencia: 'Gerencia de Infraestructura',
+      idGerencia: 103,
+      centroServicio: 'Centro 3',
+    },
+    {
+      idEquipo: 4,
+      nombre: 'Equipo D',
+      correo: 'equipoD@empresa.com',
+      descripcion: 'Equipo encargado de la seguridad informática.',
+      bloqueado: 1,
+      gerencia: 'Gerencia de Seguridad',
+      idGerencia: 104,
+      centroServicio: 'Centro 4',
+    },
+  ]
+
   useEffect(() => {
     const fetchTeamsAPIs = async () => {
       //Llamamos a la API para obtener los equipos
@@ -145,12 +205,15 @@ export const TeamPage = () => {
     <>
       <Card title="Equipos">
         <TeamTable
-          data={team}
+          data={team1}
           onAddClick={() => setIsModalOpen(true)}
           onUpdateClick={(teamType: TeamType | null) => {
             setselectedTeam(teamType)
           }}
           onDeleteClick={(teamType: TeamType) => handleDeleteTeam(teamType)}
+          onSwichtClick={(teamType: UpdateTeamType) =>
+            handleSwitchTeam(teamType)
+          }
         />
       </Card>
 

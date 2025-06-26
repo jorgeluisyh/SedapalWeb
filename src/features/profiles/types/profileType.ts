@@ -3,3 +3,9 @@ export interface Profile {
   descripcion: string
   nombrePerfil: string
 }
+
+export interface FunctionType {
+  idFuncion: number
+  descripcion: string
+  nombreFuncion: string
+}

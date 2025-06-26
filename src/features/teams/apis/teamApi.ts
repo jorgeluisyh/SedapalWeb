@@ -3,6 +3,7 @@ import type { TeamType } from "../types/teamType";
 import type { AreasType } from "../types/areasType";
 import type { InsertTeamType } from "../types/insertTeamType";
 import type { UpdateTeamType } from "../types/updateTeamType";
+import type { CentersType } from "../types/centersType";
 
 
 export const getTeam = async (): Promise<TeamType[]> => {
@@ -30,7 +31,7 @@ export const getAreas = async (): Promise<AreasType[]> => {
     return response.data;
 }
 
-export const getCenters = async (): Promise<AreasType[]> => {
+export const getCenters = async (): Promise<CentersType[]> => {
     const response = await axiosInstance.get("/api/Lista/Centros");
     return response.data;
 }

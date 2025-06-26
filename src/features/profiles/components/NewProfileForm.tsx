@@ -2,19 +2,29 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
 // import { useForm, register } from 'react-hook-form';
-// import { FormInput } from '../../../shared/components/form/FormInput'
-import type { Profile } from '../types/profileType'
+import type { Map } from '../../maps/types/mapType'
+import type { FunctionType, Profile } from '../types/profileType'
 import { InputText } from 'primereact/inputtext'
 import { useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
+import { DualListBoxProfileFunctions } from './DualListBoxProfileFunctions'
+import { DualListBoxProfileMaps } from './DualListBoxProfileMaps'
+import { DualListBoxProfileZones } from './DualListBoxProfileZones'
+import type { CentersType } from '../../teams/types/centersType'
 
 interface NewProfileFormProps {
+  availableFunctions: FunctionType[]
+  availableMaps: Map[]
+  availableCenters: CentersType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: Profile) => Promise<void>
 }
 
 export const NewProfileForm = ({
+  availableFunctions,
+  availableMaps,
+  availableCenters,
   isModalOpen,
   onIsModalOpen,
   onSubmit,
@@ -29,9 +39,25 @@ export const NewProfileForm = ({
     mode: 'onBlur',
   })
 
+  const [funcionesSeleccionados, setFuncionesSeleccionados] = useState<
+    FunctionType[]
+  >([])
+  const [funcionesDisponibles, setFuncionesDisponibles] =
+    useState<FunctionType[]>(availableFunctions)
+
+  const [mapasDisponibles, setMapsDisponibles] = useState<Map[]>(availableMaps)
+  const [mapasSeleccionados, setMapasSeleccionados] = useState<Map[]>([])
+
+  const [centersDisponibles, setCentersDisponibles] =
+    useState<CentersType[]>(availableCenters)
+  const [centersSeleccionados, setCentersSeleccionados] = useState<
+    CentersType[]
+  >([])
+
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
     string[]
   >([])
+
   const [serviciosDisponibles, setServiciosDisponibles] = useState([
     'SGIO',
     'Análisis Redesmx',
@@ -76,8 +102,6 @@ export const NewProfileForm = ({
             <InputText
               id="nombre"
               style={{ width: '60%' }}
-              //   name="nombre"
-              //   control={control}
               {...register('nombrePerfil', {
                 required: 'Ingrese nombre del perfil',
               })}
@@ -97,8 +121,6 @@ export const NewProfileForm = ({
             <InputText
               id="descripcion"
               style={{ width: '60%' }}
-              //   name="descripcion"
-              //   control={control}
               {...register('descripcion', {
                 required: 'Ingrese la descripción del perfil',
               })}
@@ -114,34 +136,36 @@ export const NewProfileForm = ({
             )}
           </div>
         </div>
-        <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
+        {/* Divisiones para los listados de Funciones */}
+        <DualListBoxProfileFunctions
+          disponibles={funcionesDisponibles}
+          seleccionados={funcionesSeleccionados}
+          setDisponibles={setFuncionesDisponibles}
+          setSeleccionados={setFuncionesSeleccionados}
           tituloDisponibles="Funciones Disponibles"
           tituloSeleccionados="Funciones Asignadas"
         />
 
-        {/* Divisiones para los listados de mapas */}
-        <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
+        {/* Divisiones para los listados de Mapas */}
+        <DualListBoxProfileMaps
+          disponibles={mapasDisponibles}
+          seleccionados={mapasSeleccionados}
+          setDisponibles={setMapsDisponibles}
+          setSeleccionados={setMapasSeleccionados}
           tituloDisponibles="Mapas Disponibles"
           tituloSeleccionados="Mapas Asignados"
         />
-
-        <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
+        {/* Divisiones para los listados de Zonas */}
+        <DualListBoxProfileZones
+          disponibles={centersDisponibles}
+          seleccionados={centersSeleccionados}
+          setDisponibles={setCentersDisponibles}
+          setSeleccionados={setCentersSeleccionados}
           tituloDisponibles="Zonas Disponibles"
           tituloSeleccionados="Zonas Asignadas"
         />
 
+        {/* Divisiones para los listados de Permisos */}
         <DualListBox
           disponibles={serviciosDisponibles}
           seleccionados={serviciosSeleccionados}
@@ -151,6 +175,15 @@ export const NewProfileForm = ({
           tituloSeleccionados="Permisos Asignados"
         />
 
+        {/* Divisiones para los listados de Tipos de Edicion */}
+        <DualListBox
+          disponibles={serviciosDisponibles}
+          seleccionados={serviciosSeleccionados}
+          setDisponibles={setServiciosDisponibles}
+          setSeleccionados={setServiciosSeleccionados}
+          tituloDisponibles="Tipos de Edicion Disponibles"
+          tituloSeleccionados="Tipos de Edicion Asignados"
+        />
         {/* Botones de acción */}
         <div className="flex justify-content-center gap-4 mt-4">
           <Button

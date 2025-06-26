@@ -1,5 +1,5 @@
 export interface CentersType {
-  id: number
+  id: string
   name: string
   extra: string
 }
