@@ -1,5 +1,5 @@
 import { axiosInstance } from "../../../shared/http/axiosInstance";
-import type { FunctionType, Profile } from "../types/profileType";
+import type { FunctionType, PermissionsType, Profile, ProjectType } from "../types/profileType";
 import type { Map } from "../../maps/types/mapType";
 import type { CentersType } from "../../teams/types/centersType";
 
@@ -37,5 +37,15 @@ export const getFunctions = async (): Promise<FunctionType[]> => {
 
 export const getCenters = async (): Promise<CentersType[]> => {
     const response = await axiosInstance.get("/api/Lista/Centros");
+    return response.data;
+}
+
+export const getPermissions = async (): Promise<PermissionsType[]> => {
+    const response = await axiosInstance.get("/api/Lista/Centros");
+    return response.data;
+}
+
+export const getProjects = async (): Promise<ProjectType[]> => {
+    const response = await axiosInstance.get("/api/Proyecto");
     return response.data;
 }

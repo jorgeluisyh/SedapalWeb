@@ -1,22 +1,24 @@
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
-// import { useForm, register } from 'react-hook-form';
 import type { Map } from '../../maps/types/mapType'
-import type { FunctionType, Profile } from '../types/profileType'
+import {
+  type FunctionType,
+  type Profile,
+  type PermissionsType,
+  type ProjectType,
+} from '../types/profileType'
 import { InputText } from 'primereact/inputtext'
 import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
-import { DualListBoxProfileFunctions } from './DualListBoxProfileFunctions'
-import { DualListBoxProfileMaps } from './DualListBoxProfileMaps'
-import { DualListBoxProfileZones } from './DualListBoxProfileZones'
 import type { CentersType } from '../../teams/types/centersType'
-import { getFunctions } from '../apis/profileApi'
 
 interface NewProfileFormProps {
   availableFunctions: FunctionType[]
   availableMaps: Map[]
   availableCenters: CentersType[]
+  availablePermissions: PermissionsType[]
+  availableProjects: ProjectType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: Profile) => Promise<void>
@@ -26,6 +28,8 @@ export const NewProfileForm = ({
   availableFunctions,
   availableMaps,
   availableCenters,
+  availablePermissions,
+  availableProjects,
   isModalOpen,
   onIsModalOpen,
   onSubmit,
@@ -51,13 +55,24 @@ export const NewProfileForm = ({
 
   const [centersDisponibles, setCentersDisponibles] =
     useState<CentersType[]>(availableCenters)
-  const [centersSeleccionados, setCentersSeleccionados] = useState<
-    CentersType[]
+  const [centersSeleccionados, setCentersSeleccionados] =
+    useState<CentersType[]>(availableCenters)
+
+  const [permisosDisponibles, setPermisosDisponibles] =
+    useState<PermissionsType[]>(availablePermissions)
+  const [permisosSeleccionados, setPermisosSeleccionados] = useState<
+    PermissionsType[]
   >([])
 
-  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
-    string[]
+  const [proyectosDisponibles, setProyectosDisponibles] =
+    useState<ProjectType[]>(availableProjects)
+  const [proyectosSeleccionados, setProyectosSeleccionados] = useState<
+    ProjectType[]
   >([])
+
+  // const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
+  //   string[]
+  // >([])
 
   useEffect(() => {
     setFuncionesDisponibles(availableFunctions)
@@ -65,22 +80,22 @@ export const NewProfileForm = ({
     setCentersDisponibles(availableCenters)
   }, [availableFunctions])
 
-  const [serviciosDisponibles, setServiciosDisponibles] = useState([
-    'SGIO',
-    'Análisis Redesmx',
-    'ANFmxd',
-    'Catastro Comercial',
-    'AguaPotable',
-    'Satélite ESRI',
-    'Alcantarillado',
-    'Curvas de Nivel',
-    'Red Vial',
-    'Mapa Base',
-    'TIN',
-    'Consulta Redesmx',
-    'Gestión Comercialmx',
-    'Supervisor Edicion ArcSDEmx',
-  ])
+  // const [serviciosDisponibles, setServiciosDisponibles] = useState([
+  //   'SGIO',
+  //   'Análisis Redesmx',
+  //   'ANFmxd',
+  //   'Catastro Comercial',
+  //   'AguaPotable',
+  //   'Satélite ESRI',
+  //   'Alcantarillado',
+  //   'Curvas de Nivel',
+  //   'Red Vial',
+  //   'Mapa Base',
+  //   'TIN',
+  //   'Consulta Redesmx',
+  //   'Gestión Comercialmx',
+  //   'Supervisor Edicion ArcSDEmx',
+  // ])
 
   const onSubmitNewProduct = async (data: Profile) => {
     await onSubmit(data)
@@ -177,22 +192,24 @@ export const NewProfileForm = ({
 
         {/* Divisiones para los listados de Permisos */}
         <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
+          disponibles={permisosDisponibles}
+          seleccionados={permisosSeleccionados}
+          setDisponibles={setPermisosDisponibles}
+          setSeleccionados={setPermisosSeleccionados}
           tituloDisponibles="Permisos Disponibles"
           tituloSeleccionados="Permisos Asignados"
+          labelFieldName="nombre"
         />
 
         {/* Divisiones para los listados de Tipos de Edicion */}
         <DualListBox
-          disponibles={serviciosDisponibles}
-          seleccionados={serviciosSeleccionados}
-          setDisponibles={setServiciosDisponibles}
-          setSeleccionados={setServiciosSeleccionados}
+          disponibles={proyectosDisponibles}
+          seleccionados={proyectosSeleccionados}
+          setDisponibles={setProyectosDisponibles}
+          setSeleccionados={setProyectosSeleccionados}
           tituloDisponibles="Tipos de Edicion Disponibles"
           tituloSeleccionados="Tipos de Edicion Asignados"
+          labelFieldName="name"
         />
         {/* Botones de acción */}
         <div className="flex justify-content-center gap-4 mt-4">

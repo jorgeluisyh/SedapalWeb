@@ -143,48 +143,48 @@ export const TeamPage = () => {
     console.log('Se eliminó el equipo ' + teamType.nombre)
   }
 
-  const team1 = [
-    {
-      idEquipo: 1,
-      nombre: 'Equipo A',
-      correo: 'equipoA@empresa.com',
-      descripcion: 'Equipo encargado del soporte técnico.',
-      bloqueado: 0,
-      gerencia: 'Gerencia de TI',
-      idGerencia: 101,
-      centroServicio: 'Centro 1',
-    },
-    {
-      idEquipo: 2,
-      nombre: 'Equipo B',
-      correo: 'equipoB@empresa.com',
-      descripcion: 'Equipo encargado del desarrollo de software.',
-      bloqueado: 1,
-      gerencia: 'Gerencia de Desarrollo',
-      idGerencia: 102,
-      centroServicio: 'Centro 2',
-    },
-    {
-      idEquipo: 3,
-      nombre: 'Equipo C',
-      correo: 'equipoC@empresa.com',
-      descripcion: 'Equipo encargado de la administración de bases de datos.',
-      bloqueado: 0,
-      gerencia: 'Gerencia de Infraestructura',
-      idGerencia: 103,
-      centroServicio: 'Centro 3',
-    },
-    {
-      idEquipo: 4,
-      nombre: 'Equipo D',
-      correo: 'equipoD@empresa.com',
-      descripcion: 'Equipo encargado de la seguridad informática.',
-      bloqueado: 1,
-      gerencia: 'Gerencia de Seguridad',
-      idGerencia: 104,
-      centroServicio: 'Centro 4',
-    },
-  ]
+  // const team1 = [
+  //   {
+  //     idEquipo: 1,
+  //     nombre: 'Equipo A',
+  //     correo: 'equipoA@empresa.com',
+  //     descripcion: 'Equipo encargado del soporte técnico.',
+  //     bloqueado: 0,
+  //     gerencia: 'Gerencia de TI',
+  //     idGerencia: 101,
+  //     centroServicio: 'Centro 1',
+  //   },
+  //   {
+  //     idEquipo: 2,
+  //     nombre: 'Equipo B',
+  //     correo: 'equipoB@empresa.com',
+  //     descripcion: 'Equipo encargado del desarrollo de software.',
+  //     bloqueado: 1,
+  //     gerencia: 'Gerencia de Desarrollo',
+  //     idGerencia: 102,
+  //     centroServicio: 'Centro 2',
+  //   },
+  //   {
+  //     idEquipo: 3,
+  //     nombre: 'Equipo C',
+  //     correo: 'equipoC@empresa.com',
+  //     descripcion: 'Equipo encargado de la administración de bases de datos.',
+  //     bloqueado: 0,
+  //     gerencia: 'Gerencia de Infraestructura',
+  //     idGerencia: 103,
+  //     centroServicio: 'Centro 3',
+  //   },
+  //   {
+  //     idEquipo: 4,
+  //     nombre: 'Equipo D',
+  //     correo: 'equipoD@empresa.com',
+  //     descripcion: 'Equipo encargado de la seguridad informática.',
+  //     bloqueado: 1,
+  //     gerencia: 'Gerencia de Seguridad',
+  //     idGerencia: 104,
+  //     centroServicio: 'Centro 4',
+  //   },
+  // ]
 
   useEffect(() => {
     const fetchTeamsAPIs = async () => {
@@ -205,7 +205,7 @@ export const TeamPage = () => {
     <>
       <Card title="Equipos">
         <TeamTable
-          data={team1}
+          data={team}
           onAddClick={() => setIsModalOpen(true)}
           onUpdateClick={(teamType: TeamType | null) => {
             setselectedTeam(teamType)
