@@ -103,20 +103,12 @@ export const LayerSelector = ({
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-semibold">
-          Configuración de Servicios de Mapa
-        </h1>
-        <p className="text-muted-foreground">
-          Selecciona y ordena los servicios que se asignarán al mapa
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-2">
+      <div className="grid md:grid-cols-2 gap-2 justify-content-center">
         {/* Mapas Disponibles */}
         <Card
           title="Servicios Disponibles"
-          className="m-0 h-96 overflow-y-auto"
+          // className="m-0 h-96 overflow-y-auto layer-card"
+          style={{ maxWidth: '560px', height: '600px' }}
         >
           <div className="relative">
             <InputText
@@ -126,7 +118,10 @@ export const LayerSelector = ({
               className="pl-10"
             />
           </div>
-          <div className="space-y-3">
+          <div
+            className="space-y-3"
+            style={{ height: '400px', overflow: 'auto' }}
+          >
             {getAvailableItems().length === 0 ? (
               <div className="text-center py-6 text-gray-500">
                 <p>Todos los servicios han sido asignados</p>
@@ -165,63 +160,71 @@ export const LayerSelector = ({
         {/* Mapas Asignados */}
         <Card
           title={assignedHeaderTemplate()}
-          className="m-0 h-20 overflow-y-auto"
+          // className="m-0 h-20 overflow-y-auto layer-card"
+          style={{ width: '560px', height: '600px' }}
         >
-          {assignedItems.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No hay mapas asignados</p>
-              <p className="text-sm">Agrega mapas desde la lista disponible</p>
-            </div>
-          ) : (
-            assignedItems.map((item, index) => (
-              <div
-                key={item.idServicioMapa}
-                className="flex items-center justify-content-between p-3 gap-2 border rounded-lg bg-green-50 border-green-200"
-              >
-                <div className="flex align-items-center justify-content-center gap-3">
-                  <div className="flex flex-col gap-2">
-                    <Button
-                      rounded
-                      text
-                      severity="info"
-                      onClick={() => moveItemUp(index)}
-                      disabled={index === 0}
-                      className="h-6 w-6 p-0"
-                    >
-                      <i className="pi pi-arrow-up"></i>
-                    </Button>
-                    <Button
-                      rounded
-                      text
-                      severity="info"
-                      onClick={() => moveItemDown(index)}
-                      disabled={index === assignedItems.length - 1}
-                      className="h-6 w-6 p-0"
-                    >
-                      <i className="pi pi-arrow-down"></i>
-                    </Button>
-                  </div>
-                  <Badge value={index} severity="info" />
-                  <div>
-                    <h3 className="font-medium m-0">
-                      {item.nombreServicioMapa}
-                    </h3>
-                    <p className="text-sm text-muted-foreground m-0">
-                      {item.nombreServicioMapa}
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  size="small"
-                  onClick={() => removeItem(item.idServicioMapa)}
-                  outlined
-                  severity="danger"
-                >
-                  <i className="pi pi-minus"></i>
-                </Button>
+          <div
+            className="space-y-3"
+            style={{ height: '400px', overflow: 'auto' }}
+          >
+            {assignedItems.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>No hay mapas asignados</p>
+                <p className="text-sm">
+                  Agrega mapas desde la lista disponible
+                </p>
               </div>
-            ))
-          )}
+            ) : (
+              assignedItems.map((item, index) => (
+                <div
+                  key={item.idServicioMapa}
+                  className="flex items-center justify-content-between p-3 gap-2 border rounded-lg bg-green-50 border-green-200"
+                >
+                  <div className="flex align-items-center justify-content-center gap-3">
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        rounded
+                        text
+                        severity="info"
+                        onClick={() => moveItemUp(index)}
+                        disabled={index === 0}
+                        className="h-6 w-6 p-0"
+                      >
+                        <i className="pi pi-arrow-up"></i>
+                      </Button>
+                      <Button
+                        rounded
+                        text
+                        severity="info"
+                        onClick={() => moveItemDown(index)}
+                        disabled={index === assignedItems.length - 1}
+                        className="h-6 w-6 p-0"
+                      >
+                        <i className="pi pi-arrow-down"></i>
+                      </Button>
+                    </div>
+                    <Badge value={index} severity="info" />
+                    <div>
+                      <h3 className="font-medium m-0">
+                        {item.nombreServicioMapa}
+                      </h3>
+                      <p className="text-sm text-muted-foreground m-0">
+                        {item.nombreServicioMapa}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    size="small"
+                    onClick={() => removeItem(item.idServicioMapa)}
+                    outlined
+                    severity="danger"
+                  >
+                    <i className="pi pi-minus"></i>
+                  </Button>
+                </div>
+              ))
+            )}
+          </div>
         </Card>
       </div>
     </div>
