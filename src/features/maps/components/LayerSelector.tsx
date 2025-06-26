@@ -4,6 +4,8 @@ import { Button } from 'primereact/button'
 import { Badge } from 'primereact/badge'
 import type { ServiceMap } from '../types/serviceType'
 import { InputText } from 'primereact/inputtext'
+import { IconField } from 'primereact/iconfield'
+import { InputIcon } from 'primereact/inputicon'
 
 interface LayerSelectorProps {
   availableItems: ServiceMap[]
@@ -12,7 +14,7 @@ interface LayerSelectorProps {
 }
 export const LayerSelector = ({
   availableItems,
-  currentAssignedItems = [],
+  currentAssignedItems,
   onAssignedItemsChange,
 }: LayerSelectorProps) => {
   const [assignedItems, setAssignedItems] = useState<ServiceMap[]>([])
@@ -27,9 +29,11 @@ export const LayerSelector = ({
         .includes(searchTerm.toLowerCase())
   )
   availableItems = filteredItems
-  useEffect(() => {
-    setAssignedItems(currentAssignedItems)
-  }, [currentAssignedItems])
+  if (currentAssignedItems) {
+    useEffect(() => {
+      setAssignedItems(currentAssignedItems)
+    }, [])
+  }
 
   const addItem = (item: ServiceMap) => {
     if (!assignedItems.find((p) => p.idServicioMapa === item.idServicioMapa)) {
@@ -94,7 +98,7 @@ export const LayerSelector = ({
   const assignedHeaderTemplate = () => {
     return (
       <div className="flex items-center gap-2  m-0">
-        <p className=" text-2xl font-bold m-0">Mapas Asignados</p>
+        <p className=" text-2xl font-bold m-0">Servicios Asignados</p>
         <Badge value={assignedItems.length} severity="info" />
       </div>
     )
@@ -110,12 +114,15 @@ export const LayerSelector = ({
           style={{ maxWidth: '560px', height: '600px' }}
         >
           <div className="relative">
-            <InputText
-              placeholder="Buscar servicios..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+            <IconField iconPosition="left">
+              <InputIcon className="pi pi-search" />
+              <InputText
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+                placeholder="Buscar servicios..."
+              />
+            </IconField>
           </div>
           <div
             className="space-y-3"
@@ -142,6 +149,7 @@ export const LayerSelector = ({
                     </div>
                   </div>
                   <Button
+                    type="button"
                     className="m-2"
                     size="small"
                     outlined
@@ -168,9 +176,9 @@ export const LayerSelector = ({
           >
             {assignedItems.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                <p>No hay mapas asignados</p>
+                <p>No hay servicios asignados</p>
                 <p className="text-sm">
-                  Agrega mapas desde la lista disponible
+                  Agrega servicios desde la lista disponible
                 </p>
               </div>
             ) : (
@@ -182,6 +190,7 @@ export const LayerSelector = ({
                   <div className="flex align-items-center justify-content-center gap-3">
                     <div className="flex flex-col gap-2">
                       <Button
+                        type="button"
                         rounded
                         text
                         severity="info"
@@ -192,6 +201,7 @@ export const LayerSelector = ({
                         <i className="pi pi-arrow-up"></i>
                       </Button>
                       <Button
+                        type="button"
                         rounded
                         text
                         severity="info"
@@ -213,6 +223,7 @@ export const LayerSelector = ({
                     </div>
                   </div>
                   <Button
+                    type="button"
                     size="small"
                     onClick={() => removeItem(item.idServicioMapa)}
                     outlined

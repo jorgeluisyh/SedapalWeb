@@ -8,7 +8,7 @@ export const getMaps = async (): Promise<Map[]> => {
 }
 
 export const postMap = async (data: Map) => {
-    const response = await axiosInstance.post("/api/Mapas/InsertarMapa", data);
+    const response = await axiosInstance.post("/api/Mapas", data);
     return response.data;
 }
 

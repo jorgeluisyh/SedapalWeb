@@ -62,6 +62,7 @@ export const MapPage = () => {
       rejectLabel: 'No',
       accept: async () => {
         const response = await postMap(map)
+        setIsModalOpen(false)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -72,6 +73,7 @@ export const MapPage = () => {
         console.log(response.message)
       },
       reject: () => {
+        setIsModalOpen(false)
         console.log('No se envió el mapa' + map.nombreMapa)
       },
     })
