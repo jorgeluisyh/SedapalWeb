@@ -8,10 +8,11 @@ import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
+import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
 interface NewTeamFormProps {
-  areas: AreasType[] | null
-  centers: CentersType[] | null
+  areas: AreasType[]
+  centers: CentersType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: any) => Promise<void>
