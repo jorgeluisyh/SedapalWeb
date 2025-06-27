@@ -99,20 +99,25 @@ export const NewTeamForm = ({
           placeholder="Seleccione una Zona"
         />
 
-        <Button
-          type="button"
-          label="Cancelar"
-          severity="secondary"
-          outlined
-          onClick={() => onIsModalOpen(false)}
-        />
-        <Button
-          disabled={!isValid || isSubmitting}
-          label="Agregar"
-          type="submit"
-          icon="pi pi-plus"
-          loading={isSubmitting}
-        />
+        <div
+          className="flex justify-content-center gap-4"
+          style={{ marginTop: '20px' }}
+        >
+          <Button
+            type="button"
+            label="Cancelar"
+            severity="secondary"
+            outlined
+            onClick={() => onIsModalOpen(false)}
+          />
+          <Button
+            disabled={!isValid || isSubmitting}
+            label="Agregar"
+            type="submit"
+            icon="pi pi-plus"
+            loading={isSubmitting}
+          />
+        </div>
       </form>
     </Dialog>
   )
