@@ -10,6 +10,7 @@ import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 import { FormDropdownMultiple } from '../../../shared/components/form/FormDropDownMultiple'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 
 interface NewTeamFormProps {
   areas: AreasType[]
@@ -95,7 +96,7 @@ export const NewTeamForm = ({
           rules={{ required: 'Defina Area' }}
           placeholder="Seleccione un Area"
         />
-        <FormDropdownMultiple
+        <FormMultiSelect
           name="zonaId"
           label="Zonas"
           control={control}
