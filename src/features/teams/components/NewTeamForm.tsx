@@ -9,7 +9,6 @@ import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
-import { FormDropdownMultiple } from '../../../shared/components/form/FormDropDownMultiple'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 
 interface NewTeamFormProps {
