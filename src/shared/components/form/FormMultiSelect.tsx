@@ -43,6 +43,7 @@ export const FormMultiSelect = ({
             value={field.value || []} // Handle selected values
             onChange={(e) => field.onChange(e.value)} // Update the selected values
             className={errors[name] ? 'p-invalid' : ''}
+            display="chip"
             filter
             optionLabel="label"
             optionValue="value"

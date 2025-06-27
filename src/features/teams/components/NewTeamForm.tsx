@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { FormInput } from '../../../shared/components/form/FormInput'
 // import type { TeamType } from '../types/teamType'
 import type { InsertTeamType } from '../types/insertTeamType'
-import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
@@ -40,14 +39,6 @@ export const NewTeamForm = ({
     reset()
   }
 
-  const [selectedArea, setSelectedArea] = useState<string | null>(null)
-  const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
-
-  // const perfiles = [
-  //   { name: 'Admin', extra: 'admin' },
-  //   { name: 'Editor', extra: 'editor' },
-  //   { name: 'Viewer', extra: 'viewer' },
-  // ]
   return (
     <Dialog
       header="Agregar Equipo"
@@ -100,49 +91,28 @@ export const NewTeamForm = ({
           label="Zonas"
           control={control}
           errors={errors}
-          options={areas?.map((area) => ({
-            label: area.name,
-            value: area.id,
+          options={centers?.map((center) => ({
+            label: center.name,
+            value: center.id,
           }))}
           rules={{ required: 'Defina Zona' }}
           placeholder="Seleccione una Zona"
         />
 
-        <div className="col-4 flex align-items-center p-mb-2">
-          Centro de Servicio:
-        </div>
-        <div className="col-8" style={{ width: '100%' }}>
-          <Dropdown
-            value={selectedCenter}
-            options={centers?.map((center) => ({
-              label: center.name,
-              value: center.id,
-            }))}
-            onChange={(e) => setSelectedCenter(e.value)}
-            placeholder="Seleccione"
-            className="p-dropdown-sm"
-            style={{ width: '100%' }}
-          />
-        </div>
-        <div
-          className="flex justify-content-center gap-4"
-          style={{ marginTop: '20px' }}
-        >
-          <Button
-            type="button"
-            label="Cancelar"
-            severity="secondary"
-            outlined
-            onClick={() => onIsModalOpen(false)}
-          />
-          <Button
-            disabled={!isValid || isSubmitting}
-            label="Agregar"
-            type="submit"
-            icon="pi pi-plus"
-            loading={isSubmitting}
-          />
-        </div>
+        <Button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          outlined
+          onClick={() => onIsModalOpen(false)}
+        />
+        <Button
+          disabled={!isValid || isSubmitting}
+          label="Agregar"
+          type="submit"
+          icon="pi pi-plus"
+          loading={isSubmitting}
+        />
       </form>
     </Dialog>
   )
