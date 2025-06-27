@@ -9,6 +9,7 @@ import { useState } from 'react'
 import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
+import { FormDropdownMultiple } from '../../../shared/components/form/FormDropDownMultiple'
 
 interface NewTeamFormProps {
   areas: AreasType[]
@@ -82,31 +83,31 @@ export const NewTeamForm = ({
           rules={{ required: 'Ingrese la descripción' }}
         />
         <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
-        <div className="col-8" style={{ width: '100%' }}>
-          <FormDropdown
-            name="areaId"
-            label="Area"
-            control={control}
-            errors={errors}
-            options={areas?.map((area) => ({
-              label: area.name,
-              value: area.id,
-            }))}
-            rules={{ required: 'Defina Area' }}
-            placeholder="Seleccione un Area"
-          />
-          <Dropdown
-            value={selectedArea}
-            options={areas?.map((area) => ({
-              label: area.name,
-              value: area.id,
-            }))}
-            onChange={(e) => setSelectedArea(e.value)}
-            placeholder="Seleccione"
-            className="p-dropdown-sm"
-            style={{ width: '100%' }}
-          />
-        </div>
+        <FormDropdown
+          name="areaId"
+          label="Area"
+          control={control}
+          errors={errors}
+          options={areas?.map((area) => ({
+            label: area.name,
+            value: area.id,
+          }))}
+          rules={{ required: 'Defina Area' }}
+          placeholder="Seleccione un Area"
+        />
+        <FormDropdownMultiple
+          name="zonaId"
+          label="Zonas"
+          control={control}
+          errors={errors}
+          options={areas?.map((area) => ({
+            label: area.name,
+            value: area.id,
+          }))}
+          rules={{ required: 'Defina Zona' }}
+          placeholder="Seleccione una Zona"
+        />
+
         <div className="col-4 flex align-items-center p-mb-2">
           Centro de Servicio:
         </div>
