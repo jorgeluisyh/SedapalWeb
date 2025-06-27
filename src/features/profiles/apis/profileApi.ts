@@ -41,7 +41,7 @@ export const getCenters = async (): Promise<CentersType[]> => {
 }
 
 export const getPermissions = async (): Promise<PermissionsType[]> => {
-    const response = await axiosInstance.get("/api/Lista/Centros");
+    const response = await axiosInstance.get("/api/Permiso");
     return response.data;
 }
 

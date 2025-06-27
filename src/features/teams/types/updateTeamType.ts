@@ -5,5 +5,5 @@ export interface UpdateTeamType {
   descripcion: string
   bloqueado: number
   areaId: string
-  zonaId: string
+  zonasId: string[]
 }

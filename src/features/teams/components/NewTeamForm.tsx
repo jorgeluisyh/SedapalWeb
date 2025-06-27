@@ -14,7 +14,7 @@ interface NewTeamFormProps {
   centers: CentersType[] | null
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: InsertTeamType) => Promise<void>
+  onSubmit: (data: any) => Promise<void>
 }
 
 export const NewTeamForm = ({

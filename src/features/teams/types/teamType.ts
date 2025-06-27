@@ -5,6 +5,6 @@ export interface TeamType {
   descripcion: string
   bloqueado: number
   gerencia: string
-  idGerencia?: number
-  centroServicio?: string
+  areaId: string
+  centroServicio: []
 }

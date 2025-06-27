@@ -4,5 +4,5 @@ export interface InsertTeamType {
   descripcion: string
   bloqueado: number
   areaId: string
-  zonaId: string
+  zonasId: string[]
 }

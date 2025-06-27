@@ -12,12 +12,12 @@ export const getTeam = async (): Promise<TeamType[]> => {
 }
 
 export const postTeam = async (data: InsertTeamType) => {
-    const response = await axiosInstance.post("/api/Equipos/InsertarEquipo", data);
+    const response = await axiosInstance.post("/api/Equipos", data);
     return response.data;
 }
 
 export const updateTeam = async (id: number, data: UpdateTeamType) => {
-    const response = await axiosInstance.put(`/api/Equipos/EditarEquipo/${id}`, data);
+    const response = await axiosInstance.put(`/api/Equipos/${id}`, data);
     return response.data;
 }
 
