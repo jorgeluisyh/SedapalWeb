@@ -87,7 +87,7 @@ export const NewTeamForm = ({
           placeholder="Seleccione un Area"
         />
         <FormMultiSelect
-          name="zonaId"
+          name="zonasId"
           label="Zonas"
           control={control}
           errors={errors}

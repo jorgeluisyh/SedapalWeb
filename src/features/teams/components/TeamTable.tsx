@@ -3,7 +3,7 @@ import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { TeamTableHeader } from './TeamTableHeader'
-import type { TeamType } from '../types/teamType'
+import type { CenterServiceType, TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
 import { useForm } from 'react-hook-form'
 import { InputSwitch } from 'primereact/inputswitch'
@@ -82,6 +82,13 @@ export const TeamTable = ({
     setGlobalFilterValue(value)
   }
 
+  const formatCentroServicio = (centroServicio: CenterServiceType) => {
+    if (centroServicio && Array.isArray(centroServicio)) {
+      return centroServicio.map((item) => item.nombre).join(', ')
+    }
+    return ''
+  }
+
   return (
     <DataTable
       header={
@@ -104,30 +111,49 @@ export const TeamTable = ({
       <Column
         header="#"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
-        style={{ width: '5%' }}
+        style={{ width: '2%' }}
       />
-      <Column field="nombre" header="Nombre" filter sortable />
-      <Column field="correo" header="Correo" filter sortable />
+      <Column
+        field="nombre"
+        header="Nombre"
+        sortable
+        style={{ width: '10%' }}
+      />
+      <Column
+        field="correo"
+        header="Correo"
+        sortable
+        style={{ width: '10%' }}
+      />
 
       <Column
         field="descripcion"
         header="Descripción"
-        // filter
         sortable
-        style={{ width: '35%' }}
+        style={{ width: '15%' }}
       />
-      <Column field="gerencia" header="Gerencia" sortable />
-      <Column field="centroServicio" header="Centro Servicio" sortable />
+      <Column
+        field="gerencia"
+        header="Gerencia"
+        sortable
+        style={{ width: '15%' }}
+      />
+      <Column
+        field="centroServicio"
+        header="Centro Servicio"
+        body={(rowData) => formatCentroServicio(rowData.centroServicio)}
+        style={{ width: '15%' }}
+      />
       <Column
         field="bloqueado"
         header="Bloqueado"
-        style={{ width: '25%' }}
+        style={{ width: '15%' }}
         body={checkedBodyTemplate}
       />
       <Column
         body={actionBodyTemplate}
         header="Acciones"
-        style={{ width: '15%' }}
+        style={{ width: '5%' }}
       />
     </DataTable>
   )
