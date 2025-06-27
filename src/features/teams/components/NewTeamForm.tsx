@@ -82,6 +82,18 @@ export const NewTeamForm = ({
         />
         <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
         <div className="col-8" style={{ width: '100%' }}>
+          <FormDropdown
+            name="areaId"
+            label="Area"
+            control={control}
+            errors={errors}
+            options={areas?.map((area) => ({
+              label: area.name,
+              value: area.id,
+            }))}
+            rules={{ required: 'Defina Area' }}
+            placeholder="Seleccione un Area"
+          />
           <Dropdown
             value={selectedArea}
             options={areas?.map((area) => ({

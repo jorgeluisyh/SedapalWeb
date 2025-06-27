@@ -6,5 +6,10 @@ export interface TeamType {
   bloqueado: number
   gerencia: string
   areaId: string
-  centroServicio: []
+  centroServicio?: CenterServiceType[]
+}
+
+export interface CenterServiceType{
+  zonaId: string
+  nombre: string 
 }

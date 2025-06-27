@@ -78,7 +78,15 @@ export const NewProfileForm = ({
     setFuncionesDisponibles(availableFunctions)
     setMapsDisponibles(availableMaps)
     setCentersDisponibles(availableCenters)
-  }, [availableFunctions])
+    setPermisosDisponibles(availablePermissions)
+    setProyectosDisponibles(availableProjects)
+  }, [
+    availableFunctions,
+    availableMaps,
+    availableCenters,
+    availablePermissions,
+    availableProjects,
+  ])
 
   // const [serviciosDisponibles, setServiciosDisponibles] = useState([
   //   'SGIO',

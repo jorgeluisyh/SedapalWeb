@@ -8,14 +8,13 @@ import { Button } from 'primereact/button'
 import { useForm } from 'react-hook-form'
 import { InputSwitch } from 'primereact/inputswitch'
 import type { UpdateTeamType } from '../types/updateTeamType'
-// import type { CheckboxChangeEvent } from 'primereact/checkbox'
 
 interface Props {
   data: TeamType[]
   onAddClick: () => void
   onUpdateClick: (team: TeamType | null) => void
   onDeleteClick: (team: TeamType) => void
-  onSwichtClick: (team: UpdateTeamType) => void
+  onSwichtClick: (team: TeamType) => void
 }
 
 interface Filter {
@@ -40,10 +39,7 @@ export const TeamTable = ({
     cacheado: { value: null, matchMode: FilterMatchMode.IN },
     descripcion: { value: null, matchMode: FilterMatchMode.IN },
   })
-  const {
-    control,
-    formState: { errors },
-  } = useForm()
+
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
   const actionBodyTemplate = (row: TeamType) => {
@@ -69,12 +65,8 @@ export const TeamTable = ({
     )
   }
 
-  const checkedBodyTemplate = (row: UpdateTeamType) => {
+  const checkedBodyTemplate = (row: TeamType) => {
     return (
-      // <ToggleButton
-      //   checked={row.bloqueado === 1}
-      //   onChange={(row) => console.log(row)}
-      // />
       <InputSwitch
         checked={row.bloqueado === 1}
         onChange={(e) => onSwichtClick(row)} // Llamamos a la función de cambio de estado

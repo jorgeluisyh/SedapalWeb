@@ -3,7 +3,7 @@ import { Card } from 'primereact/card'
 import type { TeamType } from '../types/teamType'
 import { TeamTable } from '../components/TeamTable'
 import { NewTeamForm } from '../components/NewTeamForm'
-import { confirmDialog } from 'primereact/confirmdialog'
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import {
   deleteTeam,
   getTeam,
@@ -48,10 +48,23 @@ export const TeamPage = () => {
   //   },
   // ]
 
+  // Función de transformación
+  const toEquipoApi = (raw: TeamType): UpdateTeamType => ({
+    idEquipo: raw.idEquipo,
+    nombre: raw.nombre,
+    correo: raw.correo,
+    descripcion: raw.descripcion,
+    bloqueado: raw.bloqueado,
+    areaId: raw.areaId,
+    zonasId: Array.isArray(raw.centroServicio)
+      ? raw.centroServicio.map((cs) => cs.zonaId)
+      : [],
+  })
+
   const handleCloseUpdateForm = () => setselectedTeam(null)
 
   const handleCreateTeam = async (teamType: InsertTeamType) => {
-    confirmDialog({
+    await confirmDialog({
       message: '¿Estás seguro de que deseas enviar el equipo?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
@@ -75,14 +88,14 @@ export const TeamPage = () => {
   }
 
   const handleUpdateTeam = async (teamType: UpdateTeamType) => {
-    confirmDialog({
+    await confirmDialog({
       message: `¿Estás seguro de que deseas editar el equipo : ${teamType.nombre}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await updateTeam(teamType.idEquipo, teamType)
+        const response = await updateTeam(teamType)
         handleCloseUpdateForm()
         toast.current?.show({
           severity: 'success',
@@ -102,7 +115,7 @@ export const TeamPage = () => {
 
   const handleDeleteTeam = async (teamType: TeamType) => {
     console.log('eliminar')
-    confirmDialog({
+    await confirmDialog({
       message: `¿Estás seguro de que deseas eliminar el equipo: ${teamType.nombre}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
@@ -126,21 +139,22 @@ export const TeamPage = () => {
     })
   }
 
-  const handleSwitchTeam = async (teamType: UpdateTeamType) => {
+  const handleSwitchTeam = async (teamType: TeamType) => {
     console.log('se modifico bloqueo')
     console.log(teamType)
     teamType.bloqueado = teamType.bloqueado === 1 ? 0 : 1 // Cambia el estado de bloqueado
     console.log(teamType)
-    const response = await updateTeam(teamType.idEquipo, teamType)
+    const updateTeam_: UpdateTeamType = toEquipoApi(teamType)
+    const response = await updateTeam(updateTeam_)
     console.log(response.message)
     toast.current?.show({
       severity: 'success',
       summary: 'Confirmed',
-      detail: 'Se eliminó el equipo',
+      detail: 'Se modificó el equipo',
       life: 3000,
     })
     setRefresh(!refresh)
-    console.log('Se eliminó el equipo ' + teamType.nombre)
+    console.log('Se modificó el equipo ' + teamType.nombre)
   }
 
   // const team1 = [
@@ -211,9 +225,7 @@ export const TeamPage = () => {
             setselectedTeam(teamType)
           }}
           onDeleteClick={(teamType: TeamType) => handleDeleteTeam(teamType)}
-          onSwichtClick={(teamType: UpdateTeamType) =>
-            handleSwitchTeam(teamType)
-          }
+          onSwichtClick={(teamType: TeamType) => handleSwitchTeam(teamType)}
         />
       </Card>
 
@@ -234,6 +246,8 @@ export const TeamPage = () => {
           centers={centers}
         />
       )}
+      <ConfirmDialog />
+      <Toast ref={toast} />
     </>
   )
 }

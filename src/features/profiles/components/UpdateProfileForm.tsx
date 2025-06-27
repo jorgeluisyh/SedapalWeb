@@ -64,8 +64,9 @@ export const UpdateProfileForm = ({
 
   const [centersDisponibles, setCentersDisponibles] =
     useState<CentersType[]>(availableCenters)
-  const [centersSeleccionados, setCentersSeleccionados] =
-    useState<CentersType[]>(availableCenters)
+  const [centersSeleccionados, setCentersSeleccionados] = useState<
+    CentersType[]
+  >([])
 
   const [permisosDisponibles, setPermisosDisponibles] =
     useState<PermissionsType[]>(availablePermissions)

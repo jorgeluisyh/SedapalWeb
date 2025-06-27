@@ -16,8 +16,8 @@ export const postTeam = async (data: InsertTeamType) => {
     return response.data;
 }
 
-export const updateTeam = async (id: number, data: UpdateTeamType) => {
-    const response = await axiosInstance.put(`/api/Equipos/${id}`, data);
+export const updateTeam = async ( data: UpdateTeamType) => {
+    const response = await axiosInstance.put("/api/Equipos", data);
     return response.data;
 }
 
