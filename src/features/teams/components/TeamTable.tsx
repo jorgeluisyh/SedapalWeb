@@ -5,9 +5,7 @@ import { useState, type ChangeEvent } from 'react'
 import { TeamTableHeader } from './TeamTableHeader'
 import type { CenterServiceType, TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
-import { useForm } from 'react-hook-form'
 import { InputSwitch } from 'primereact/inputswitch'
-import type { UpdateTeamType } from '../types/updateTeamType'
 
 interface Props {
   data: TeamType[]

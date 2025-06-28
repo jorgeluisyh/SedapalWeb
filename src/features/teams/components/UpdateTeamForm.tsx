@@ -10,10 +10,11 @@ import type { CentersType } from '../types/centersType'
 import type { UpdateTeamType } from '../types/updateTeamType'
 import type { TeamType } from '../types/teamType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 
 interface UpdateTeamFormProps {
-  areas: AreasType[] | null
-  centers: CentersType[] | null
+  areas: AreasType[]
+  centers: CentersType[]
   currentService: TeamType
   handleClose: () => void
   // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -43,14 +44,6 @@ export const UpdateTeamForm = ({
     reset()
   }
 
-  // const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
-  // const [selectedCenter, setSelectedCenter] = useState<string | null>(null)
-
-  // const perfiles = [
-  //   { label: 'Admin', value: 'admin' },
-  //   { label: 'Editor', value: 'editor' },
-  //   { label: 'Viewer', value: 'viewer' },
-  // ]
   return (
     <Dialog
       header="Editar Equipo"
@@ -86,7 +79,7 @@ export const UpdateTeamForm = ({
         />
 
         <FormDropdown
-          name="gerencia"
+          name="areaId"
           label="Gerencia:"
           control={control}
           errors={errors}
@@ -100,50 +93,18 @@ export const UpdateTeamForm = ({
           placeholder="Seleccione una generencia"
         />
 
-        <FormDropdown
-          name="centroServicio"
-          label="Centro de Servicio:"
+        <FormMultiSelect
+          name="zonasId"
+          label="Zonas"
           control={control}
           errors={errors}
-          options={
-            centers?.map((center) => ({
-              label: center.name,
-              value: center.id,
-            })) ?? []
-          }
-          rules={{ required: 'Defina el centor de servicio' }} // Puedes agregar reglas como required, minLength, etc.
-          placeholder="Seleccione un centor de servicio"
+          options={centers?.map((center) => ({
+            label: center.name,
+            value: center.id,
+          }))}
+          placeholder="Seleccione un Centro de Servicio"
         />
-        {/* <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
-        <div className="col-8" style={{ width: '100%' }}>
-          <Dropdown
-            value={selectedPerfil}
-            options={areas?.map((area) => ({
-              label: area.name,
-              value: area.id,
-            }))}
-            onChange={(e) => setSelectedPerfil(e.value)}
-            placeholder="Seleccione"
-            className="p-dropdown-sm"
-            style={{ width: '100%' }}
-          />
-        </div>
-        <div className="col-4 flex align-items-center p-mb-2">
-          Centro de Servicio:
-        </div>
-        <div className="col-8" style={{ width: '100%' }}>
-          <Dropdown
-            value={selectedCenter}
-            options={centers?.map((center) => ({
-              label: center.name,
-              value: center.id,
-            }))}
-            onChange={(e) => setSelectedCenter(e.value)}
-            placeholder="Seleccione"
-            className="p-dropdown-sm"
-            style={{ width: '100%' }}
-          />
-        </div> */}
+
         <div
           className="flex justify-content-center gap-4"
           style={{ marginTop: '20px' }}

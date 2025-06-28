@@ -22,7 +22,7 @@ export const updateTeam = async ( data: UpdateTeamType) => {
 }
 
 export const deleteTeam = async (id: number) => {
-    const response = await axiosInstance.delete(`/api/Equipos/${id}`);
+    const response = await axiosInstance.delete(`/api/Equipos?idEquipo=${id}`);
     return response.data;
 }
 
