@@ -29,6 +29,20 @@ export const UpdateTeamForm = ({
   // onIsModalOpen,
   onSubmit,
 }: UpdateTeamFormProps) => {
+  const toEquipoApi = (raw: TeamType): UpdateTeamType => ({
+    idEquipo: raw.idEquipo,
+    nombre: raw.nombre,
+    correo: raw.correo,
+    descripcion: raw.descripcion,
+    bloqueado: raw.bloqueado,
+    areaId: raw.areaId,
+    zonasId: Array.isArray(raw.centroServicio)
+      ? raw.centroServicio.map((cs) => cs.zonaId)
+      : [],
+  })
+
+  const formatedCurrentService: UpdateTeamType = toEquipoApi(currentService)
+
   const {
     control,
     handleSubmit,
@@ -36,7 +50,7 @@ export const UpdateTeamForm = ({
     formState: { errors, isValid, isSubmitting },
   } = useForm<UpdateTeamType>({
     mode: 'onBlur',
-    defaultValues: currentService,
+    defaultValues: formatedCurrentService,
   })
 
   const onSubmitUpdateElement = async (data: UpdateTeamType) => {

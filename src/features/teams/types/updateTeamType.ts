@@ -1,9 +1,9 @@
 export interface UpdateTeamType {
-    idEquipo: number
+  idEquipo: number
   nombre: string
   correo: string
   descripcion: string
-  bloqueado: number
+  bloqueado: number 
   areaId: string
   zonasId: string[]
 }
