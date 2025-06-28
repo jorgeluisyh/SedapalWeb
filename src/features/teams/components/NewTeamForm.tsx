@@ -72,18 +72,17 @@ export const NewTeamForm = ({
           errors={errors}
           rules={{ required: 'Ingrese la descripción' }}
         />
-        <div className="col-4 flex align-items-center p-mb-2">Gerencia:</div>
         <FormDropdown
           name="areaId"
-          label="Area"
+          label="Gerencia"
           control={control}
           errors={errors}
           options={areas?.map((area) => ({
             label: area.name,
             value: area.id,
           }))}
-          rules={{ required: 'Defina Area' }}
-          placeholder="Seleccione un Area"
+          rules={{ required: 'Defina Gerencia' }}
+          placeholder="Seleccione una Gerencia"
         />
         <FormMultiSelect
           name="zonasId"
@@ -94,8 +93,7 @@ export const NewTeamForm = ({
             label: center.name,
             value: center.id,
           }))}
-          rules={{ required: 'Defina Zona' }}
-          placeholder="Seleccione una Zona"
+          placeholder="Seleccione un Centro de Servicio"
         />
 
         <div
