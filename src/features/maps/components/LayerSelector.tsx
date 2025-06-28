@@ -6,6 +6,7 @@ import type { ServiceMap } from '../types/serviceType'
 import { InputText } from 'primereact/inputtext'
 import { IconField } from 'primereact/iconfield'
 import { InputIcon } from 'primereact/inputicon'
+import { Checkbox } from 'primereact/checkbox'
 
 interface LayerSelectorProps {
   availableItems: ServiceMap[]
@@ -104,6 +105,19 @@ export const LayerSelector = ({
     )
   }
 
+  const handleCheckboxChange = (
+    itemId: number,
+    checked: boolean | undefined
+  ) => {
+    const updatedItems = assignedItems.map((item) =>
+      item.idServicioMapa === itemId
+        ? { ...item, visible: checked ? 1 : 0 }
+        : item
+    )
+    setAssignedItems(updatedItems)
+    onAssignedItemsChange(updatedItems)
+  }
+
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       <div className="grid md:grid-cols-2 gap-2 justify-content-center">
@@ -140,12 +154,9 @@ export const LayerSelector = ({
                 >
                   <div className="flex align-items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-medium m-0">
+                      <h4 className="font-medium m-0">
                         {item.nombreServicioMapa}
-                      </h3>
-                      <p className="text-sm text-gray-600 m-0">
-                        {item.nombreServicioMapa}
-                      </p>
+                      </h4>
                     </div>
                   </div>
                   <Button
@@ -214,14 +225,17 @@ export const LayerSelector = ({
                     </div>
                     <Badge value={index} severity="info" />
                     <div>
-                      <h3 className="font-medium m-0">
+                      <h4 className="font-medium m-0">
                         {item.nombreServicioMapa}
-                      </h3>
-                      <p className="text-sm text-muted-foreground m-0">
-                        {item.nombreServicioMapa}
-                      </p>
+                      </h4>
                     </div>
                   </div>
+                  <Checkbox
+                    checked={item.visible === 1}
+                    onChange={(e) =>
+                      handleCheckboxChange(item.idServicioMapa, e.checked)
+                    }
+                  />
                   <Button
                     type="button"
                     size="small"
