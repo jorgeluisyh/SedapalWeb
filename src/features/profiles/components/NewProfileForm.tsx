@@ -12,6 +12,7 @@ import { InputText } from 'primereact/inputtext'
 import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
 import type { CentersType } from '../../teams/types/centersType'
+import type { ProfileIns } from '../types/profileInsType'
 
 interface NewProfileFormProps {
   availableFunctions: FunctionType[]
@@ -21,7 +22,7 @@ interface NewProfileFormProps {
   availableProjects: ProjectType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: Profile) => Promise<void>
+  onSubmit: (data: ProfileIns) => Promise<void>
 }
 
 export const NewProfileForm = ({
@@ -103,11 +104,32 @@ export const NewProfileForm = ({
   //   'Consulta Redesmx',
   //   'Gestión Comercialmx',
   //   'Supervisor Edicion ArcSDEmx',
-  // ])
+  // ])}
+
+  interface ProfileIns {
+    nombrePerfil: string
+    descripcion: string
+    funciones: number[]
+    mapas: number[]
+    permisos: number[]
+    proyectos: number[]
+    zonas: string[]
+  }
+  const toProfileIns = (raw: Profile): ProfileIns => ({
+    nombrePerfil: raw.nombrePerfil,
+    descripcion: raw.descripcion,
+    funciones: funcionesSeleccionados.map((f) => f.idFuncion),
+    mapas: mapasSeleccionados.map((m) => m.idMapa),
+    permisos: permisosSeleccionados.map((p) => p.idPermiso),
+    proyectos: proyectosSeleccionados.map((p) => p.idProyecto),
+    zonas: centersSeleccionados.map((c) => c.id),
+  })
 
   const onSubmitNewProduct = async (data: Profile) => {
-    console.log(funcionesSeleccionados)
-    await onSubmit(data)
+    // crear objeto de tipo ProfileIns
+
+    var profileIns = toProfileIns(data)
+    await onSubmit(profileIns)
     reset()
   }
 

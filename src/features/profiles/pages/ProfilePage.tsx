@@ -24,6 +24,7 @@ import { Toast } from 'primereact/toast'
 import { UpdateProfileForm } from '../components/UpdateProfileForm'
 import type { Map } from '../../maps/types/mapType'
 import type { CentersType } from '../../teams/types/centersType'
+import type { ProfileIns } from '../types/profileInsType'
 
 export const ProfilePage = () => {
   const toast = useRef<Toast>(null)
@@ -39,7 +40,7 @@ export const ProfilePage = () => {
 
   const handleCloseUpdateForm = () => setselectedProfile(null)
 
-  const handleCreateProfile = async (profile: Profile) => {
+  const handleCreateProfile = async (profile: ProfileIns) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
