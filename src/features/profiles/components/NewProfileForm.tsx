@@ -108,9 +108,18 @@ export const NewProfileForm = ({
   // ])
 
   const onSubmitNewProduct = async (data: InsertProfileType) => {
+    console.log('Función IDs seleccionadas:', data.funciones)
     await onSubmit(data)
     reset()
   }
+
+  //   const onSubmitNewProduct = async (data: InsertProfileType) => {
+  //   const funcionesSeleccionadasIds = data.funciones.map((funcion: FunctionType) => funcion.idFuncion);
+  //   console.log('IDs de las funciones seleccionadas:', funcionesSeleccionadasIds);
+
+  //   await onSubmit(data);
+  //   reset();
+  // }
 
   return (
     <Dialog

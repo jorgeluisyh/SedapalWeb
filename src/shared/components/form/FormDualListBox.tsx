@@ -74,9 +74,14 @@ export const FormDualListBox = <T extends unknown>({
             <div className="col-6">
               <h5 className="mb-2">{tituloDisponibles}</h5>
               <ListBox
-                value={disponibles}
+                value={field.value?.disponibles || disponibles}
                 options={disponibles}
-                onChange={() => {}}
+                onChange={(e) =>
+                  field.onChange({
+                    ...field.value,
+                    disponibles: e.value.map((item: any) => item.idFuncion), // Solo extraemos los idFuncion
+                  })
+                }
                 style={{ height: '200px', overflow: 'auto' }}
                 itemTemplate={itemTemplateDisponibles}
                 emptyMessage="No hay elementos disponibles"
@@ -85,9 +90,14 @@ export const FormDualListBox = <T extends unknown>({
             <div className="col-6">
               <h5 className="mb-2">{tituloSeleccionados}</h5>
               <ListBox
-                value={seleccionados}
+                value={field.value?.seleccionados || seleccionados}
                 options={seleccionados}
-                onChange={() => {}}
+                onChange={(e) =>
+                  field.onChange({
+                    ...field.value,
+                    seleccionados: e.value.map((item: any) => item.idFuncion), // Solo extraemos los idFuncion
+                  })
+                }
                 style={{ height: '200px', overflow: 'auto' }}
                 itemTemplate={itemTemplateSeleccionados}
                 emptyMessage="No hay elementos seleccionados"
