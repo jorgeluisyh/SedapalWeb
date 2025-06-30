@@ -2,6 +2,7 @@ import { axiosInstance } from "../../../shared/http/axiosInstance";
 import type { FunctionType, PermissionsType, Profile, ProjectType } from "../types/profileType";
 import type { Map } from "../../maps/types/mapType";
 import type { CentersType } from "../../teams/types/centersType";
+import type { InsertProfileType } from "../types/insertProfileType";
 
 
 
@@ -10,7 +11,7 @@ export const getProfile = async (): Promise<Profile[]> => {
     return response.data;
 }
 
-export const postProfile = async (data: Profile) => {
+export const postProfile = async (data: InsertProfileType) => {
     const response = await axiosInstance.post("/api/Perfiles", data);
     return response.data;
 }

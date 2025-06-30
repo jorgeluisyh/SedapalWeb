@@ -11,7 +11,9 @@ import {
 import { InputText } from 'primereact/inputtext'
 import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
+import { FormDualListBox } from '../../../shared/components/form/FormDualListBox'
 import type { CentersType } from '../../teams/types/centersType'
+import type { InsertProfileType } from '../types/insertProfileType'
 
 interface NewProfileFormProps {
   availableFunctions: FunctionType[]
@@ -21,7 +23,7 @@ interface NewProfileFormProps {
   availableProjects: ProjectType[]
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: Profile) => Promise<void>
+  onSubmit: (data: InsertProfileType) => Promise<void>
 }
 
 export const NewProfileForm = ({
@@ -35,12 +37,12 @@ export const NewProfileForm = ({
   onSubmit,
 }: NewProfileFormProps) => {
   const {
-    // control,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
     register,
-  } = useForm<Profile>({
+  } = useForm<InsertProfileType>({
     mode: 'onBlur',
   })
 
@@ -105,7 +107,7 @@ export const NewProfileForm = ({
   //   'Supervisor Edicion ArcSDEmx',
   // ])
 
-  const onSubmitNewProduct = async (data: Profile) => {
+  const onSubmitNewProduct = async (data: InsertProfileType) => {
     await onSubmit(data)
     reset()
   }
@@ -167,7 +169,7 @@ export const NewProfileForm = ({
           </div>
         </div>
         {/* Divisiones para los listados de Funciones */}
-        <DualListBox
+        {/* <DualListBox
           disponibles={funcionesDisponibles}
           seleccionados={funcionesSeleccionados}
           setDisponibles={setFuncionesDisponibles}
@@ -175,7 +177,20 @@ export const NewProfileForm = ({
           tituloDisponibles="Funciones Disponibles"
           tituloSeleccionados="Funciones Asignadas"
           labelFieldName="nombreFuncion"
-        ></DualListBox>
+        ></DualListBox> */}
+        <FormDualListBox
+          name="funciones" // El nombre que usará react-hook-form para el campo
+          label="Funciones Asignadas"
+          control={control} // Control de react-hook-form
+          errors={errors} // Errores de validación de react-hook-form
+          disponibles={funcionesDisponibles}
+          seleccionados={funcionesSeleccionados}
+          setDisponibles={setFuncionesDisponibles}
+          setSeleccionados={setFuncionesSeleccionados}
+          labelFieldName="nombreFuncion"
+          tituloDisponibles="Funciones Disponibles"
+          tituloSeleccionados="Funciones Asignadas"
+        />
 
         {/* Divisiones para los listados de Mapas */}
         <DualListBox

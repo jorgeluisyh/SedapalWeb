@@ -72,6 +72,7 @@ export const TeamPage = () => {
       rejectLabel: 'No',
       accept: async () => {
         const response = await postTeam(teamType)
+        setIsModalOpen(false)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -82,6 +83,7 @@ export const TeamPage = () => {
         console.log(response.message)
       },
       reject: () => {
+        setIsModalOpen(false)
         console.log('No se envió el equipo' + teamType.nombre)
       },
     })
@@ -233,8 +235,8 @@ export const TeamPage = () => {
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateTeam}
-        areas={areas}
-        centers={centers}
+        areas={areas ?? []}
+        centers={centers ?? []}
       />
       {selectedTeam && (
         <UpdateTeamForm
@@ -242,8 +244,8 @@ export const TeamPage = () => {
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateTeam}
           currentService={selectedTeam}
-          areas={areas}
-          centers={centers}
+          areas={areas ?? []}
+          centers={centers ?? []}
         />
       )}
       <ConfirmDialog />

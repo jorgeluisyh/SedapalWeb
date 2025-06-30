@@ -24,6 +24,7 @@ import { Toast } from 'primereact/toast'
 import { UpdateProfileForm } from '../components/UpdateProfileForm'
 import type { Map } from '../../maps/types/mapType'
 import type { CentersType } from '../../teams/types/centersType'
+import type { InsertProfileType } from '../types/insertProfileType'
 
 export const ProfilePage = () => {
   const toast = useRef<Toast>(null)
@@ -39,14 +40,15 @@ export const ProfilePage = () => {
 
   const handleCloseUpdateForm = () => setselectedProfile(null)
 
-  const handleCreateProfile = async (profile: Profile) => {
+  const handleCreateProfile = async (profile: InsertProfileType) => {
     confirmDialog({
-      message: '¿Estás seguro de que deseas enviar el servicio?',
+      message: '¿Estás seguro de que deseas enviar el Perfil?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
+        console.log(profile)
         const response = await postProfile(profile)
         toast.current?.show({
           severity: 'success',
@@ -65,7 +67,7 @@ export const ProfilePage = () => {
 
   const handleUpdateProfile = async (profile: Profile) => {
     confirmDialog({
-      message: `¿Estás seguro de que deseas editar el perfil : ${profile.nombrePerfil}?`,
+      message: `¿Estás seguro de que deseas editar el Perfil : ${profile.nombrePerfil}?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
