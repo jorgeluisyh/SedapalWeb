@@ -106,6 +106,7 @@ export const NewProfileForm = ({
   // ])
 
   const onSubmitNewProduct = async (data: Profile) => {
+    console.log(funcionesSeleccionados)
     await onSubmit(data)
     reset()
   }
