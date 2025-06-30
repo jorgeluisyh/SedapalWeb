@@ -1,6 +1,5 @@
 import { Dialog } from 'primereact/dialog'
 import { useForm } from 'react-hook-form'
-
 import { Button } from 'primereact/button'
 import type { Map } from '../types/mapType'
 import { FormInput } from '../../../shared/components/form/FormInput'

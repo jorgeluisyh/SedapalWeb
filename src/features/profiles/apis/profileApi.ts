@@ -50,3 +50,30 @@ export const getProjects = async (): Promise<ProjectType[]> => {
     const response = await axiosInstance.get("/api/Proyecto");
     return response.data;
 }
+
+// Obtener elementos por ID
+
+export const getFuncionesById = async (id: number): Promise<FunctionType[]> => {
+    const response = await axiosInstance.get(`/api/Funcion/FuncionesPerfil?idPerfil=${id}`);
+    return response.data;
+}
+
+export const getMapsById = async (id: number): Promise<Map[]> => {
+    const response = await axiosInstance.get(`//api/Mapas/MapasPerfil?idPerfil=${id}`);
+    return response.data;
+}
+
+export const getProyectosById = async (id: number): Promise<ProjectType[]> => {
+    const response = await axiosInstance.get(`/api/Proyecto/ProyectosPerfil?idPerfil=${id}`);
+    return response.data;
+}
+
+export const getPermisosById = async (id: number): Promise<PermissionsType[]> => {
+    const response = await axiosInstance.get(`/api/Permiso/PermisosPerfil?idPerfil=${id}`);
+    return response.data;
+}
+
+export const getCentersById = async (id: number): Promise<CentersType[]> => {
+    const response = await axiosInstance.get(`/api/Lista/CentrosPerfil?idPerfil=${id}`);
+    return response.data;
+}

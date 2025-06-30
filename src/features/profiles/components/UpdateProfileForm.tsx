@@ -10,8 +10,15 @@ import type {
 import type { Map } from '../../maps/types/mapType'
 import { InputText } from 'primereact/inputtext'
 import type { CentersType } from '../../teams/types/centersType'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
+import {
+  getCentersById,
+  getFuncionesById,
+  getMapsById,
+  getPermisosById,
+  getProyectosById,
+} from '../apis/profileApi'
 
 interface UpdateProfileFormProps {
   availableFunctions: FunctionType[]
@@ -19,7 +26,7 @@ interface UpdateProfileFormProps {
   availableCenters: CentersType[]
   availablePermissions: PermissionsType[]
   availableProjects: ProjectType[]
-  currentService: Profile
+  currentProfile: Profile
   // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: Profile) => Promise<void>
   handleClose: () => void
@@ -31,7 +38,7 @@ export const UpdateProfileForm = ({
   availableCenters,
   availablePermissions,
   availableProjects,
-  currentService,
+  currentProfile: currentProfile,
   // isModalOpen,
   // onIsModalOpen,
   handleClose,
@@ -45,7 +52,7 @@ export const UpdateProfileForm = ({
     register,
   } = useForm<Profile>({
     mode: 'onBlur',
-    defaultValues: currentService,
+    defaultValues: currentProfile,
   })
 
   const onSubmitNewProduct = async (data: Profile) => {
@@ -79,6 +86,49 @@ export const UpdateProfileForm = ({
   const [proyectosSeleccionados, setProyectosSeleccionados] = useState<
     ProjectType[]
   >([])
+
+  // useEffect(() => {
+  //     const fetchAttributes = async () => {
+  //       const profile = await getProfile()
+  //       setProfile(profile)
+  //       const functions = await getFunctions()
+  //       setFunctions(functions)
+  //       const maps = await getMaps()
+  //       setMaps(maps)
+  //       const centers = await getCenters()
+  //       setCenters(centers)
+  //       const permissions = await getPermissions()
+  //       setPermissions(permissions)
+  //       const projects = await getProjects()
+  //       setProjects(projects)
+  //     }
+  //     fetchAttributes()
+  //   }, [refresh])
+
+  if (currentProfile) {
+    useEffect(() => {
+      const fetchAttributes = async () => {
+        const assignedFunctions = await getFuncionesById(
+          currentProfile.idPerfil
+        )
+        setFuncionesSeleccionados(assignedFunctions)
+
+        const assignedMaps = await getMapsById(currentProfile.idPerfil)
+        setMapasSeleccionados(assignedMaps)
+
+        const assignedCenters = await getCentersById(currentProfile.idPerfil)
+        setCentersSeleccionados(assignedCenters)
+
+        const assignedPermissions = await getPermisosById(
+          currentProfile.idPerfil
+        )
+        setPermisosSeleccionados(assignedPermissions)
+
+        const assignedProjects = await getProyectosById(currentProfile.idPerfil)
+        setProyectosDisponibles(assignedProjects)
+      }
+    }, [])
+  }
 
   return (
     <Dialog

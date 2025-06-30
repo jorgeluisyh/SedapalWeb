@@ -174,7 +174,7 @@ export const ProfilePage = () => {
   //   },
   // ]
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchAttributes = async () => {
       const profile = await getProfile()
       setProfile(profile)
       const functions = await getFunctions()
@@ -188,7 +188,7 @@ export const ProfilePage = () => {
       const projects = await getProjects()
       setProjects(projects)
     }
-    fetchProfiles()
+    fetchAttributes()
   }, [refresh])
 
   return (
@@ -224,7 +224,7 @@ export const ProfilePage = () => {
           availablePermissions={permissions}
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateProfile}
-          currentService={selectedProfile}
+          currentProfile={selectedProfile}
         />
       )}
       <ConfirmDialog />
