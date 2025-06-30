@@ -19,6 +19,7 @@ import {
   getPermisosById,
   getProyectosById,
 } from '../apis/profileApi'
+import { FormInput } from '../../../shared/components/form/FormInput'
 
 interface UpdateProfileFormProps {
   availableFunctions: FunctionType[]
@@ -45,11 +46,10 @@ export const UpdateProfileForm = ({
   onSubmit,
 }: UpdateProfileFormProps) => {
   const {
-    // control,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-    register,
   } = useForm<Profile>({
     mode: 'onBlur',
     defaultValues: currentProfile,
@@ -104,9 +104,9 @@ export const UpdateProfileForm = ({
   //     }
   //     fetchAttributes()
   //   }, [refresh])
-
   if (currentProfile) {
     useEffect(() => {
+      debugger
       const fetchAttributes = async () => {
         const assignedFunctions = await getFuncionesById(
           currentProfile.idPerfil
@@ -127,6 +127,7 @@ export const UpdateProfileForm = ({
         const assignedProjects = await getProyectosById(currentProfile.idPerfil)
         setProyectosDisponibles(assignedProjects)
       }
+      fetchAttributes()
     }, [])
   }
 
@@ -144,51 +145,20 @@ export const UpdateProfileForm = ({
         onSubmit={handleSubmit(onSubmitNewProduct)}
         style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
       >
-        {/* Inputs de la cabecera */}
-        <div className="flex gap-4">
-          <div style={{ flex: 1 }}>
-            <label htmlFor="nombre">Nombre del perfil: </label>
-            <InputText
-              id="nombre"
-              style={{ width: '60%' }}
-              //   name="nombre"
-              //   control={control}
-              {...register('nombrePerfil', {
-                required: 'Ingrese nombre del perfil',
-              })}
-              className="p-inputtext-sm"
-            />
-            {errors.nombrePerfil && (
-              <small
-                className="p-error"
-                style={{ display: 'block', marginTop: '5px' }}
-              >
-                {errors.nombrePerfil.message}
-              </small>
-            )}
-          </div>
-          <div style={{ flex: 1 }}>
-            <label htmlFor="descripcion">Descripción: </label>
-            <InputText
-              id="descripcion"
-              style={{ width: '60%' }}
-              //   name="descripcion"
-              //   control={control}
-              {...register('descripcion', {
-                required: 'Ingrese la descripción del perfil',
-              })}
-              className="p-inputtext-sm"
-            />
-            {errors.descripcion && (
-              <small
-                className="p-error"
-                style={{ display: 'block', marginTop: '5px' }}
-              >
-                {errors.descripcion.message}
-              </small>
-            )}
-          </div>
-        </div>
+        <FormInput
+          name="nombrePerfil"
+          label="Nombre del Perfil:"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese nombre del perfil' }}
+        />
+        <FormInput
+          name="descripcion"
+          label="Descripción"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese descripción del perfil' }}
+        />
 
         {/* Divisiones para los listados de Funciones */}
         <DualListBox

@@ -33,6 +33,13 @@ export const DualListBox = <T extends unknown>({
     }
   }
 
+  const getAvailableItems = () => {
+    debugger
+    return disponibles.filter(
+      (item) => !seleccionados.find((assigned) => assigned === item)
+    )
+  }
+
   const itemTemplateDisponibles = (option: T) => (
     <div
       className="flex justify-content-between align-items-center"
@@ -59,8 +66,8 @@ export const DualListBox = <T extends unknown>({
       <div className="col-6">
         <h5 className="mb-2">{tituloDisponibles}</h5>
         <ListBox
-          value={disponibles}
-          options={disponibles}
+          value={getAvailableItems()}
+          options={getAvailableItems()}
           onChange={() => {}}
           style={{ height: '200px', overflow: 'auto' }}
           itemTemplate={itemTemplateDisponibles}

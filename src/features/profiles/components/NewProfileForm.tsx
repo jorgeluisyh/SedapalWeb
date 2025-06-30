@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
 import type { CentersType } from '../../teams/types/centersType'
 import type { ProfileIns } from '../types/profileInsType'
+import { FormInput } from '../../../shared/components/form/FormInput'
 
 interface NewProfileFormProps {
   availableFunctions: FunctionType[]
@@ -36,11 +37,10 @@ export const NewProfileForm = ({
   onSubmit,
 }: NewProfileFormProps) => {
   const {
-    // control,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-    register,
   } = useForm<Profile>({
     mode: 'onBlur',
   })
@@ -148,47 +148,20 @@ export const NewProfileForm = ({
         onSubmit={handleSubmit(onSubmitNewProduct)}
         style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
       >
-        {/* Inputs de la cabecera */}
-        <div className="flex gap-4">
-          <div style={{ flex: 1 }}>
-            <label htmlFor="nombre">Nombre del perfil: </label>
-            <InputText
-              id="nombre"
-              style={{ width: '60%' }}
-              {...register('nombrePerfil', {
-                required: 'Ingrese nombre del perfil',
-              })}
-              className="p-inputtext-sm"
-            />
-            {errors.nombrePerfil && (
-              <small
-                className="p-error"
-                style={{ display: 'block', marginTop: '5px' }}
-              >
-                {errors.nombrePerfil.message}
-              </small>
-            )}
-          </div>
-          <div style={{ flex: 1 }}>
-            <label htmlFor="descripcion">Descripción: </label>
-            <InputText
-              id="descripcion"
-              style={{ width: '60%' }}
-              {...register('descripcion', {
-                required: 'Ingrese la descripción del perfil',
-              })}
-              className="p-inputtext-sm"
-            />
-            {errors.descripcion && (
-              <small
-                className="p-error"
-                style={{ display: 'block', marginTop: '5px' }}
-              >
-                {errors.descripcion.message}
-              </small>
-            )}
-          </div>
-        </div>
+        <FormInput
+          name="nombrePerfil"
+          label="Nombre del Perfil:"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese nombre del perfil' }}
+        />
+        <FormInput
+          name="descripcion"
+          label="Descripción"
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese descripción del perfil' }}
+        />
         {/* Divisiones para los listados de Funciones */}
         <DualListBox
           disponibles={funcionesDisponibles}
