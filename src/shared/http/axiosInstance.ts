@@ -28,6 +28,11 @@ axiosInstance.interceptors.response.use(
       Cookies.remove('auth_token');
       window.location.href = '/login'; // redirección forzada
     }
+    if (error.response?.status === 404) {
+      // Puedes devolver un objeto vacío o cualquier otro dato que tenga sentido
+      console.warn('Recurso no encontrado (404)');
+      return Promise.resolve({}); // Evita que se caiga el método
+    }
     return Promise.reject(error);
   }
 );

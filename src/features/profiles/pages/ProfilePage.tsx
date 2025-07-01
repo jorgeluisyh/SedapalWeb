@@ -64,7 +64,7 @@ export const ProfilePage = () => {
     })
   }
 
-  const handleUpdateProfile = async (profile: Profile) => {
+  const handleUpdateProfile = async (profile: ProfileIns) => {
     confirmDialog({
       message: `¿Estás seguro de que deseas editar el perfil : ${profile.nombrePerfil}?`,
       header: 'Confirmación',
@@ -72,7 +72,7 @@ export const ProfilePage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await updateProfile(profile.idPerfil, profile)
+        const response = await updateProfile(profile)
         handleCloseUpdateForm()
         toast.current?.show({
           severity: 'success',

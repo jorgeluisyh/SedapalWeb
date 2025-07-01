@@ -8,7 +8,6 @@ import type {
   ProjectType,
 } from '../types/profileType'
 import type { Map } from '../../maps/types/mapType'
-import { InputText } from 'primereact/inputtext'
 import type { CentersType } from '../../teams/types/centersType'
 import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
@@ -20,6 +19,7 @@ import {
   getProyectosById,
 } from '../apis/profileApi'
 import { FormInput } from '../../../shared/components/form/FormInput'
+import type { ProfileIns } from '../types/profileInsType'
 
 interface UpdateProfileFormProps {
   availableFunctions: FunctionType[]
@@ -29,7 +29,7 @@ interface UpdateProfileFormProps {
   availableProjects: ProjectType[]
   currentProfile: Profile
   // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: Profile) => Promise<void>
+  onSubmit: (data: ProfileIns) => Promise<void>
   handleClose: () => void
 }
 
@@ -54,11 +54,6 @@ export const UpdateProfileForm = ({
     mode: 'onBlur',
     defaultValues: currentProfile,
   })
-
-  const onSubmitNewProduct = async (data: Profile) => {
-    await onSubmit(data)
-    reset()
-  }
 
   const [funcionesSeleccionados, setFuncionesSeleccionados] = useState<
     FunctionType[]
@@ -87,48 +82,59 @@ export const UpdateProfileForm = ({
     ProjectType[]
   >([])
 
-  // useEffect(() => {
-  //     const fetchAttributes = async () => {
-  //       const profile = await getProfile()
-  //       setProfile(profile)
-  //       const functions = await getFunctions()
-  //       setFunctions(functions)
-  //       const maps = await getMaps()
-  //       setMaps(maps)
-  //       const centers = await getCenters()
-  //       setCenters(centers)
-  //       const permissions = await getPermissions()
-  //       setPermissions(permissions)
-  //       const projects = await getProjects()
-  //       setProjects(projects)
-  //     }
-  //     fetchAttributes()
-  //   }, [refresh])
+  // Estados para saber si los datos han sido cargados
+  const [isLoading, setIsLoading] = useState(true)
+
   if (currentProfile) {
     useEffect(() => {
-      debugger
       const fetchAttributes = async () => {
-        const assignedFunctions = await getFuncionesById(
-          currentProfile.idPerfil
-        )
-        setFuncionesSeleccionados(assignedFunctions)
+        try {
+          const assignedFunctions = await getFuncionesById(
+            currentProfile.idPerfil
+          )
+          const assignedMaps = await getMapsById(currentProfile.idPerfil)
+          const assignedCenters = await getCentersById(currentProfile.idPerfil)
+          const assignedPermissions = await getPermisosById(
+            currentProfile.idPerfil
+          )
+          const assignedProjects = await getProyectosById(
+            currentProfile.idPerfil
+          )
 
-        const assignedMaps = await getMapsById(currentProfile.idPerfil)
-        setMapasSeleccionados(assignedMaps)
-
-        const assignedCenters = await getCentersById(currentProfile.idPerfil)
-        setCentersSeleccionados(assignedCenters)
-
-        const assignedPermissions = await getPermisosById(
-          currentProfile.idPerfil
-        )
-        setPermisosSeleccionados(assignedPermissions)
-
-        const assignedProjects = await getProyectosById(currentProfile.idPerfil)
-        setProyectosDisponibles(assignedProjects)
+          setFuncionesSeleccionados(assignedFunctions)
+          setMapasSeleccionados(assignedMaps)
+          setCentersSeleccionados(assignedCenters)
+          setPermisosSeleccionados(assignedPermissions)
+          setProyectosSeleccionados(assignedProjects)
+          setIsLoading(false)
+        } catch (error) {
+          console.error('Error loading data:', error)
+          setIsLoading(false)
+        }
       }
       fetchAttributes()
     }, [])
+  }
+  if (isLoading) {
+    return <div>Loading...</div> // Puedes usar un spinner o cualquier otro indicador de carga
+  }
+
+  const toProfileIns = (raw: Profile): ProfileIns => ({
+    nombrePerfil: raw.nombrePerfil,
+    descripcion: raw.descripcion,
+    funciones: funcionesSeleccionados.map((f) => f.idFuncion),
+    mapas: mapasSeleccionados.map((m) => m.idMapa),
+    permisos: permisosSeleccionados.map((p) => p.idPermiso),
+    proyectos: proyectosSeleccionados.map((p) => p.idProyecto),
+    zonas: centersSeleccionados.map((c) => c.id),
+  })
+
+  const onSubmitNewProduct = async (data: Profile) => {
+    // crear objeto de tipo ProfileIns
+
+    var profileIns = toProfileIns(data)
+    await onSubmit(profileIns)
+    reset()
   }
 
   return (

@@ -8,7 +8,6 @@ import {
   type PermissionsType,
   type ProjectType,
 } from '../types/profileType'
-import { InputText } from 'primereact/inputtext'
 import { useEffect, useState } from 'react'
 import { DualListBox } from '../../../shared/components/form/DualListBox'
 import type { CentersType } from '../../teams/types/centersType'

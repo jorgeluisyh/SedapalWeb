@@ -16,8 +16,8 @@ export const postProfile = async (data: ProfileIns) => {
     return response.data;
 }
 
-export const updateProfile = async (id: number, data: Profile) => {
-    const response = await axiosInstance.put(`/api/Perfiles/${id}`, data);
+export const updateProfile = async ( data: ProfileIns) => {
+    const response = await axiosInstance.put(`/api/Perfiles`, data);
     return response.data;
 }
 
@@ -54,26 +54,68 @@ export const getProjects = async (): Promise<ProjectType[]> => {
 // Obtener elementos por ID
 
 export const getFuncionesById = async (id: number): Promise<FunctionType[]> => {
+  try {
     const response = await axiosInstance.get(`/api/Funcion/FuncionesPerfil?idPerfil=${id}`);
     return response.data;
+  } catch (error: any) {
+    // Verificar si el error es un 404
+    if (error.response?.status === 404) {
+      console.warn(`Funciones para el perfil ${id} no encontradas, devolviendo un array vacío.`);
+      return []; // Retorna un array vacío en caso de error 404
+    }
+    // Propagar otros errores
+    throw error;
+  }
 }
 
 export const getMapsById = async (id: number): Promise<Map[]> => {
-    const response = await axiosInstance.get(`//api/Mapas/MapasPerfil?idPerfil=${id}`);
+  try {
+    const response = await axiosInstance.get(`/api/Mapas/MapasPerfil?idPerfil=${id}`);
     return response.data;
+  } catch (error:any) {
+    if (error.response?.status === 404) {
+      console.warn(`Mapas para el perfil ${id} no encontrados, devolviendo un array vacío.`);
+      return []; // Retorna un array vacío en caso de error 404
+    }
+    throw error;
+  }
 }
 
 export const getProyectosById = async (id: number): Promise<ProjectType[]> => {
+  try {
     const response = await axiosInstance.get(`/api/Proyecto/ProyectosPerfil?idPerfil=${id}`);
     return response.data;
+  } catch (error:any) {
+    if (error.response?.status === 404) {
+      console.warn(`Proyectos para el perfil ${id} no encontrados, devolviendo un array vacío.`);
+      return []; // Retorna un array vacío en caso de error 404
+    }
+    throw error;
+  }
 }
 
 export const getPermisosById = async (id: number): Promise<PermissionsType[]> => {
+  try {
     const response = await axiosInstance.get(`/api/Permiso/PermisosPerfil?idPerfil=${id}`);
     return response.data;
+  } catch (error:any) {
+    if (error.response?.status === 404) {
+      console.warn(`Permisos para el perfil ${id} no encontrados, devolviendo un array vacío.`);
+      return []; // Retorna un array vacío en caso de error 404
+    }
+    throw error;
+  }
 }
 
 export const getCentersById = async (id: number): Promise<CentersType[]> => {
+  try {
     const response = await axiosInstance.get(`/api/Lista/CentrosPerfil?idPerfil=${id}`);
     return response.data;
+  } catch (error:any) {
+    if (error.response?.status === 404) {
+      console.warn(`Centros para el perfil ${id} no encontrados, devolviendo un array vacío.`);
+      return []; // Retorna un array vacío en caso de error 404
+    }
+    throw error;
+  }
 }
