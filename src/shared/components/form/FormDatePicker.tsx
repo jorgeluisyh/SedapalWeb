@@ -33,7 +33,7 @@ export const FormDatePicker = ({
             {...field}
             placeholder={placeholder}
             showTime={showTime}
-            className={errors[name] ? 'p-invalid' : ''}
+            className="p-inputtext-sm"
           />
         )}
       />

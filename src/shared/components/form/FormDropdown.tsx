@@ -39,7 +39,7 @@ export const FormDropdown = ({
             {...field}
             options={options}
             placeholder={placeholder}
-            className={errors[name] ? 'p-invalid' : ''}
+            className="p-inputtext-sm"
           />
         )}
       />

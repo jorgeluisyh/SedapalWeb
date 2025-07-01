@@ -29,6 +29,7 @@ export const FormInput = ({
         rules={rules}
         render={({ field }) => (
           <InputText
+            className="p-inputtext-sm"
             autoComplete="off"
             id={name}
             {...field}

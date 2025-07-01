@@ -29,7 +29,7 @@ export const FormCheckbox = ({
             checked={value}
             onChange={(e) => onChange(e.checked)}
             {...rest}
-            className={errors[name] ? 'p-invalid' : ''}
+            className="p-inputtext-sm"
           />
         )}
       />

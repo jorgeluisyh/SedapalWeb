@@ -98,7 +98,7 @@ export const LayerSelector = ({
 
   const assignedHeaderTemplate = () => {
     return (
-      <div className="flex items-center gap-2  m-0">
+      <div className="flex align-items-center gap-2  m-0">
         <p className=" text-2xl font-bold m-0">Servicios Asignados</p>
         <Badge value={assignedItems.length} severity="info" />
       </div>
@@ -127,51 +127,53 @@ export const LayerSelector = ({
           // className="m-0 h-96 overflow-y-auto layer-card"
           style={{ maxWidth: '560px', height: '600px' }}
         >
-          <div className="relative">
-            <IconField iconPosition="left">
-              <InputIcon className="pi pi-search" />
-              <InputText
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-                placeholder="Buscar servicios..."
-              />
-            </IconField>
-          </div>
-          <div
-            className="space-y-3"
-            style={{ height: '400px', overflow: 'auto' }}
-          >
-            {getAvailableItems().length === 0 ? (
-              <div className="text-center py-6 text-gray-500">
-                <p>Todos los servicios han sido asignados</p>
-              </div>
-            ) : (
-              getAvailableItems().map((item) => (
-                <div
-                  key={item.idServicioMapa}
-                  className="flex items-center justify-content-between p-3 gap-2 border rounded-lg background-blue-50  hover:bg-gray-50"
-                >
-                  <div className="flex align-items-center justify-between gap-3">
-                    <div>
-                      <h4 className="font-medium m-0">
-                        {item.nombreServicioMapa}
-                      </h4>
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    className="m-2"
-                    size="small"
-                    outlined
-                    severity="info"
-                    onClick={() => addItem(item)}
-                  >
-                    <i className="pi pi-plus"></i>
-                  </Button>
+          <div className="flex-col  gap-4">
+            <div className="relative">
+              <IconField iconPosition="left">
+                <InputIcon className="pi pi-search" />
+                <InputText
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className=" p-inputtext-sm pl-10"
+                  placeholder="Buscar servicios..."
+                />
+              </IconField>
+            </div>
+            <div
+              className="space-y-3"
+              style={{ height: '400px', overflow: 'auto' }}
+            >
+              {getAvailableItems().length === 0 ? (
+                <div className="text-center py-6 text-gray-500">
+                  <p>Todos los servicios han sido asignados</p>
                 </div>
-              ))
-            )}
+              ) : (
+                getAvailableItems().map((item) => (
+                  <div
+                    key={item.idServicioMapa}
+                    className="flex items-center justify-content-between p-3 gap-2 border-gray-300 p-inputtext-sm rounded-lg background-blue-50  hover:bg-gray-50"
+                  >
+                    <div className="flex align-items-center justify-between gap-3">
+                      <div>
+                        <h4 className="font-medium m-0">
+                          {item.nombreServicioMapa}
+                        </h4>
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      className="m-2"
+                      size="small"
+                      outlined
+                      severity="info"
+                      onClick={() => addItem(item)}
+                    >
+                      <i className="pi pi-plus"></i>
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </Card>
 
@@ -230,21 +232,33 @@ export const LayerSelector = ({
                       </h4>
                     </div>
                   </div>
-                  <Checkbox
-                    checked={item.visible === 1}
-                    onChange={(e) =>
-                      handleCheckboxChange(item.idServicioMapa, e.checked)
-                    }
-                  />
-                  <Button
-                    type="button"
-                    size="small"
-                    onClick={() => removeItem(item.idServicioMapa)}
-                    outlined
-                    severity="danger"
-                  >
-                    <i className="pi pi-minus"></i>
-                  </Button>
+                  <div className="flex align-items-center gap-2">
+                    <div className="flex align-items-center gap-0">
+                      <Checkbox
+                        variant="filled"
+                        inputId={item.idServicioMapa.toString()}
+                        checked={item.visible === 1}
+                        onChange={(e) =>
+                          handleCheckboxChange(item.idServicioMapa, e.checked)
+                        }
+                      />
+                      <label
+                        htmlFor={item.idServicioMapa.toString()}
+                        className="ml-2"
+                      >
+                        Visible
+                      </label>
+                    </div>
+                    <Button
+                      type="button"
+                      size="small"
+                      onClick={() => removeItem(item.idServicioMapa)}
+                      outlined
+                      severity="danger"
+                    >
+                      <i className="pi pi-minus"></i>
+                    </Button>
+                  </div>
                 </div>
               ))
             )}
