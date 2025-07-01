@@ -120,6 +120,7 @@ export const UpdateProfileForm = ({
   }
 
   const toProfileIns = (raw: Profile): ProfileIns => ({
+    idPerfil: raw.idPerfil,
     nombrePerfil: raw.nombrePerfil,
     descripcion: raw.descripcion,
     funciones: funcionesSeleccionados.map((f) => f.idFuncion),

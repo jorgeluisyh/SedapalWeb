@@ -105,16 +105,8 @@ export const NewProfileForm = ({
   //   'Supervisor Edicion ArcSDEmx',
   // ])}
 
-  interface ProfileIns {
-    nombrePerfil: string
-    descripcion: string
-    funciones: number[]
-    mapas: number[]
-    permisos: number[]
-    proyectos: number[]
-    zonas: string[]
-  }
   const toProfileIns = (raw: Profile): ProfileIns => ({
+    idPerfil: raw.idPerfil,
     nombrePerfil: raw.nombrePerfil,
     descripcion: raw.descripcion,
     funciones: funcionesSeleccionados.map((f) => f.idFuncion),

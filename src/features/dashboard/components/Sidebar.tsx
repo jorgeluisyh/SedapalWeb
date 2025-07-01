@@ -18,7 +18,7 @@ export const Sidebar = () => {
         },
         {
           label: 'Perfiles',
-          icon: 'pi pi-search',
+          icon: 'pi pi-graduation-cap',
           command: () => navigate('/dashboard/perfiles'),
         },
         {

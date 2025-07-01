@@ -1,4 +1,5 @@
 export interface ProfileIns {
+  idPerfil:number
   nombrePerfil: string;
   descripcion: string;
   funciones: number[]; 
