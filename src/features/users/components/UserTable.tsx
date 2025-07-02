@@ -104,30 +104,27 @@ export const UserTable = ({
         field="nombre"
         header="Usuario"
         style={{ width: '30%' }}
-        filter
         sortable
       />
       <Column
         field="perfil"
         header="Perfil"
-        filter
+        body={(rowData) =>
+          rowData.perfiles
+            ? rowData.perfiles.map((p: any) => p.nombrePerfil).join(', ')
+            : ''
+        }
         sortable
         style={{ width: '25%' }}
       />
       <Column
         field="equipo"
+        body={(rowData) => rowData.equipo || 'SIN EQUIPO'}
         header="Equipo"
-        filter
         sortable
         style={{ width: '25%' }}
       />
-      <Column
-        field="tipo"
-        header="Tipo"
-        filter
-        sortable
-        style={{ width: '25%' }}
-      />
+      <Column field="tipo" header="Tipo" sortable style={{ width: '25%' }} />
       <Column
         field="bloqueado"
         header="Bloqueado"

@@ -9,6 +9,7 @@ interface FormInputProps {
   rules?: object
   placeholder?: string
   hidden?: boolean
+  disabled?: boolean
 }
 
 export const FormInput = ({
@@ -19,6 +20,7 @@ export const FormInput = ({
   rules = {},
   placeholder = '',
   hidden = false,
+  disabled = false,
 }: FormInputProps) => {
   return (
     <div className={hidden ? 'hidden' : 'flex flex-column gap-2 mb-4'}>
@@ -29,6 +31,7 @@ export const FormInput = ({
         rules={rules}
         render={({ field }) => (
           <InputText
+            disabled={disabled}
             className="p-inputtext-sm"
             autoComplete="off"
             id={name}

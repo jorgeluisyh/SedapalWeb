@@ -90,11 +90,10 @@ export const MapTable = ({
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
-      <Column field="nombreMapa" header="Nombre Mapa" filter sortable />
+      <Column field="nombreMapa" header="Nombre Mapa" sortable />
       <Column
         field="descripcion"
         header="Descripción"
-        filter
         sortable
         style={{ width: '35%' }}
       />

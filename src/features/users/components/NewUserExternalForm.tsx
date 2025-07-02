@@ -5,6 +5,10 @@ import { useForm } from 'react-hook-form'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { NewUserExternal } from '../types/newUserExternalType'
+import { FormInput } from '../../../shared/components/form/FormInput'
+import { Divider } from 'primereact/divider'
+import type { UserPortal } from '../types/userPortalType'
+import { validateUser } from '../apis/userApi'
 // import { NewUserForm } from './NewUserForm';
 
 interface NewUserExternalFormProps {
@@ -19,11 +23,46 @@ export const NewUserExternalForm = ({
   onIsModalOpen,
   onSubmit,
 }: NewUserExternalFormProps) => {
-  const { register, handleSubmit, reset } = useForm<NewUserExternal>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors, isValid },
+  } = useForm<NewUserExternal>({
     mode: 'onBlur',
   })
 
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  const [usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
+
+  const buscarUsuarioPortal = async () => {
+    setUsuarioPortal(null)
+    const username = (
+      document.getElementById('buscarUsuario') as HTMLInputElement
+    ).value
+
+    if (!username) {
+      alert('Por favor, ingresa un nombre de usuario')
+      return
+    }
+
+    try {
+      const userPortal = await validateUser(username)
+      debugger
+      // Aquí va la llamada a tu API (cambia la URL a la correcta)
+      if (userPortal) {
+        reset({
+          login: userPortal.username,
+          representante: userPortal.fullName,
+          email: userPortal.email,
+        })
+        setUsuarioPortal(userPortal)
+      }
+    } catch (error) {
+      console.error('Error al buscar usuario en el portal:', error)
+    }
+  }
 
   const perfiles = [
     { label: 'Admin', value: 'admin' },
@@ -33,6 +72,7 @@ export const NewUserExternalForm = ({
 
   const onSubmitNewProduct = async (data: NewUserExternal) => {
     await onSubmit(data)
+    setUsuarioPortal(null)
     reset()
   }
 
@@ -40,6 +80,7 @@ export const NewUserExternalForm = ({
     <div className="flex justify-content-end gap-2">
       <Button
         label="Agregar"
+        disabled={!isValid}
         icon="pi pi-check"
         onClick={handleSubmit(onSubmitNewProduct)}
         className="p-button-sm p-button-primary"
@@ -48,7 +89,11 @@ export const NewUserExternalForm = ({
         label="Cancelar"
         icon="pi pi-times"
         severity="secondary"
-        onClick={() => onIsModalOpen(false)}
+        onClick={() => {
+          setUsuarioPortal(null)
+          reset()
+          onIsModalOpen(false)
+        }}
         className="p-button-sm"
       />
     </div>
@@ -59,121 +104,113 @@ export const NewUserExternalForm = ({
       header="Agregar usuario Externo"
       visible={isModalOpen}
       maximizable
-      style={{ width: '40vw' }}
-      onHide={() => onIsModalOpen(false)}
+      style={{ width: '30vw' }}
+      onHide={() => {
+        setUsuarioPortal(null)
+        reset()
+        onIsModalOpen(false)
+      }}
       footer={footer}
     >
-      <form onSubmit={handleSubmit(onSubmitNewProduct)}>
-        {/* Login */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="login" className="p-text-bold">
-            Login:
-          </label>
-          <InputText
-            id="login"
-            {...register('login', { required: 'Login es requerido' })}
+      <label
+        htmlFor="buscarUsuario"
+        className="p-text-bold"
+        style={{ width: '100px' }}
+      >
+        Buscar Usuario en Portal
+      </label>
+      <div className="p-inputgroup flex-1">
+        <InputText id="buscarUsuario" placeholder="Usuario portal..." />
+        <Button
+          id="btnBuscarUsuarioPortal"
+          icon="pi pi-search"
+          className="p-button-info"
+          onClick={buscarUsuarioPortal}
+        />
+      </div>
+      <Divider />
+      {usuarioPortal && (
+        <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+          {/* Login */}
+          <FormInput
+            name="login"
+            label="Login"
+            disabled
+            control={control}
+            errors={errors}
+            rules={{ required: 'Login es requerido' }}
           />
-        </div>
 
-        {/* Representante */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="representante" className="p-text-bold">
-            Representante:
-          </label>
-          <InputText
-            id="representante"
-            {...register('representante', {
-              required: 'Representante es requerido',
-            })}
+          <FormInput
+            name="representante"
+            label="Representante"
+            disabled
+            control={control}
+            errors={errors}
+            rules={{ required: 'Representante es requerido' }}
           />
-        </div>
 
-        {/* Email */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="email" className="p-text-bold">
-            Email:
-          </label>
-          <InputText
-            id="email"
-            type="email"
-            {...register('email', { required: 'Email es requerido' })}
+          <FormInput
+            name="email"
+            label="Correo"
+            disabled
+            placeholder="username@dominio.com"
+            control={control}
+            errors={errors}
+            rules={{ required: 'email es requerido' }}
           />
-        </div>
 
-        {/* Descripción */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="descripcion" className="p-text-bold">
-            Descripción:
-          </label>
-          <InputText
-            id="descripcion"
-            {...register('descripcion', {
-              required: 'Descripción es requerida',
-            })}
+          <FormInput
+            name="descripcion"
+            label="Descripción"
+            control={control}
+            errors={errors}
           />
-        </div>
 
-        {/* Razón Social */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="razonSocial" className="p-text-bold">
-            Razón Social:
-          </label>
-          <InputText
-            id="razonSocial"
-            {...register('razonSocial', {
-              required: 'Razón Social es requerida',
-            })}
+          <FormInput
+            name="razonSocial"
+            label="Razón Social"
+            control={control}
+            errors={errors}
           />
-        </div>
+          <FormInput
+            name="telefono"
+            label="Teléfono"
+            placeholder="999999999"
+            control={control}
+            errors={errors}
+          />
+          <FormInput
+            name="rucDni"
+            label="Ruc/Dni"
+            placeholder="1044444444"
+            control={control}
+            errors={errors}
+            rules={{ required: 'Ruc o Dni es requerido' }}
+          />
+          <FormInput
+            name="notas"
+            label="Notas"
+            control={control}
+            errors={errors}
+          />
 
-        {/* Teléfono */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="telefono" className="p-text-bold">
-            Teléfono:
-          </label>
-          <InputText
-            id="telefono"
-            {...register('telefono', { required: 'Teléfono es requerido' })}
-          />
-        </div>
-
-        {/* Ruc/Dni */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="rucDni" className="p-text-bold">
-            Ruc/Dni:
-          </label>
-          <InputText
-            id="rucDni"
-            {...register('rucDni', { required: 'Ruc/Dni es requerido' })}
-          />
-        </div>
-
-        {/* Notas */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="notas" className="p-text-bold">
-            Notas:
-          </label>
-          <InputText
-            id="notas"
-            {...register('notas', { required: 'Notas son requeridas' })}
-          />
-        </div>
-
-        {/* Perfiles */}
-        <div className="flex flex-column gap-2 mb-3">
-          <label htmlFor="perfil" className="p-text-bold">
-            Perfiles:
-          </label>
-          <Dropdown
-            id="perfil"
-            value={selectedPerfil}
-            options={perfiles}
-            onChange={(e) => setSelectedPerfil(e.value)}
-            placeholder="Seleccione"
-            className="p-dropdown-sm"
-          />
-        </div>
-      </form>
+          {/* Perfiles */}
+          <div className="flex flex-column gap-2 mb-3">
+            <label htmlFor="perfil" className="p-text-bold">
+              Perfiles:
+            </label>
+            <Dropdown
+              id="perfil"
+              value={selectedPerfil}
+              options={perfiles}
+              onChange={(e) => setSelectedPerfil(e.value)}
+              placeholder="Seleccione"
+              className="p-dropdown-sm"
+            />
+          </div>
+        </form>
+      )}
     </Dialog>
   )
 }

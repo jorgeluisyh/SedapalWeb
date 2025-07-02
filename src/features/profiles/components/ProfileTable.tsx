@@ -94,13 +94,11 @@ export const ProfileTable = ({
         field="nombrePerfil"
         header="Nombre Perfil"
         style={{ width: '40%' }}
-        filter
         sortable
       />
       <Column
         field="descripcion"
         header="Descripción"
-        filter
         sortable
         style={{ width: '55%' }}
       />
