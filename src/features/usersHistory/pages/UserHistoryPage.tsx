@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from 'primereact/card'
 import { UserHistoryTable } from '../components/UserHistoryTable'
 import { UserHistoryTableNoMatch } from '../components/UserHistoryTableNoMatch'
+import type { UserHistoryType } from '../types/userHistoryType'
+import { getUserHistory } from '../apis/userHistoryApi'
 
 export const UserHistoryPage = () => {
   const [_isModalOpen, setIsModalOpen] = useState(false)
+  const [refresh, setRefresh] = useState(false)
+
+  const [users, setUsers] = useState<UserHistoryType[]>([])
 
   const data = [
     {
@@ -19,10 +24,21 @@ export const UserHistoryPage = () => {
     },
   ]
 
+  useEffect(() => {
+    const fetchWmsServices = async () => {
+      const users = await getUserHistory()
+      setUsers(users)
+    }
+    fetchWmsServices()
+  }, [refresh])
+
   return (
     <>
       <Card title="Historicos de Usuarios" className="w-full">
-        <UserHistoryTable data={data} onAddClick={() => setIsModalOpen(true)} />
+        <UserHistoryTable
+          data={users}
+          onAddClick={() => setIsModalOpen(true)}
+        />
         <div className="text-left" style={{ marginTop: '20px' }}>
           Sin Coincidencias
         </div>

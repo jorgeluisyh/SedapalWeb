@@ -3,7 +3,7 @@ import type { UserHistoryType } from "../types/userHistoryType";
 
 
 export const getUserHistory = async (): Promise<UserHistoryType[]> => {
-    const response = await axiosInstance.get("/api/Servicios/users");
+    const response = await axiosInstance.get("/api/Usuarios");
     return response.data;
 }
 
