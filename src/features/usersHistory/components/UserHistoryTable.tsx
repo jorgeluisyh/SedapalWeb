@@ -77,16 +77,19 @@ export const UserHistoryTable = ({ data, onAddClick }: Props) => {
         style={{ width: '5%' }}
       />
       <Column
-        field="user"
+        field="nombre"
         header="Usuario"
         style={{ width: '20%' }}
-        filter
         sortable
       />
       <Column
-        field="profile"
+        field="perfil"
         header="Perfil"
-        filter
+        body={(rowData) =>
+          rowData.perfiles
+            ? rowData.perfiles.map((p: any) => p.nombrePerfil).join(', ')
+            : ''
+        }
         sortable
         style={{ width: '25%' }}
       />
