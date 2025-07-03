@@ -3,14 +3,15 @@ import { Card } from 'primereact/card'
 import { UserHistoryTable } from '../components/UserHistoryTable'
 import { UserHistoryTableNoMatch } from '../components/UserHistoryTableNoMatch'
 import type { UserHistoryType } from '../types/userHistoryType'
-import { getUserHistory } from '../apis/userHistoryApi'
+import type { RecordsUserHistoryType } from '../types/recordsUserHistoryType'
+import { getRecordsUserHistory, getUserHistory } from '../apis/userHistoryApi'
 
 export const UserHistoryPage = () => {
   const [_isModalOpen, setIsModalOpen] = useState(false)
   const [refresh, setRefresh] = useState(false)
 
   const [users, setUsers] = useState<UserHistoryType[]>([])
-
+  const [recordsUsers, setRecordsUsers] = useState<RecordsUserHistoryType[]>([])
   const data = [
     {
       id: 1,
@@ -28,6 +29,8 @@ export const UserHistoryPage = () => {
     const fetchWmsServices = async () => {
       const users = await getUserHistory()
       setUsers(users)
+      const recordsUsers = await getRecordsUserHistory()
+      setRecordsUsers(recordsUsers)
     }
     fetchWmsServices()
   }, [refresh])
@@ -43,7 +46,7 @@ export const UserHistoryPage = () => {
           Sin Coincidencias
         </div>
         <UserHistoryTableNoMatch
-          data={data}
+          data={recordsUsers}
           onAddClick={() => setIsModalOpen(true)}
         />
       </Card>

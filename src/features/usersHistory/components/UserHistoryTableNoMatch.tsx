@@ -3,10 +3,10 @@ import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { UserHistoryTableHeader } from './UserHistoryTableHeader'
-import type { UserHistoryType } from '../types/userHistoryType'
+import type { RecordsUserHistoryType } from '../types/recordsUserHistoryType'
 
 interface Props {
-  data: UserHistoryType[]
+  data: RecordsUserHistoryType[]
   onAddClick: () => void
 }
 
@@ -63,45 +63,46 @@ export const UserHistoryTableNoMatch = ({ data, onAddClick }: Props) => {
         field="editor"
         header="Editor"
         style={{ width: '25%' }}
-        filter
         sortable
       />
+      <Column field="tipo" header="Tipo" sortable style={{ width: '25%' }} />
       <Column
-        field="type"
-        header="Tipo"
-        filter
+        field="fechaGuardado"
+        header="Fecha"
         sortable
         style={{ width: '25%' }}
       />
-      <Column field="date" header="Date" sortable style={{ width: '25%' }} />
       <Column
-        field="user"
+        field="usuarioNombre"
         header="Usuario"
-        filter
         sortable
         style={{ width: '25%' }}
       />
       <Column
-        field="profile"
+        field="perfil"
         header="Perfil"
-        filter
         sortable
         style={{ width: '25%' }}
       />
-      <Column field="team" header="Equipo" sortable style={{ width: '25%' }} />
       <Column
-        field="serviceCenter"
+        field="equipo"
+        header="Equipo"
+        sortable
+        style={{ width: '25%' }}
+      />
+      <Column
+        field="centroServicio"
         header="Centro de Servicio"
         sortable
         style={{ width: '25%' }}
       />
       <Column
-        field="management"
+        field="gerencia"
         header="Gerencia"
         sortable
         style={{ width: '25%' }}
       />
-      <Column field="blocked" header="Bloqueado" style={{ width: '25%' }} />
+      <Column field="bloqueado" header="Bloqueado" style={{ width: '25%' }} />
     </DataTable>
   )
 }
