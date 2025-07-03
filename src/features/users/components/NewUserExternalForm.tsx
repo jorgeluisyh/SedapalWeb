@@ -8,7 +8,7 @@ import type { UserExterno } from '../types/newUserExternalType'
 import { FormInput } from '../../../shared/components/form/FormInput'
 import { Divider } from 'primereact/divider'
 import type { UserPortal } from '../types/userPortalType'
-import { validateExternalUser } from '../apis/userApi'
+import { validateExternalUserPortal, validateUsuarioBd } from '../apis/userApi'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 // import { NewUserForm } from './NewUserForm';
 
@@ -50,7 +50,11 @@ export const NewUserExternalForm = ({
 
     try {
       debugger
-      const userPortal = await validateExternalUser(username)
+      const tipoExterno = 2
+      const response = await validateUsuarioBd(username, tipoExterno)
+      console.log('Respuesta del servidor:', response)
+
+      const userPortal = await validateExternalUserPortal(username)
       if (userPortal) {
         reset({
           nombreUsuario: userPortal.username,

@@ -1,3 +1,4 @@
+import type { AxiosResponse } from "axios";
 import { axiosInstance } from "../../../shared/http/axiosInstance";
 import type { UserExterno } from "../types/newUserExternalType";
 import type { UserPortal } from "../types/userPortalType";
@@ -28,7 +29,17 @@ export const deleteUser = async (id: number) => {
     return response.data;
 }
 
-export const validateExternalUser = async (username: string): Promise<UserPortal> => {
-    const response = await axiosInstance.post(`/api/Usuarios/ValidarUsuarioExterno?NombreUsuario=${username}`);
+export const validateExternalUserPortal = async (username: string): Promise<UserPortal> => {
+    const response = await axiosInstance.post(`/api/Usuarios/ValidarUsuarioExternoPortal?NombreUsuario=${username}`);
     return response.data;
+}
+
+export const validateUsuarioLdap = async (username: string): Promise<UserPortal> => {
+    const response = await axiosInstance.post(`/api/Usuarios/ValidarUsuarioLDAP?NombreUsuario=${username}`);
+    return response.data;
+}
+
+export const validateUsuarioBd = async (username: string, tipo: number): Promise<AxiosResponse> => {
+    const response = await axiosInstance.post(`/api/Usuarios/ValidarUsuarioBD?NombreUsuario=${username}&Tipo=${tipo}`);
+    return response;
 }
