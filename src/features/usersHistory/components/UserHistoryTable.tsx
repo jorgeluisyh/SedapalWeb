@@ -94,24 +94,18 @@ export const UserHistoryTable = ({ data, onAddClick }: Props) => {
         style={{ width: '25%' }}
       />
       <Column
-        field="team"
+        field="equipo"
         header="Equipo"
-        filter
         sortable
+        body={(rowData) => rowData.equipo || 'SIN EQUIPO'}
         style={{ width: '25%' }}
       />
-      <Column
-        field="type"
-        header="Tipo"
-        filter
-        sortable
-        style={{ width: '25%' }}
-      />
-      <Column field="blocked" header="Bloqueado" style={{ width: '25%' }} />
+      <Column field="tipo" header="Tipo" sortable style={{ width: '10%' }} />
+      <Column field="blocked" header="Bloqueado" style={{ width: '10%' }} />
       <Column
         body={actionBodyTemplate}
         header="Acciones"
-        style={{ width: '15%' }}
+        style={{ width: '20%' }}
       />
     </DataTable>
   )
