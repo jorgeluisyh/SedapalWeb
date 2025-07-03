@@ -4,17 +4,18 @@ import { InputText } from 'primereact/inputtext'
 import { useForm } from 'react-hook-form'
 import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
-import type { NewUserExternal } from '../types/newUserExternalType'
+import type { UserExterno } from '../types/newUserExternalType'
 import { FormInput } from '../../../shared/components/form/FormInput'
 import { Divider } from 'primereact/divider'
 import type { UserPortal } from '../types/userPortalType'
-import { validateUser } from '../apis/userApi'
+import { validateExternalUser } from '../apis/userApi'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 // import { NewUserForm } from './NewUserForm';
 
 interface NewUserExternalFormProps {
   isModalOpen: boolean
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: NewUserExternal) => Promise<void>
+  onSubmit: (data: UserExterno) => Promise<void>
   onHide: () => void
 }
 
@@ -24,17 +25,17 @@ export const NewUserExternalForm = ({
   onSubmit,
 }: NewUserExternalFormProps) => {
   const {
-    register,
     handleSubmit,
     reset,
     control,
     formState: { errors, isValid },
-  } = useForm<NewUserExternal>({
+  } = useForm<UserExterno>({
     mode: 'onBlur',
   })
 
   const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
   const [usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const buscarUsuarioPortal = async () => {
     setUsuarioPortal(null)
@@ -48,19 +49,22 @@ export const NewUserExternalForm = ({
     }
 
     try {
-      const userPortal = await validateUser(username)
       debugger
-      // Aquí va la llamada a tu API (cambia la URL a la correcta)
+      const userPortal = await validateExternalUser(username)
       if (userPortal) {
         reset({
-          login: userPortal.username,
-          representante: userPortal.fullName,
-          email: userPortal.email,
+          nombreUsuario: userPortal.username,
+          nombreCompleto: userPortal.fullName,
+          correo: userPortal.email,
         })
         setUsuarioPortal(userPortal)
+        setErrorMessage(null)
+      } else {
+        setErrorMessage('Usuario no existe en el portal')
       }
     } catch (error) {
       console.error('Error al buscar usuario en el portal:', error)
+      setErrorMessage('Error al buscar usuario en el portal')
     }
   }
 
@@ -70,7 +74,7 @@ export const NewUserExternalForm = ({
     { label: 'Viewer', value: 'viewer' },
   ]
 
-  const onSubmitNewProduct = async (data: NewUserExternal) => {
+  const onSubmitNewProduct = async (data: UserExterno) => {
     await onSubmit(data)
     setUsuarioPortal(null)
     reset()
@@ -80,7 +84,8 @@ export const NewUserExternalForm = ({
     <div className="flex justify-content-end gap-2">
       <Button
         label="Agregar"
-        disabled={!isValid}
+        // deshabilitar cuando haya errores en errorMessage
+        disabled={!isValid || !usuarioPortal}
         icon="pi pi-check"
         onClick={handleSubmit(onSubmitNewProduct)}
         className="p-button-sm p-button-primary"
@@ -91,6 +96,7 @@ export const NewUserExternalForm = ({
         severity="secondary"
         onClick={() => {
           setUsuarioPortal(null)
+          setErrorMessage(null)
           reset()
           onIsModalOpen(false)
         }}
@@ -107,6 +113,7 @@ export const NewUserExternalForm = ({
       style={{ width: '30vw' }}
       onHide={() => {
         setUsuarioPortal(null)
+        setErrorMessage(null)
         reset()
         onIsModalOpen(false)
       }}
@@ -128,88 +135,102 @@ export const NewUserExternalForm = ({
           onClick={buscarUsuarioPortal}
         />
       </div>
-      <Divider />
+      <small className="p-error" hidden={errorMessage === null}>
+        {errorMessage}
+      </small>
       {usuarioPortal && (
-        <form onSubmit={handleSubmit(onSubmitNewProduct)}>
-          {/* Login */}
-          <FormInput
-            name="login"
-            label="Login"
-            disabled
-            control={control}
-            errors={errors}
-            rules={{ required: 'Login es requerido' }}
-          />
-
-          <FormInput
-            name="representante"
-            label="Representante"
-            disabled
-            control={control}
-            errors={errors}
-            rules={{ required: 'Representante es requerido' }}
-          />
-
-          <FormInput
-            name="email"
-            label="Correo"
-            disabled
-            placeholder="username@dominio.com"
-            control={control}
-            errors={errors}
-            rules={{ required: 'email es requerido' }}
-          />
-
-          <FormInput
-            name="descripcion"
-            label="Descripción"
-            control={control}
-            errors={errors}
-          />
-
-          <FormInput
-            name="razonSocial"
-            label="Razón Social"
-            control={control}
-            errors={errors}
-          />
-          <FormInput
-            name="telefono"
-            label="Teléfono"
-            placeholder="999999999"
-            control={control}
-            errors={errors}
-          />
-          <FormInput
-            name="rucDni"
-            label="Ruc/Dni"
-            placeholder="1044444444"
-            control={control}
-            errors={errors}
-            rules={{ required: 'Ruc o Dni es requerido' }}
-          />
-          <FormInput
-            name="notas"
-            label="Notas"
-            control={control}
-            errors={errors}
-          />
-
-          {/* Perfiles */}
-          <div className="flex flex-column gap-2 mb-3">
-            <label htmlFor="perfil" className="p-text-bold">
-              Perfiles:
-            </label>
-            <Dropdown
-              id="perfil"
-              value={selectedPerfil}
-              options={perfiles}
-              onChange={(e) => setSelectedPerfil(e.value)}
-              placeholder="Seleccione"
-              className="p-dropdown-sm"
+        <>
+          <Divider />
+          <form onSubmit={handleSubmit(onSubmitNewProduct)}>
+            {/* Login */}
+            <FormInput
+              name="nombreUsuario"
+              label="Login"
+              disabled
+              control={control}
+              errors={errors}
+              rules={{ required: 'Login es requerido' }}
             />
-          </div>
-        </form>
+
+            <FormInput
+              name="correo"
+              label="Correo"
+              disabled
+              placeholder="username@dominio.com"
+              control={control}
+              errors={errors}
+              rules={{ required: 'email es requerido' }}
+            />
+            <FormInput
+              name="nombreCompleto"
+              label="Representante"
+              control={control}
+              errors={errors}
+              rules={{ required: 'Representante es requerido' }}
+            />
+            <FormInput
+              name="ruc"
+              label="Ruc/Dni"
+              placeholder="1044444444"
+              control={control}
+              errors={errors}
+              rules={{ required: 'Ruc o Dni es requerido' }}
+            />
+
+            <FormInput
+              name="descripcion"
+              label="Descripción"
+              control={control}
+              errors={errors}
+            />
+
+            <FormInput
+              name="empresa"
+              label="Razón Social"
+              control={control}
+              errors={errors}
+            />
+            <FormInput
+              name="telefono"
+              label="Teléfono"
+              placeholder="999999999"
+              control={control}
+              errors={errors}
+            />
+
+            <FormInput
+              name="notas"
+              label="Notas"
+              control={control}
+              errors={errors}
+            />
+            <FormMultiSelect
+              name="perfiles"
+              label="Perfiles"
+              control={control}
+              errors={errors}
+              options={perfiles?.map((perfil) => ({
+                label: perfil.label,
+                value: perfil.value,
+              }))}
+            />
+
+            {/* Perfiles */}
+            <div className="flex flex-column gap-2 mb-3">
+              <label htmlFor="perfil" className="p-text-bold">
+                Perfiles:
+              </label>
+              <Dropdown
+                id="perfil"
+                value={selectedPerfil}
+                options={perfiles}
+                onChange={(e) => setSelectedPerfil(e.value)}
+                placeholder="Seleccione"
+                className="p-dropdown-sm"
+              />
+            </div>
+          </form>
+        </>
       )}
     </Dialog>
   )

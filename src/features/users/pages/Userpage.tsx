@@ -2,11 +2,17 @@ import { useState, useRef, useEffect } from 'react'
 import { Card } from 'primereact/card'
 import { NewUserForm } from '../components/NewUserLDAPForm'
 import { NewUserExternalForm } from '../components/NewUserExternalForm'
-import type { NewUserExternal } from '../types/newUserExternalType'
+import type { UserExterno } from '../types/newUserExternalType'
 import type { User } from '../types/userType'
 import { EditMultipleUsersForm } from '../components/EditMultipleUsersForm'
 import { UserTable } from '../components/UserTable'
-import { deleteUsers, getUsers, postUsers, updateUsers } from '../apis/userApi'
+import {
+  deleteUser,
+  getUsers,
+  postExternalUser,
+  postUser,
+  updateUser,
+} from '../apis/userApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
 import { UpdateUserForm } from '../components/UpdateUserForm'
@@ -25,8 +31,29 @@ export const Userpage = () => {
     console.log(user)
   }
 
-  const handleCreateNewExternalUser = async (user: NewUserExternal) => {
+  const handleCreateNewExternalUser = async (user: UserExterno) => {
     console.log(user)
+    confirmDialog({
+      message: '¿Estás seguro de que deseas enviar el servicio?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      accept: async () => {
+        const response = await postExternalUser(user)
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Servicio agregado correctamente',
+          life: 3000,
+        })
+        setRefresh(!refresh)
+        console.log(response.message)
+      },
+      reject: () => {
+        console.log('No se envió el servicio' + user.nombreUsuario)
+      },
+    })
   }
 
   const handleEditMultipleUsers = async (users: User) => {
@@ -92,7 +119,7 @@ export const Userpage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await deleteUsers(user.idUsuario)
+        const response = await deleteUser(user.idUsuario)
         console.log(response.message)
         toast.current?.show({
           severity: 'success',
@@ -165,7 +192,7 @@ export const Userpage = () => {
       <NewUserForm
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
-        onSubmit={handleCreateProduct}
+        onSubmit={handleCreateService}
         onHide={() => console.log('Modal hidden')} // Add this prop
       />
       {selectedService && (

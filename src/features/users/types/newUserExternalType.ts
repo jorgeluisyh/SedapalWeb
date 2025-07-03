@@ -1,11 +1,16 @@
-export interface NewUserExternal {
-  login: string;
-  representante: string;
-  email: string;
+export interface UserExterno {
+  nombreUsuario: string;
+  nombreCompleto: string;
+  clave: string;
+  token:string;
+  correo: string;
   descripcion: string;
-  razonSocial: string;
+  empresa: string;
   telefono: string;
-  rucDni: string;
+  ruc: string;
   notas: string;
-  perfil: string;
-}
+  perfiles: number[];
+  idEquipo: number;
+  }
+
+
