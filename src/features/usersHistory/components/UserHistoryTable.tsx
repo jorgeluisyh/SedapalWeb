@@ -100,8 +100,23 @@ export const UserHistoryTable = ({ data, onAddClick }: Props) => {
         body={(rowData) => rowData.equipo || 'SIN EQUIPO'}
         style={{ width: '25%' }}
       />
-      <Column field="tipo" header="Tipo" sortable style={{ width: '10%' }} />
-      <Column field="blocked" header="Bloqueado" style={{ width: '10%' }} />
+      <Column
+        field="tipo"
+        header="Tipo"
+        sortable
+        body={(rowData) => (
+          <span>{rowData.tipo === 1 ? 'LDAP' : 'EXTERNO'}</span>
+        )}
+        style={{ width: '10%' }}
+      />
+      <Column
+        field="bloqueado"
+        header="Bloqueado"
+        body={(rowDataCheck) => (
+          <span>{rowDataCheck.bloqueado === 1 ? 'Sí' : 'No'}</span>
+        )}
+        style={{ width: '10%' }}
+      />
       <Column
         body={actionBodyTemplate}
         header="Acciones"
