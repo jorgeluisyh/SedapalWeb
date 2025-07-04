@@ -86,8 +86,23 @@ export const UserHistoryTableNoMatch = ({
       <Column
         field="perfil"
         header="Perfil"
-        sortable
-        style={{ width: '25%' }}
+        // sortable
+        // style={{ width: '25%' }}
+        body={(rowData) => (
+          <div
+            style={{
+              maxHeight: '170px', // Limitar la altura de la celda
+              overflowY: 'auto', // Agregar scroll vertical si el texto excede el maxHeight
+              textOverflow: 'ellipsis', // Cortar el texto que exceda la celda (opcional)
+              whiteSpace: 'normal', // Permite el salto de línea
+              width: '300px',
+              overflowWrap: 'break-word', // Permite el salto de línea
+              wordWrap: 'break-word', // Para que el texto largo se ajuste dentro del contenedor
+            }}
+          >
+            {rowData.perfil || 'No disponible'}
+          </div>
+        )}
       />
       <Column
         field="equipo"
