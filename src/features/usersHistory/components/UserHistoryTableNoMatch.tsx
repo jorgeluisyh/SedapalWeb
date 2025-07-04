@@ -1,11 +1,13 @@
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import { UserHistoryTableHeader } from './UserHistoryTableHeader'
 import type { RecordsUserHistoryType } from '../types/recordsUserHistoryType'
+import type { UserHistoryType } from '../types/userHistoryType'
 
-interface Props {
+interface UserHistoryTableNoMatchProps {
+  user: UserHistoryType | null
   data: RecordsUserHistoryType[]
   onAddClick: () => void
 }
@@ -18,7 +20,10 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const UserHistoryTableNoMatch = ({ data, onAddClick }: Props) => {
+export const UserHistoryTableNoMatch = ({
+  data,
+  onAddClick,
+}: UserHistoryTableNoMatchProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     editor: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

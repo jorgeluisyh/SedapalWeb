@@ -6,9 +6,10 @@ import { UserHistoryTableHeader } from './UserHistoryTableHeader'
 import type { UserHistoryType } from '../types/userHistoryType'
 import { Button } from 'primereact/button'
 
-interface Props {
+interface UserHistoryTableProps {
   data: UserHistoryType[]
   onAddClick: () => void
+  onSelectedFilterClick: (row: UserHistoryType) => void
 }
 
 interface Filter {
@@ -19,7 +20,11 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const UserHistoryTable = ({ data, onAddClick }: Props) => {
+export const UserHistoryTable = ({
+  data,
+  onAddClick,
+  onSelectedFilterClick,
+}: UserHistoryTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     user: { value: null, matchMode: FilterMatchMode.CONTAINS },
     profile: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -34,11 +39,11 @@ export const UserHistoryTable = ({ data, onAddClick }: Props) => {
       <div className="flex justify-content-center ">
         <Button
           icon="pi pi-address-book"
-          onClick={() => console.log(row)} // Llamamos a la función de edición pasando el servicio
+          onClick={() => onSelectedFilterClick(row)} // Llamamos a la función de edición pasando el servicio
           // onClick={() => onUpdateClick(row)}
           severity="info"
           text
-          size="small"
+          size="large"
         />
       </div>
     )

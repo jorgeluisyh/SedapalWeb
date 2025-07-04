@@ -9,5 +9,5 @@ export interface RecordsUserHistoryType {
   fechaGuardado: string; // o podrías usar Date si lo conviertes
   tipo: "ACTUALIZACION" | string; // Puedes ampliar con otros tipos posibles
   editor: string;
-  bloqueado: "SI" | "NO";
+  bloqueado: string;
 }
