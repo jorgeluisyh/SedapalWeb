@@ -8,6 +8,7 @@ import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect
 import type { Profile } from '../../profiles/types/profileType'
 import type { TeamType } from '../../teams/types/teamType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
+import { toEditUser } from '../utils/userToEditUser'
 
 interface UpdateUserFormProps {
   onSubmit: (data: EditUser) => Promise<void>
@@ -25,22 +26,12 @@ export const UpdateUserForm = ({
   handleClose,
   onSubmit,
 }: UpdateUserFormProps) => {
-  const toEditUser = (raw: User): EditUser => ({
-    idUsuario: raw.idUsuario,
-    nombre: raw.nombre,
-    idEquipo: raw.idEquipo ?? 1,
-    bloqueado: raw.bloqueado,
-    perfiles: Array.isArray(raw.perfiles)
-      ? raw.perfiles.map((perfil: Profile) => perfil.idPerfil)
-      : [],
-  })
-
   const formatedCurrentUser: EditUser = toEditUser(currentUser)
   const {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<EditUser>({
     mode: 'onBlur',
     defaultValues: formatedCurrentUser,

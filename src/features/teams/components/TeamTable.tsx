@@ -67,7 +67,7 @@ export const TeamTable = ({
     return (
       <InputSwitch
         checked={row.bloqueado === 1}
-        onChange={(e) => onSwichtClick(row)} // Llamamos a la función de cambio de estado
+        onChange={() => onSwichtClick(row)} // Llamamos a la función de cambio de estado
       />
     )
   }

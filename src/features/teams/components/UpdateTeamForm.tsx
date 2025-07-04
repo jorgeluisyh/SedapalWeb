@@ -11,6 +11,7 @@ import type { UpdateTeamType } from '../types/updateTeamType'
 import type { TeamType } from '../types/teamType'
 import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
+import { toEquipoApi } from '../utils/teamtoUpdateTeam'
 
 interface UpdateTeamFormProps {
   areas: AreasType[]
@@ -29,18 +30,6 @@ export const UpdateTeamForm = ({
   // onIsModalOpen,
   onSubmit,
 }: UpdateTeamFormProps) => {
-  const toEquipoApi = (raw: TeamType): UpdateTeamType => ({
-    idEquipo: raw.idEquipo,
-    nombre: raw.nombre,
-    correo: raw.correo,
-    descripcion: raw.descripcion,
-    bloqueado: raw.bloqueado,
-    areaId: raw.areaId,
-    zonasId: Array.isArray(raw.centroServicio)
-      ? raw.centroServicio.map((cs) => cs.zonaId)
-      : [],
-  })
-
   const formatedCurrentService: UpdateTeamType = toEquipoApi(currentService)
 
   const {

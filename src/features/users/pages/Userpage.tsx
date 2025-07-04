@@ -21,6 +21,7 @@ import type { Profile } from '../../profiles/types/profileType'
 import type { EditUser } from '../types/editUserType'
 import { getTeams } from '../../teams/apis/teamApi'
 import type { TeamType } from '../../teams/types/teamType'
+import { toEditUser } from '../utils/userToEditUser'
 
 export const Userpage = () => {
   const toast = useRef<Toast>(null)
@@ -61,6 +62,24 @@ export const Userpage = () => {
 
   const handleEditMultipleUsers = async (users: User) => {
     console.log(users)
+  }
+
+  const handleSwitchUser = async (user: User) => {
+    console.log('se modifico bloqueo')
+    console.log(user)
+    user.bloqueado = user.bloqueado === 1 ? 0 : 1 // Cambia el estado de bloqueado
+    console.log(user)
+    const editUser: EditUser = toEditUser(user)
+    const response = await updateUser(editUser)
+    console.log(response.message)
+    toast.current?.show({
+      severity: 'success',
+      summary: 'Confirmed',
+      detail: 'Se modificó el equipo',
+      life: 3000,
+    })
+    setRefresh(!refresh)
+    console.log('Se modificó el usuario ')
   }
 
   const handleCreateService = async (user: User) => {
@@ -167,6 +186,7 @@ export const Userpage = () => {
           onDeleteClick={(users: User) => handleDeleteService(users)}
           onAddExternalClick={() => setIsModalOpenExternal(true)}
           onAddMultipleClick={() => setIsModalOpenMultiple(true)}
+          onSwichtClick={(user: User) => handleSwitchUser(user)}
         />
       </Card>
       <NewUserForm

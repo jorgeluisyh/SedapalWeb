@@ -18,6 +18,7 @@ import type { AreasType } from '../types/areasType'
 import type { CentersType } from '../types/centersType'
 import type { InsertTeamType } from '../types/insertTeamType'
 import type { UpdateTeamType } from '../types/updateTeamType'
+import { toEquipoApi } from '../utils/teamtoUpdateTeam'
 
 export const TeamPage = () => {
   const [areas, setAreas] = useState<AreasType[] | null>(null)
@@ -27,20 +28,6 @@ export const TeamPage = () => {
   const [refresh, setRefresh] = useState(false)
   const [team, setTeam] = useState<TeamType[]>([])
   const [selectedTeam, setselectedTeam] = useState<TeamType | null>(null)
-
-  // Función de transformación
-  const toEquipoApi = (raw: TeamType): UpdateTeamType => ({
-    idEquipo: raw.idEquipo,
-    nombre: raw.nombre,
-    correo: raw.correo,
-    descripcion: raw.descripcion,
-    bloqueado: raw.bloqueado,
-    areaId: raw.areaId,
-    zonasId: Array.isArray(raw.centroServicio)
-      ? raw.centroServicio.map((cs) => cs.zonaId)
-      : [],
-  })
-
   const handleCloseUpdateForm = () => setselectedTeam(null)
 
   const handleCreateTeam = async (teamType: InsertTeamType) => {

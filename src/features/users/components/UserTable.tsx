@@ -7,6 +7,7 @@ import type { User } from '../types/userType'
 import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 import { Button } from 'primereact/button'
 import type { Profile } from '../../profiles/types/profileType'
+import { InputSwitch } from 'primereact/inputswitch'
 
 interface Props {
   data: User[]
@@ -15,6 +16,7 @@ interface Props {
   onAddMultipleClick?: () => void
   onUpdateClick: (users: User | null) => void
   onDeleteClick: (users: User) => void
+  onSwichtClick: (team: User) => void
 }
 
 interface Filter {
@@ -32,6 +34,7 @@ export const UserTable = ({
   onDeleteClick,
   onAddExternalClick,
   onAddMultipleClick,
+  onSwichtClick,
 }: Props) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -67,6 +70,15 @@ export const UserTable = ({
           size="small"
         />
       </div>
+    )
+  }
+
+  const checkedBodyTemplate = (row: User) => {
+    return (
+      <InputSwitch
+        checked={row.bloqueado === 1}
+        onChange={() => onSwichtClick(row)} // Llamamos a la función de cambio de estado
+      />
     )
   }
 
@@ -134,12 +146,7 @@ export const UserTable = ({
         field="bloqueado"
         header="Bloqueado"
         style={{ width: '25%' }}
-        body={(rowDataCheck) => (
-          <Checkbox
-            checked={rowDataCheck.bloqueado === 1}
-            onChange={(e) => onCheckBoxChange(e, rowDataCheck)}
-          />
-        )}
+        body={checkedBodyTemplate}
       />
       <Column
         body={actionBodyTemplate}
