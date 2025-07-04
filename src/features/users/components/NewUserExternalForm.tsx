@@ -16,7 +16,6 @@ interface NewUserExternalFormProps {
   perfiles: Profile[]
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: UserExterno) => Promise<void>
-  onHide: () => void
 }
 
 export const NewUserExternalForm = ({

@@ -9,7 +9,7 @@ interface UserTableHeaderProps {
   onGlobalFilterChange: (e: ChangeEvent<HTMLInputElement>) => void
   onAddClick: () => void
   onAddExternalClick?: () => void
-  onAddMultipleClick?: () => void
+  onEditMultipleUsersClick?: () => void
 }
 
 export const UserTableHeader = ({
@@ -17,14 +17,14 @@ export const UserTableHeader = ({
   onGlobalFilterChange,
   onAddClick,
   onAddExternalClick,
-  onAddMultipleClick,
+  onEditMultipleUsersClick,
 }: UserTableHeaderProps) => {
   return (
     <div className="flex flex-column md:flex-row justify-content-between gap-2">
-      {/* <div className="flex justify-content-between"> */}
       <IconField iconPosition="left">
         <InputIcon className="pi pi-search" />
         <InputText
+          className="p-inputtext-sm"
           value={globalFilterValue}
           onChange={onGlobalFilterChange}
           placeholder="Palabra clave"
@@ -47,7 +47,7 @@ export const UserTableHeader = ({
           className="p-button-sm w-full md:w-auto"
         />
         <Button
-          onClick={onAddMultipleClick}
+          onClick={onEditMultipleUsersClick}
           type="button"
           icon="pi pi-plus"
           label="Editar Multiples Usuarios"

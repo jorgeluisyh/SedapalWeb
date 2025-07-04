@@ -27,6 +27,7 @@ export const Userpage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [users, setUsers] = useState<User[]>([])
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([])
   const [perfiles, setPerfiles] = useState<Profile[]>([])
   const [equipos, setEquipos] = useState<TeamType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,6 +35,10 @@ export const Userpage = () => {
   const [isModalOpenMultiple, setIsModalOpenMultiple] = useState(false)
   const [selectedUser, setselectedUser] = useState<User | null>(null)
   const handleCloseUpdateForm = () => setselectedUser(null)
+  const handleCloseUpdateFormMultiple = () => {
+    setSelectedUsers([])
+    setIsModalOpenMultiple(false)
+  }
 
   const handleCreateNewExternalUser = async (user: UserExterno) => {
     console.log(user)
@@ -158,6 +163,13 @@ export const Userpage = () => {
     })
   }
 
+  const handleOpenModalEditUsers = async (users: User[]) => {
+    if (users.length > 0) {
+      console.log(users)
+      setSelectedUsers(users)
+    }
+  }
+
   useEffect(() => {
     const fetchWmsServices = async () => {
       const users = await getUsers()
@@ -176,16 +188,17 @@ export const Userpage = () => {
       <Card title="Usuarios">
         <UserTable
           data={users}
-          // onAddClick={() => setIsModalOpen(true)}
+          selectedUsers={selectedUsers}
+          onsetSelectedUsers={setSelectedUsers}
           onAddClick={() => {
             setIsModalOpen(true)
           }}
-          onUpdateClick={(users: User | null) => {
-            setselectedUser(users)
+          onUpdateClick={(user: User | null) => {
+            setselectedUser(user)
           }}
-          onDeleteClick={(users: User) => handleDeleteService(users)}
+          onDeleteClick={(user: User) => handleDeleteService(user)}
           onAddExternalClick={() => setIsModalOpenExternal(true)}
-          onAddMultipleClick={() => setIsModalOpenMultiple(true)}
+          onEditMultipleUsersClick={() => setIsModalOpenMultiple(true)}
           onSwichtClick={(user: User) => handleSwitchUser(user)}
         />
       </Card>
@@ -211,14 +224,16 @@ export const Userpage = () => {
         isModalOpen={isModalOpenExternal}
         onIsModalOpen={setIsModalOpenExternal}
         onSubmit={handleCreateNewExternalUser}
-        onHide={() => console.log('Modal hidden')} // Add this prop
       />
-      <EditMultipleUsersForm
-        isModalOpen={isModalOpenMultiple}
-        onIsModalOpen={setIsModalOpenMultiple}
-        onSubmit={handleEditMultipleUsers}
-        onHide={() => console.log('Modal hidden')} // Add this prop
-      />
+      {(selectedUsers.length > 0 && isModalOpenMultiple && (
+        <EditMultipleUsersForm
+          handleClose={handleCloseUpdateFormMultiple}
+          selectedUsers={selectedUsers}
+          perfiles={perfiles}
+          onSubmit={handleEditMultipleUsers}
+        />
+      )) ??
+        alert('No hay usuarios seleccionados')}
     </>
   )
 }

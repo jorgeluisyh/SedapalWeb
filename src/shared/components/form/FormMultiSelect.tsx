@@ -42,7 +42,7 @@ export const FormMultiSelect = ({
             placeholder={placeholder}
             value={field.value || []} // Handle selected values
             onChange={(e) => field.onChange(e.value)} // Update the selected values
-            className={errors[name] ? 'p-invalid' : ''}
+            className="p-inputtext-sm"
             display="chip"
             optionLabel="label"
             optionValue="value"
