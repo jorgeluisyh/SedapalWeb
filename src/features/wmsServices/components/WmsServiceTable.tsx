@@ -6,7 +6,7 @@ import { WmsServiceTableHeader } from './WmsServiceTableHeader'
 import type { WmsService } from '../types/wmsServiceType'
 import { Button } from 'primereact/button'
 
-interface Props {
+interface WmsServiceTableProps {
   data: WmsService[]
   onAddClick: () => void
   onUpdateClick: (arcGisService: WmsService | null) => void
@@ -26,7 +26,7 @@ export const WmsServiceTable = ({
   onAddClick,
   onUpdateClick,
   onDeleteClick,
-}: Props) => {
+}: WmsServiceTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

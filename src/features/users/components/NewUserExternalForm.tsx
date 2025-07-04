@@ -10,7 +10,6 @@ import type { UserPortal } from '../types/userPortalType'
 import { validateExternalUserPortal, validateUsuarioBd } from '../apis/userApi'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 import type { Profile } from '../../profiles/types/profileType'
-// import { NewUserForm } from './NewUserForm';
 
 interface NewUserExternalFormProps {
   isModalOpen: boolean

@@ -9,45 +9,15 @@ import { Toast } from 'primereact/toast'
 import type { ServiceMap } from '../types/serviceType'
 import { getArcgisServices } from '../../arcgisServices/apis/arcgisServiceApi'
 import { UpdateMapForm } from '../components/UpdateMapForm'
+import { toMapService } from '../utils/arcgisServiceToMapService'
 
 export const MapPage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [maps, setMaps] = useState<Map[]>([])
-  const [arcgisServices, setArcgisServices] = useState<ServiceMap[]>([])
+  const [mapServices, setMapServices] = useState<ServiceMap[]>([])
   const [selectedService, setselectedService] = useState<Map | null>(null)
-  // const handleCreateProduct = async (mapType: MapType) => {
-  //   //create tu metodo para guardar usuario con un api bicho
-  //   console.log(mapType.nombreMapa)
-  // }
-
-  // const [availableItems] = useState<ServiceMap[]>([
-  //   {
-  //     idServicioMapa: 1,
-  //     nombreServicioMapa: 'Mapa Administrador',
-  //   },
-  //   {
-  //     idServicioMapa: 2,
-  //     nombreServicioMapa: 'Mapa Usuario',
-  //   },
-  //   {
-  //     idServicioMapa: 3,
-  //     nombreServicioMapa: 'Mapa Editor',
-  //   },
-  //   {
-  //     idServicioMapa: 4,
-  //     nombreServicioMapa: 'Mapa Analista',
-  //   },
-  //   {
-  //     idServicioMapa: 5,
-  //     nombreServicioMapa: 'Mapa Moderador',
-  //   },
-  //   {
-  //     idServicioMapa: 6,
-  //     nombreServicioMapa: 'Mapa Visualizador',
-  //   },
-  // ])
 
   const handleCloseUpdateForm = () => setselectedService(null)
 
@@ -136,7 +106,8 @@ export const MapPage = () => {
       const maps = await getMaps()
       setMaps(maps)
       const arcgisServices = await getArcgisServices()
-      setArcgisServices(arcgisServices)
+      const _mapServices = arcgisServices.map(toMapService)
+      setMapServices(_mapServices)
     }
     fetchElements()
   }, [refresh])
@@ -156,14 +127,14 @@ export const MapPage = () => {
       </Card>
 
       <NewMapForm
-        availableItems={arcgisServices}
+        availableItems={mapServices}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateMap}
       />
       {selectedService && (
         <UpdateMapForm
-          availableItems={arcgisServices}
+          availableItems={mapServices}
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateMap}
           currentService={selectedService}

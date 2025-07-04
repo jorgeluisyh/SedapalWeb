@@ -4,12 +4,11 @@ import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { UserTableHeader } from './UserTableHeader'
 import type { User } from '../types/userType'
-import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 import { Button } from 'primereact/button'
 import type { Profile } from '../../profiles/types/profileType'
 import { InputSwitch } from 'primereact/inputswitch'
 
-interface Props {
+interface UserTableProps {
   data: User[]
   onAddClick: () => void
   onAddExternalClick?: () => void
@@ -35,7 +34,7 @@ export const UserTable = ({
   onAddExternalClick,
   onAddMultipleClick,
   onSwichtClick,
-}: Props) => {
+}: UserTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     username: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

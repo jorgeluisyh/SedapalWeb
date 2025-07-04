@@ -6,7 +6,7 @@ import { ProfileTableHeader } from './ProfileTableHeader'
 import type { Profile } from '../types/profileType'
 import { Button } from 'primereact/button'
 
-interface Props {
+interface ProfileTableProps {
   data: Profile[]
   onAddClick: () => void
   onUpdateClick: (arcGisService: Profile | null) => void
@@ -26,7 +26,7 @@ export const ProfileTable = ({
   onAddClick,
   onUpdateClick,
   onDeleteClick,
-}: Props) => {
+}: ProfileTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

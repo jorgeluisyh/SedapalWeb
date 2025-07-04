@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { type ChangeEvent } from 'react'
 
-interface Props {
+interface UserTableHeaderProps {
   globalFilterValue: string
   onGlobalFilterChange: (e: ChangeEvent<HTMLInputElement>) => void
   onAddClick: () => void
@@ -18,7 +18,7 @@ export const UserTableHeader = ({
   onAddClick,
   onAddExternalClick,
   onAddMultipleClick,
-}: Props) => {
+}: UserTableHeaderProps) => {
   return (
     <div className="flex flex-column md:flex-row justify-content-between gap-2">
       {/* <div className="flex justify-content-between"> */}

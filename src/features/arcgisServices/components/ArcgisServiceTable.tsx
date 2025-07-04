@@ -7,7 +7,7 @@ import { ArcgisServiceStatusTag } from './ArcgisServiceStatusTag'
 import type { ArcGisService } from '../types/arcgisServiceType'
 import { Button } from 'primereact/button'
 
-interface Props {
+interface ArcgisServiceTableProps {
   data: ArcGisService[]
   onAddClick: () => void
   onUpdateClick: (arcGisService: ArcGisService | null) => void
@@ -28,7 +28,7 @@ export const ArcgisServiceTable = ({
   onAddClick,
   onUpdateClick,
   onDeleteClick,
-}: Props) => {
+}: ArcgisServiceTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

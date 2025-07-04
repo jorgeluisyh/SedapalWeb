@@ -1,10 +1,12 @@
 import { Tag } from 'primereact/tag'
 
-interface Props {
+interface ArcgisServiceStatusTagProps {
   status: number
 }
 
-export const ArcgisServiceStatusTag = ({ status }: Props) => {
+export const ArcgisServiceStatusTag = ({
+  status,
+}: ArcgisServiceStatusTagProps) => {
   const getSeverity = () => {
     switch (status) {
       case 1:

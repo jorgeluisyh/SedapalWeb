@@ -6,7 +6,7 @@ import { MapTableHeader } from './MapTableHeader'
 import type { Map } from '../types/mapType'
 import { Button } from 'primereact/button'
 
-interface Props {
+interface MapTableProps {
   data: Map[]
   onAddClick: () => void
   onUpdateClick: (mapType: Map | null) => void
@@ -26,7 +26,7 @@ export const MapTable = ({
   onAddClick,
   onUpdateClick,
   onDeleteClick,
-}: Props) => {
+}: MapTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

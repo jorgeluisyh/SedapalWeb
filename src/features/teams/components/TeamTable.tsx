@@ -7,7 +7,7 @@ import type { CenterServiceType, TeamType } from '../types/teamType'
 import { Button } from 'primereact/button'
 import { InputSwitch } from 'primereact/inputswitch'
 
-interface Props {
+interface TeamTableProps {
   data: TeamType[]
   onAddClick: () => void
   onUpdateClick: (team: TeamType | null) => void
@@ -29,7 +29,7 @@ export const TeamTable = ({
   onUpdateClick,
   onDeleteClick,
   onSwichtClick,
-}: Props) => {
+}: TeamTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

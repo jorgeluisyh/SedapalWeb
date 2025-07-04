@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { type ChangeEvent } from 'react'
 
-interface Props {
+interface WmsServiceTableHeaderProps {
   globalFilterValue: string
   onGlobalFilterChange: (e: ChangeEvent<HTMLInputElement>) => void
   onAddClick: () => void
@@ -14,7 +14,7 @@ export const WmsServiceTableHeader = ({
   globalFilterValue,
   onGlobalFilterChange,
   onAddClick,
-}: Props) => {
+}: WmsServiceTableHeaderProps) => {
   return (
     <div className="flex justify-content-between">
       <IconField iconPosition="left">
