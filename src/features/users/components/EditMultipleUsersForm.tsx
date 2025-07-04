@@ -6,12 +6,13 @@ import { useForm } from 'react-hook-form'
 import type { User } from '../types/userType'
 import type { Profile } from '../../profiles/types/profileType'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
+import type { EditMultipleUsers } from '../types/editMultipleUsersType'
 
 interface EditMultipleUsersFormProps {
   handleClose: () => void
   perfiles: Profile[]
   selectedUsers: User[]
-  onSubmit: (data: User) => Promise<void>
+  onSubmit: (data: EditMultipleUsers) => Promise<void>
 }
 
 export const EditMultipleUsersForm = ({
@@ -25,7 +26,7 @@ export const EditMultipleUsersForm = ({
     reset,
     control,
     formState: { errors },
-  } = useForm<User>({
+  } = useForm<EditMultipleUsers>({
     mode: 'onBlur',
   })
 
@@ -41,9 +42,15 @@ export const EditMultipleUsersForm = ({
     return ''
   }
 
-  const onSubmitNewProduct = async (data: User) => {
-    await onSubmit(data)
-    reset()
+  const onSubmitNewProduct = async (data: { perfiles: number[] }) => {
+    const payload: EditMultipleUsers = {
+      usuarios: selectedUsers.map((u) => u.idUsuario), // Asumiendo que el campo de usuario es 'idUsuario'
+      perfiles: data.perfiles, // Recogemos los perfiles seleccionados
+    }
+
+    await onSubmit(payload) // Enviar los datos a la función onSubmit
+    reset() // Limpia el formulario
+    handleClose() // Cierra el diálogo si lo prefieres aquí
   }
 
   const footer = (

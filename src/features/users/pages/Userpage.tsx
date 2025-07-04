@@ -10,7 +10,8 @@ import {
   deleteUser,
   getUsers,
   postExternalUser,
-  postUser,
+  postLDAPUser,
+  updatePerfilesMultipleUser,
   updateUser,
 } from '../apis/userApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
@@ -22,6 +23,7 @@ import type { EditUser } from '../types/editUserType'
 import { getTeams } from '../../teams/apis/teamApi'
 import type { TeamType } from '../../teams/types/teamType'
 import { toEditUser } from '../utils/userToEditUser'
+import type { EditMultipleUsers } from '../types/editMultipleUsersType'
 
 export const Userpage = () => {
   const toast = useRef<Toast>(null)
@@ -65,8 +67,28 @@ export const Userpage = () => {
     })
   }
 
-  const handleEditMultipleUsers = async (users: User) => {
-    console.log(users)
+  const handleEditMultipleUsers = async (multipleusers: EditMultipleUsers) => {
+    confirmDialog({
+      message: '¿Estás seguro de que deseas actualizar los perfiles?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      accept: async () => {
+        const response = await updatePerfilesMultipleUser(multipleusers)
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Servicio agregado correctamente',
+          life: 3000,
+        })
+        setRefresh(!refresh)
+        console.log(response.message)
+      },
+      reject: () => {
+        console.log('No se envió el servicio')
+      },
+    })
   }
 
   const handleSwitchUser = async (user: User) => {
@@ -87,7 +109,7 @@ export const Userpage = () => {
     console.log('Se modificó el usuario ')
   }
 
-  const handleCreateService = async (user: User) => {
+  const handleCreateLDAPUser = async (user: User) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
@@ -95,7 +117,8 @@ export const Userpage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await postUser(user)
+        debugger
+        const response = await postLDAPUser(user)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -163,13 +186,6 @@ export const Userpage = () => {
     })
   }
 
-  const handleOpenModalEditUsers = async (users: User[]) => {
-    if (users.length > 0) {
-      console.log(users)
-      setSelectedUsers(users)
-    }
-  }
-
   useEffect(() => {
     const fetchWmsServices = async () => {
       const users = await getUsers()
@@ -203,9 +219,11 @@ export const Userpage = () => {
         />
       </Card>
       <NewUserForm
+        perfiles={perfiles}
+        equipos={equipos}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
-        onSubmit={handleCreateService}
+        onSubmit={handleCreateLDAPUser}
         onHide={() => console.log('Modal hidden')} // Add this prop
       />
       {selectedUser && (
@@ -225,15 +243,14 @@ export const Userpage = () => {
         onIsModalOpen={setIsModalOpenExternal}
         onSubmit={handleCreateNewExternalUser}
       />
-      {(selectedUsers.length > 0 && isModalOpenMultiple && (
+      {selectedUsers.length > 0 && isModalOpenMultiple && (
         <EditMultipleUsersForm
           handleClose={handleCloseUpdateFormMultiple}
           selectedUsers={selectedUsers}
           perfiles={perfiles}
           onSubmit={handleEditMultipleUsers}
         />
-      )) ??
-        alert('No hay usuarios seleccionados')}
+      )}
     </>
   )
 }

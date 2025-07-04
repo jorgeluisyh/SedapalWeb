@@ -64,7 +64,7 @@ export const UpdateUserForm = ({
 
   return (
     <Dialog
-      header="Agregar Usuario"
+      header="Actualizar Perfiles de Usuario"
       visible={true}
       maximizable
       style={{ width: '35vw' }}

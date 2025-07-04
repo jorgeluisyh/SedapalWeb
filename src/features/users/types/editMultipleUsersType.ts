@@ -1,4 +1,4 @@
 export interface EditMultipleUsers {
-  username: number[]
-  profiles: number[]
+  usuarios: number[]
+  perfiles: number[]
 }

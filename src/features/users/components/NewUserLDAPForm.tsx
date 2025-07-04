@@ -3,13 +3,20 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { useForm } from 'react-hook-form'
 import type { User } from '../types/userType'
-import { DataTable } from 'primereact/datatable'
-import { Column } from 'primereact/column'
-import { Dropdown } from 'primereact/dropdown'
+
 import { useState } from 'react'
+import { validateUsuarioBd, validateUsuarioLdap } from '../apis/userApi'
+import type { UserPortal } from '../types/userPortalType'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
+import { FormDropdown } from '../../../shared/components/form/FormDropdown'
+import type { Profile } from '../../profiles/types/profileType'
+import type { TeamType } from '../../teams/types/teamType'
+import { FormInput } from '../../../shared/components/form/FormInput'
 
 interface NewUserFormProps {
   isModalOpen: boolean
+  perfiles: Profile[]
+  equipos: TeamType[]
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: User) => Promise<void>
   onHide: () => void
@@ -17,43 +24,68 @@ interface NewUserFormProps {
 
 export const NewUserForm = ({
   isModalOpen,
+  perfiles,
+  equipos,
   onIsModalOpen,
   onSubmit,
 }: NewUserFormProps) => {
-  const { handleSubmit, reset } = useForm<User>({ mode: 'onBlur' })
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors, isValid },
+  } = useForm<User>({ mode: 'onBlur' })
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
 
-  const [searchValue, setSearchValue] = useState('')
-  const [selectedUser, setSelectedUser] = useState<any>(null)
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
-  const [selectedEquipo, setSelectedEquipo] = useState<string | null>(null)
   const onSubmitNewProduct = async (data: User) => {
+    debugger
     await onSubmit(data)
     reset()
   }
 
-  const buscarUsuario = () => {
-    // Aquí iría la lógica para buscar usuarios por LDAP
-    console.log('Buscando usuario:', searchValue)
+  const buscarUsuarioPortal = async () => {
+    setUsuarioPortal(null)
+    const username = (
+      document.getElementById('buscarUsuario') as HTMLInputElement
+    ).value
+
+    if (!username) {
+      alert('Por favor, ingresa un nombre de usuario')
+      return
+    }
+
+    try {
+      debugger
+      const tipoInterno = 1
+      const response = await validateUsuarioBd(username, tipoInterno)
+      console.log('Respuesta del servidor:', response)
+
+      const userPortal = await validateUsuarioLdap(username)
+      if (userPortal) {
+        reset({
+          nombre: userPortal.username,
+          bloqueado: 0,
+          perfiles: [],
+        })
+        setUsuarioPortal(userPortal)
+        setErrorMessage(null)
+      } else {
+        setErrorMessage('Usuario no existe en el portal')
+      }
+    } catch (error) {
+      console.error('Error al buscar usuario en el portal:', error)
+      setErrorMessage('Error al buscar usuario en el portal')
+    }
   }
-  const usuariosEncontrados = [
-    { usuario: 'user1', nombres: 'Juan Perez' },
-    { usuario: 'user2', nombres: 'Maria Lopez' },
-  ] // Aquí deberías cargar los resultados del LDAP
-  const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-  ]
-  const equipos = [
-    { label: 'Equipo A', value: 'a' },
-    { label: 'Equipo B', value: 'b' },
-  ]
+
   const footer = (
     <div className="flex justify-content-end gap-2">
       <Button
+        onClick={handleSubmit(onSubmitNewProduct)}
         label="Agregar"
+        disabled={!isValid}
         icon="pi pi-check"
-        onClick={() => console.log('Agregar usuario')}
-        disabled={!selectedUser || !selectedPerfil || !selectedEquipo}
         className="p-button-sm p-button-primary"
       />
       <Button
@@ -77,86 +109,61 @@ export const NewUserForm = ({
       }}
       footer={footer}
     >
+      <label
+        htmlFor="buscarUsuario"
+        className="p-text-bold"
+        style={{ width: '100px' }}
+      >
+        Buscar Usuario en Portal
+      </label>
+      <div className="p-inputgroup flex-1">
+        <InputText id="buscarUsuario" placeholder="Usuario portal..." />
+        <Button
+          id="btnBuscarUsuarioPortal"
+          icon="pi pi-search"
+          className="p-button-info"
+          onClick={buscarUsuarioPortal}
+        />
+      </div>
+
+      <small className="p-error" hidden={errorMessage === null}>
+        {errorMessage}
+      </small>
       <form onSubmit={handleSubmit(onSubmitNewProduct)}>
-        {/* Búsqueda */}
-        <div className="flex align-items-center gap-4 mb-3">
-          <label
-            htmlFor="buscarUsuario"
-            className="p-text-bold"
-            style={{ width: '100px' }}
-          >
-            Usuario:
-          </label>
-          <InputText
-            id="buscarUsuario"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            className="p-inputtext-sm"
-            style={{ width: '80%' }}
-          />
-          <Button
-            icon="pi pi-search"
-            onClick={buscarUsuario}
-            className="p-button-sm"
-          />
-        </div>
-
-        {/* Tabla de resultados */}
-        <div className="p-1 border-1 border-round mb-4">
-          <h4>Usuarios encontrados en LDAP</h4>
-          <DataTable
-            value={usuariosEncontrados}
-            selectionMode="single"
-            onSelectionChange={(e) => setSelectedUser(e.value)}
-            className="p-datatable-sm"
-          >
-            <Column field="usuario" header="Usuario" />
-            <Column field="nombres" header="Nombres" />
-          </DataTable>
-        </div>
-
         {/* Datos del nuevo usuario */}
-        <div className="mb-3">
-          <h4>Datos específicos del nuevo usuario</h4>
-          <div className="grid">
-            <div className="col-4 flex align-items-center ">
-              Usuario Seleccionado:
-            </div>
-            <div className="col-8">
-              <InputText
-                value={selectedUser?.usuario || ''}
-                disabled
-                style={{ width: '100%' }}
-              />
-            </div>
-
-            <div className="col-4 flex align-items-center p-mb-2">
-              Perfiles:
-            </div>
-            <div className="col-8">
-              <Dropdown
-                value={selectedPerfil}
-                options={perfiles}
-                onChange={(e) => setSelectedPerfil(e.value)}
-                placeholder="Seleccione"
-                className="p-dropdown-sm"
-                style={{ width: '100%' }}
-              />
-            </div>
-
-            <div className="col-4 flex align-items-center p-mb-2">Equipos:</div>
-            <div className="col-8">
-              <Dropdown
-                value={selectedEquipo}
-                options={equipos}
-                onChange={(e) => setSelectedEquipo(e.value)}
-                placeholder="Seleccione"
-                className="p-dropdown-sm"
-                style={{ width: '100%' }}
-              />
-            </div>
-          </div>
-        </div>
+        <h4> Datos del nuevo usuario</h4>
+        <FormInput
+          name="nombre"
+          label="Nombre Usuario"
+          disabled
+          control={control}
+          errors={errors}
+          rules={{ required: 'Nombre es requerido' }}
+        />
+        <FormMultiSelect
+          name="perfiles"
+          label="Perfiles"
+          control={control}
+          errors={errors}
+          options={perfiles?.map((perfil) => ({
+            label: perfil.nombrePerfil,
+            value: perfil.idPerfil,
+          }))}
+        />
+        <FormDropdown
+          name="idEquipo"
+          label="Equipo:"
+          control={control}
+          errors={errors}
+          options={
+            equipos?.map((equipo) => ({
+              label: equipo.nombre,
+              value: equipo.idEquipo,
+            })) ?? []
+          }
+          rules={{ required: 'Defina la Gerencia' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione una generencia"
+        />
       </form>
     </Dialog>
   )

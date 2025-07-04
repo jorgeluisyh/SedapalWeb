@@ -4,6 +4,7 @@ import type { UserExterno } from "../types/newUserExternalType";
 import type { UserPortal } from "../types/userPortalType";
 import type { User } from "../types/userType";
 import type { EditUser } from "../types/editUserType";
+import type { EditMultipleUsers } from "../types/editMultipleUsersType";
 
 
 export const getUsers = async (): Promise<User[]> => {
@@ -11,8 +12,8 @@ export const getUsers = async (): Promise<User[]> => {
     return response.data;
 }
 
-export const postUser = async (data: User) => {
-    const response = await axiosInstance.post("/api/Usuarios", data);
+export const postLDAPUser = async (data: User) => {
+    const response = await axiosInstance.post("/api/Usuarios/CrearUsuarioLDAP", data);
     return response.data;
 }
 
@@ -24,6 +25,13 @@ export const updateUser = async (data: EditUser) => {
     const response = await axiosInstance.put(`/api/Usuarios`, data);
     return response.data;
 }
+
+export const updatePerfilesMultipleUser = async (data: EditMultipleUsers) => {
+    const response = await axiosInstance.post(`/api/Usuarios/AsignarPerfilesMasivos`, data);
+    return response.data;
+}
+
+
 export const deleteUser = async (id: number) => {
     const response = await axiosInstance.delete(`/api/Usuarios/${id}`);
     return response.data;
