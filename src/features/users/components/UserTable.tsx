@@ -43,6 +43,7 @@ export const UserTable = ({
   })
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
+  const [selectedProducts, setSelectedProducts] = useState<User[]>([])
 
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -82,11 +83,6 @@ export const UserTable = ({
     )
   }
 
-  const onCheckBoxChange = (e: CheckboxChangeEvent, rowDataCheck: User) => {
-    rowDataCheck.bloqueado = Number(e.checked)
-    // Realizar la actualización de estado o lo que sea necesario
-  }
-
   const formatPerfil = (profile: Profile) => {
     if (profile && Array.isArray(profile)) {
       return profile.map((item) => item.nombrePerfil).join(', ')
@@ -96,6 +92,9 @@ export const UserTable = ({
 
   return (
     <DataTable
+      selectionMode={'checkbox'}
+      selection={selectedProducts}
+      onSelectionChange={(e) => setSelectedProducts(e.value)}
       header={
         <UserTableHeader
           globalFilterValue={globalFilterValue}
@@ -115,6 +114,7 @@ export const UserTable = ({
       removableSort
       emptyMessage="No existen coincidencias"
     >
+      <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
       <Column
         header="#"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
