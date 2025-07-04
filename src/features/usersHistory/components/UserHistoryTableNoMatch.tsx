@@ -1,11 +1,13 @@
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import { UserHistoryTableHeader } from './UserHistoryTableHeader'
 import type { RecordsUserHistoryType } from '../types/recordsUserHistoryType'
+import type { UserHistoryType } from '../types/userHistoryType'
 
-interface Props {
+interface UserHistoryTableNoMatchProps {
+  user: UserHistoryType | null
   data: RecordsUserHistoryType[]
   onAddClick: () => void
 }
@@ -18,7 +20,10 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const UserHistoryTableNoMatch = ({ data, onAddClick }: Props) => {
+export const UserHistoryTableNoMatch = ({
+  data,
+  onAddClick,
+}: UserHistoryTableNoMatchProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     editor: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -81,8 +86,23 @@ export const UserHistoryTableNoMatch = ({ data, onAddClick }: Props) => {
       <Column
         field="perfil"
         header="Perfil"
-        sortable
-        style={{ width: '25%' }}
+        // sortable
+        // style={{ width: '25%' }}
+        body={(rowData) => (
+          <div
+            style={{
+              maxHeight: '170px', // Limitar la altura de la celda
+              overflowY: 'auto', // Agregar scroll vertical si el texto excede el maxHeight
+              textOverflow: 'ellipsis', // Cortar el texto que exceda la celda (opcional)
+              whiteSpace: 'normal', // Permite el salto de línea
+              width: '300px',
+              overflowWrap: 'break-word', // Permite el salto de línea
+              wordWrap: 'break-word', // Para que el texto largo se ajuste dentro del contenedor
+            }}
+          >
+            {rowData.perfil || 'No disponible'}
+          </div>
+        )}
       />
       <Column
         field="equipo"

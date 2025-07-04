@@ -9,7 +9,7 @@ export const getUserHistory = async (): Promise<UserHistoryType[]> => {
 }
 
 export const getRecordsUserHistory = async (): Promise<RecordsUserHistoryType[]> => {
-    const response = await axiosInstance.get("api/Usuarios/HistoricoUsuarios");
+    const response = await axiosInstance.get("/api/Usuarios/HistoricoUsuarios");
     return response.data;
 }
 
