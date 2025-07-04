@@ -2,47 +2,55 @@ import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
-import { Dropdown } from 'primereact/dropdown'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import type { User } from '../types/userType'
+import type { Profile } from '../../profiles/types/profileType'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
 import type { EditMultipleUsers } from '../types/editMultipleUsersType'
 
-interface EditMultipleProfilesProps {
-  isModalOpen: boolean
-  onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onHide: () => void
-  onSubmit: (data: User) => Promise<void>
+interface EditMultipleUsersFormProps {
+  handleClose: () => void
+  perfiles: Profile[]
+  selectedUsers: User[]
+  onSubmit: (data: EditMultipleUsers) => Promise<void>
 }
 
 export const EditMultipleUsersForm = ({
-  isModalOpen,
-  onIsModalOpen,
+  selectedUsers,
+  perfiles,
   onSubmit,
-}: EditMultipleProfilesProps) => {
-  const { handleSubmit, reset } = useForm<User>({
+  handleClose,
+}: EditMultipleUsersFormProps) => {
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<EditMultipleUsers>({
     mode: 'onBlur',
   })
 
-  const [selectedUser, setSelectedUser] = useState<EditMultipleUsers | null>(
-    null
-  )
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
+  const formatPerfil = (profile: Profile) => {
+    if (profile && Array.isArray(profile)) {
+      return (
+        profile
+          .map((item) => item.nombrePerfil)
+          .join(', ')
+          .substring(0, 20) + '...'
+      )
+    }
+    return ''
+  }
 
-  const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-    { label: 'Viewer', value: 'viewer' },
-  ]
+  const onSubmitNewProduct = async (data: { perfiles: number[] }) => {
+    const payload: EditMultipleUsers = {
+      usuarios: selectedUsers.map((u) => u.idUsuario), // Asumiendo que el campo de usuario es 'idUsuario'
+      perfiles: data.perfiles, // Recogemos los perfiles seleccionados
+    }
 
-  const usuarios = [
-    { username: 'user1', profiles: ['Admin', 'Editor'] },
-    { username: 'user2', profiles: ['Viewer', 'Admin'] },
-  ]
-
-  const onSubmitNewProduct = async (data: User) => {
-    await onSubmit(data)
-    reset()
+    await onSubmit(payload) // Enviar los datos a la función onSubmit
+    reset() // Limpia el formulario
+    handleClose() // Cierra el diálogo si lo prefieres aquí
   }
 
   const footer = (
@@ -57,7 +65,9 @@ export const EditMultipleUsersForm = ({
         label="Cancelar"
         icon="pi pi-times"
         severity="secondary"
-        onClick={() => onIsModalOpen(false)}
+        onClick={() => {
+          handleClose()
+        }}
         className="p-button-sm"
       />
     </div>
@@ -66,50 +76,44 @@ export const EditMultipleUsersForm = ({
   return (
     <Dialog
       header="Editar Múltiples Perfiles"
-      visible={isModalOpen}
+      visible
       maximizable
       style={{ width: '30vw' }}
       onHide={() => {
-        if (!isModalOpen) return
-        onIsModalOpen(false)
+        handleClose()
       }}
       footer={footer}
     >
       {/* Usuario seleccionado */}
-      <div className="mb-3">
-        <h4>Usuarios:</h4>
-        <DataTable
-          value={usuarios}
-          selectionMode="single"
-          onSelectionChange={(e) => setSelectedUser(e.value)}
-          className="p-datatable-sm"
-        >
-          <Column field="username" header="Usuario" />
-        </DataTable>
-      </div>
+      <div className="mb-3 flex flex-column gap-6">
+        <div>
+          <h4>Usuarios:</h4>
 
-      {/* Perfiles actuales */}
-      {selectedUser && (
-        <div className="mb-3">
-          <h4>Perfiles Actuales:</h4>
           <DataTable
-            value={selectedUser.profiles.map((p) => ({ profiles: p }))}
+            value={selectedUsers}
             className="p-datatable-sm"
+            showGridlines
           >
-            <Column field="profiles" header="Perfil" />
+            <Column field="nombre" header="Usuario" />
+            <Column
+              field="perfiles"
+              header="Perfil"
+              body={(rowData) => formatPerfil(rowData.perfiles)}
+              sortable
+              style={{ width: '50%' }}
+            />
           </DataTable>
         </div>
-      )}
 
-      {/* Selección de nuevo perfil */}
-      <div className="mb-3">
-        <h4>Perfiles:</h4>
-        <Dropdown
-          value={selectedPerfil}
-          options={perfiles}
-          onChange={(e) => setSelectedPerfil(e.value)}
-          placeholder="Seleccione"
-          className="p-dropdown-sm"
+        <FormMultiSelect
+          name="perfiles"
+          label="Perfiles"
+          control={control}
+          errors={errors}
+          options={perfiles?.map((perfil) => ({
+            label: perfil.nombrePerfil,
+            value: perfil.idPerfil,
+          }))}
         />
       </div>
     </Dialog>

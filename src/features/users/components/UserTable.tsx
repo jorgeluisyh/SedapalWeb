@@ -10,11 +10,13 @@ import { InputSwitch } from 'primereact/inputswitch'
 
 interface UserTableProps {
   data: User[]
+  selectedUsers: User[]
+  onsetSelectedUsers: React.Dispatch<React.SetStateAction<User[]>>
   onAddClick: () => void
   onAddExternalClick?: () => void
-  onAddMultipleClick?: () => void
-  onUpdateClick: (users: User | null) => void
-  onDeleteClick: (users: User) => void
+  onEditMultipleUsersClick: () => void
+  onUpdateClick: (user: User | null) => void
+  onDeleteClick: (user: User) => void
   onSwichtClick: (team: User) => void
 }
 
@@ -28,12 +30,14 @@ interface Filters {
 
 export const UserTable = ({
   data,
+  selectedUsers,
   onAddClick,
   onUpdateClick,
   onDeleteClick,
   onAddExternalClick,
-  onAddMultipleClick,
+  onEditMultipleUsersClick,
   onSwichtClick,
+  onsetSelectedUsers,
 }: UserTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -42,7 +46,6 @@ export const UserTable = ({
   })
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
-  const [selectedProducts, setSelectedProducts] = useState<User[]>([])
 
   const onGlobalFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -91,16 +94,19 @@ export const UserTable = ({
 
   return (
     <DataTable
+      dataKey="idUsuario"
+      showGridlines
       selectionMode={'checkbox'}
-      selection={selectedProducts}
-      onSelectionChange={(e) => setSelectedProducts(e.value)}
+      dragSelection
+      selection={selectedUsers}
+      onSelectionChange={(e) => onsetSelectedUsers(e.value)}
       header={
         <UserTableHeader
           globalFilterValue={globalFilterValue}
           onGlobalFilterChange={onGlobalFilterChange}
           onAddClick={onAddClick}
           onAddExternalClick={onAddExternalClick}
-          onAddMultipleClick={onAddMultipleClick}
+          onEditMultipleUsersClick={onEditMultipleUsersClick}
         />
       }
       value={data}
@@ -115,23 +121,22 @@ export const UserTable = ({
     >
       <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
       <Column
-        header="#"
+        header="Nº"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
       <Column
         field="nombre"
         header="Usuario"
-        style={{ width: '30%' }}
+        style={{ width: '10%' }}
         sortable
       />
-      <Column field="perfil" header="Perfil" hidden style={{ width: '25%' }} />
       <Column
         field="perfiles"
         header="Perfil"
         body={(rowData) => formatPerfil(rowData.perfiles)}
         sortable
-        style={{ width: '25%' }}
+        style={{ width: '50%' }}
       />
       <Column
         field="equipo"
@@ -144,13 +149,14 @@ export const UserTable = ({
       <Column
         field="bloqueado"
         header="Bloqueado"
-        style={{ width: '25%' }}
+        style={{ width: '5%' }}
         body={checkedBodyTemplate}
+        bodyStyle={{ textAlign: 'center' }}
       />
       <Column
         body={actionBodyTemplate}
         header="Acciones"
-        style={{ width: '15%' }}
+        style={{ width: '10%' }}
       />
     </DataTable>
   )

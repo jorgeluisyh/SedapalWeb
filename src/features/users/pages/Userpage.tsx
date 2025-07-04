@@ -10,7 +10,8 @@ import {
   deleteUser,
   getUsers,
   postExternalUser,
-  postUser,
+  postLDAPUser,
+  updatePerfilesMultipleUser,
   updateUser,
 } from '../apis/userApi'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
@@ -22,11 +23,13 @@ import type { EditUser } from '../types/editUserType'
 import { getTeams } from '../../teams/apis/teamApi'
 import type { TeamType } from '../../teams/types/teamType'
 import { toEditUser } from '../utils/userToEditUser'
+import type { EditMultipleUsers } from '../types/editMultipleUsersType'
 
 export const Userpage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [users, setUsers] = useState<User[]>([])
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([])
   const [perfiles, setPerfiles] = useState<Profile[]>([])
   const [equipos, setEquipos] = useState<TeamType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,6 +37,10 @@ export const Userpage = () => {
   const [isModalOpenMultiple, setIsModalOpenMultiple] = useState(false)
   const [selectedUser, setselectedUser] = useState<User | null>(null)
   const handleCloseUpdateForm = () => setselectedUser(null)
+  const handleCloseUpdateFormMultiple = () => {
+    setSelectedUsers([])
+    setIsModalOpenMultiple(false)
+  }
 
   const handleCreateNewExternalUser = async (user: UserExterno) => {
     console.log(user)
@@ -60,8 +67,28 @@ export const Userpage = () => {
     })
   }
 
-  const handleEditMultipleUsers = async (users: User) => {
-    console.log(users)
+  const handleEditMultipleUsers = async (multipleusers: EditMultipleUsers) => {
+    confirmDialog({
+      message: '¿Estás seguro de que deseas actualizar los perfiles?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      accept: async () => {
+        const response = await updatePerfilesMultipleUser(multipleusers)
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Confirmación',
+          detail: 'Servicio agregado correctamente',
+          life: 3000,
+        })
+        setRefresh(!refresh)
+        console.log(response.message)
+      },
+      reject: () => {
+        console.log('No se envió el servicio')
+      },
+    })
   }
 
   const handleSwitchUser = async (user: User) => {
@@ -82,7 +109,7 @@ export const Userpage = () => {
     console.log('Se modificó el usuario ')
   }
 
-  const handleCreateService = async (user: User) => {
+  const handleCreateLDAPUser = async (user: User) => {
     confirmDialog({
       message: '¿Estás seguro de que deseas enviar el servicio?',
       header: 'Confirmación',
@@ -90,7 +117,8 @@ export const Userpage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await postUser(user)
+        debugger
+        const response = await postLDAPUser(user)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -176,23 +204,26 @@ export const Userpage = () => {
       <Card title="Usuarios">
         <UserTable
           data={users}
-          // onAddClick={() => setIsModalOpen(true)}
+          selectedUsers={selectedUsers}
+          onsetSelectedUsers={setSelectedUsers}
           onAddClick={() => {
             setIsModalOpen(true)
           }}
-          onUpdateClick={(users: User | null) => {
-            setselectedUser(users)
+          onUpdateClick={(user: User | null) => {
+            setselectedUser(user)
           }}
-          onDeleteClick={(users: User) => handleDeleteService(users)}
+          onDeleteClick={(user: User) => handleDeleteService(user)}
           onAddExternalClick={() => setIsModalOpenExternal(true)}
-          onAddMultipleClick={() => setIsModalOpenMultiple(true)}
+          onEditMultipleUsersClick={() => setIsModalOpenMultiple(true)}
           onSwichtClick={(user: User) => handleSwitchUser(user)}
         />
       </Card>
       <NewUserForm
+        perfiles={perfiles}
+        equipos={equipos}
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
-        onSubmit={handleCreateService}
+        onSubmit={handleCreateLDAPUser}
         onHide={() => console.log('Modal hidden')} // Add this prop
       />
       {selectedUser && (
@@ -211,14 +242,15 @@ export const Userpage = () => {
         isModalOpen={isModalOpenExternal}
         onIsModalOpen={setIsModalOpenExternal}
         onSubmit={handleCreateNewExternalUser}
-        onHide={() => console.log('Modal hidden')} // Add this prop
       />
-      <EditMultipleUsersForm
-        isModalOpen={isModalOpenMultiple}
-        onIsModalOpen={setIsModalOpenMultiple}
-        onSubmit={handleEditMultipleUsers}
-        onHide={() => console.log('Modal hidden')} // Add this prop
-      />
+      {selectedUsers.length > 0 && isModalOpenMultiple && (
+        <EditMultipleUsersForm
+          handleClose={handleCloseUpdateFormMultiple}
+          selectedUsers={selectedUsers}
+          perfiles={perfiles}
+          onSubmit={handleEditMultipleUsers}
+        />
+      )}
     </>
   )
 }
