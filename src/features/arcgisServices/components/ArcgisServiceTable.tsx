@@ -70,6 +70,7 @@ export const ArcgisServiceTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <ArcgisServiceTableHeader
           globalFilterValue={globalFilterValue}

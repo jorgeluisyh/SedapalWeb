@@ -68,6 +68,7 @@ export const ProfileTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <ProfileTableHeader
           globalFilterValue={globalFilterValue}

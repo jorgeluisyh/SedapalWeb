@@ -36,7 +36,7 @@ export const NewUserForm = ({
     formState: { errors, isValid },
   } = useForm<User>({ mode: 'onBlur' })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
+  const [_usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
 
   const onSubmitNewProduct = async (data: User) => {
     debugger

@@ -68,6 +68,7 @@ export const MapTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <MapTableHeader
           globalFilterValue={globalFilterValue}

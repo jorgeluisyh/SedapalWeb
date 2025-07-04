@@ -89,6 +89,7 @@ export const TeamTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <TeamTableHeader
           globalFilterValue={globalFilterValue}

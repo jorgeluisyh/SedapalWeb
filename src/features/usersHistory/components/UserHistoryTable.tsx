@@ -59,6 +59,7 @@ export const UserHistoryTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <UserHistoryTableHeader
           globalFilterValue={globalFilterValue}

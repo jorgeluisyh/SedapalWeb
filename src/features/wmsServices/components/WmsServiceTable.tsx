@@ -68,6 +68,7 @@ export const WmsServiceTable = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <WmsServiceTableHeader
           globalFilterValue={globalFilterValue}
