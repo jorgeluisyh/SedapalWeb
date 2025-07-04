@@ -1,11 +1,13 @@
+import type { Profile } from "../../profiles/types/profileType"
+
 export interface User {
   idUsuario: number
-  nombre?: string
+  nombre: string
   idEquipo?: number
   tipo?: number
   bloqueado: number
   admin?: number
-  perfil?: string
+  perfiles: Profile[]
   equipo?: string
   tipoUsuario?: string
 }

@@ -6,7 +6,7 @@ import type { UpdateTeamType } from "../types/updateTeamType";
 import type { CentersType } from "../types/centersType";
 
 
-export const getTeam = async (): Promise<TeamType[]> => {
+export const getTeams = async (): Promise<TeamType[]> => {
     const response = await axiosInstance.get("/api/Equipos");
     return response.data;
 }

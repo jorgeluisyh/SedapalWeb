@@ -6,7 +6,7 @@ import { NewTeamForm } from '../components/NewTeamForm'
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import {
   deleteTeam,
-  getTeam,
+  getTeams,
   postTeam,
   updateTeam,
   getAreas,
@@ -27,26 +27,6 @@ export const TeamPage = () => {
   const [refresh, setRefresh] = useState(false)
   const [team, setTeam] = useState<TeamType[]>([])
   const [selectedTeam, setselectedTeam] = useState<TeamType | null>(null)
-
-  // const data = [
-  //   {
-  //     idEquipo: 1,
-  //     nombre: 'EA-C',
-  //     correo: 'http://sigcap.no-ip.org:8082/geoserver/wms',
-  //     descripcion: 'Servicio WMS SIGCAP',
-  //     gerencia: 'Gerencia 1',
-  //     centroServicio: 'Centro Servicio 1',
-  //   },
-  //   {
-  //     idEquipo: 2,
-  //     nombre: 'EA-N',
-  //     correo:
-  //       'http://websig.senamhi.gob.pe/wms/?wms=WMS_CLASIFICACION_CLIMATICA',
-  //     descripcion: 'Servicio WMS GEOSERVIDOR',
-  //     gerencia: 'Gerencia 2',
-  //     centroServicio: 'Centro Servicio 2',
-  //   },
-  // ]
 
   // Función de transformación
   const toEquipoApi = (raw: TeamType): UpdateTeamType => ({
@@ -157,58 +137,12 @@ export const TeamPage = () => {
     console.log('Se modificó el equipo ' + teamType.nombre)
   }
 
-  // const team1 = [
-  //   {
-  //     idEquipo: 1,
-  //     nombre: 'Equipo A',
-  //     correo: 'equipoA@empresa.com',
-  //     descripcion: 'Equipo encargado del soporte técnico.',
-  //     bloqueado: 0,
-  //     gerencia: 'Gerencia de TI',
-  //     idGerencia: 101,
-  //     centroServicio: 'Centro 1',
-  //   },
-  //   {
-  //     idEquipo: 2,
-  //     nombre: 'Equipo B',
-  //     correo: 'equipoB@empresa.com',
-  //     descripcion: 'Equipo encargado del desarrollo de software.',
-  //     bloqueado: 1,
-  //     gerencia: 'Gerencia de Desarrollo',
-  //     idGerencia: 102,
-  //     centroServicio: 'Centro 2',
-  //   },
-  //   {
-  //     idEquipo: 3,
-  //     nombre: 'Equipo C',
-  //     correo: 'equipoC@empresa.com',
-  //     descripcion: 'Equipo encargado de la administración de bases de datos.',
-  //     bloqueado: 0,
-  //     gerencia: 'Gerencia de Infraestructura',
-  //     idGerencia: 103,
-  //     centroServicio: 'Centro 3',
-  //   },
-  //   {
-  //     idEquipo: 4,
-  //     nombre: 'Equipo D',
-  //     correo: 'equipoD@empresa.com',
-  //     descripcion: 'Equipo encargado de la seguridad informática.',
-  //     bloqueado: 1,
-  //     gerencia: 'Gerencia de Seguridad',
-  //     idGerencia: 104,
-  //     centroServicio: 'Centro 4',
-  //   },
-  // ]
-
   useEffect(() => {
     const fetchTeamsAPIs = async () => {
-      //Llamamos a la API para obtener los equipos
-      const team = await getTeam()
+      const team = await getTeams()
       setTeam(team)
-      //Llamamos a la API para obtener las áreas de gerencias
       const areas = await getAreas()
       setAreas(areas)
-      //Llamamos a la API para obtener los centros de servicio
       const centers = await getCenters()
       setCenters(centers)
     }
@@ -233,8 +167,8 @@ export const TeamPage = () => {
         isModalOpen={isModalOpen}
         onIsModalOpen={setIsModalOpen}
         onSubmit={handleCreateTeam}
-        areas={areas}
-        centers={centers}
+        areas={areas ?? []}
+        centers={centers ?? []}
       />
       {selectedTeam && (
         <UpdateTeamForm
@@ -242,8 +176,8 @@ export const TeamPage = () => {
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateTeam}
           currentService={selectedTeam}
-          areas={areas}
-          centers={centers}
+          areas={areas ?? []}
+          centers={centers ?? []}
         />
       )}
       <ConfirmDialog />

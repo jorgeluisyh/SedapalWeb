@@ -6,6 +6,7 @@ import { UserTableHeader } from './UserTableHeader'
 import type { User } from '../types/userType'
 import { Checkbox, type CheckboxChangeEvent } from 'primereact/checkbox'
 import { Button } from 'primereact/button'
+import type { Profile } from '../../profiles/types/profileType'
 
 interface Props {
   data: User[]
@@ -74,6 +75,13 @@ export const UserTable = ({
     // Realizar la actualización de estado o lo que sea necesario
   }
 
+  const formatPerfil = (profile: Profile) => {
+    if (profile && Array.isArray(profile)) {
+      return profile.map((item) => item.nombrePerfil).join(', ')
+    }
+    return ''
+  }
+
   return (
     <DataTable
       header={
@@ -106,14 +114,11 @@ export const UserTable = ({
         style={{ width: '30%' }}
         sortable
       />
+      <Column field="perfil" header="Perfil" hidden style={{ width: '25%' }} />
       <Column
-        field="perfil"
+        field="perfiles"
         header="Perfil"
-        body={(rowData) =>
-          rowData.perfiles
-            ? rowData.perfiles.map((p: any) => p.nombrePerfil).join(', ')
-            : ''
-        }
+        body={(rowData) => formatPerfil(rowData.perfiles)}
         sortable
         style={{ width: '25%' }}
       />

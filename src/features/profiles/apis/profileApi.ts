@@ -6,7 +6,7 @@ import type { ProfileIns } from "../types/profileInsType";
 
 
 
-export const getProfile = async (): Promise<Profile[]> => {
+export const getProfiles = async (): Promise<Profile[]> => {
     const response = await axiosInstance.get("/api/Perfiles");
     return response.data;
 }

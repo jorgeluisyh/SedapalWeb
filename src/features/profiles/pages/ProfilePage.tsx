@@ -9,7 +9,7 @@ import type {
 import { ProfileTable } from '../components/ProfileTable'
 import { NewProfileForm } from '../components/NewProfileForm'
 import {
-  getProfile,
+  getProfiles,
   postProfile,
   updateProfile,
   deleteProfile,
@@ -175,7 +175,7 @@ export const ProfilePage = () => {
   // ]
   useEffect(() => {
     const fetchAttributes = async () => {
-      const profile = await getProfile()
+      const profile = await getProfiles()
       setProfile(profile)
       const functions = await getFunctions()
       setFunctions(functions)

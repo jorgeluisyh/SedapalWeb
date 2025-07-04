@@ -16,20 +16,23 @@ import {
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import { Toast } from 'primereact/toast'
 import { UpdateUserForm } from '../components/UpdateUserForm'
+import { getProfiles } from '../../profiles/apis/profileApi'
+import type { Profile } from '../../profiles/types/profileType'
+import type { EditUser } from '../types/editUserType'
+import { getTeams } from '../../teams/apis/teamApi'
+import type { TeamType } from '../../teams/types/teamType'
 
 export const Userpage = () => {
   const toast = useRef<Toast>(null)
   const [refresh, setRefresh] = useState(false)
   const [users, setUsers] = useState<User[]>([])
+  const [perfiles, setPerfiles] = useState<Profile[]>([])
+  const [equipos, setEquipos] = useState<TeamType[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpenExternal, setIsModalOpenExternal] = useState(false)
   const [isModalOpenMultiple, setIsModalOpenMultiple] = useState(false)
-  const [selectedService, setselectedService] = useState<User | null>(null)
-  const handleCloseUpdateForm = () => setselectedService(null)
-
-  const handleCreateProduct = async (user: User) => {
-    console.log(user)
-  }
+  const [selectedUser, setselectedUser] = useState<User | null>(null)
+  const handleCloseUpdateForm = () => setselectedUser(null)
 
   const handleCreateNewExternalUser = async (user: UserExterno) => {
     console.log(user)
@@ -68,7 +71,7 @@ export const Userpage = () => {
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await postUsers(user)
+        const response = await postUser(user)
         toast.current?.show({
           severity: 'success',
           summary: 'Confirmación',
@@ -84,15 +87,15 @@ export const Userpage = () => {
     })
   }
 
-  const handleUpdateService = async (user: User) => {
+  const handleUpdateService = async (user: EditUser) => {
     confirmDialog({
-      message: `¿Estás seguro de que deseas editar el servicio : ${user.nombre}?`,
+      message: `¿Estás seguro de que deseas editar el usuario?`,
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí',
       rejectLabel: 'No',
       accept: async () => {
-        const response = await updateUsers(user.idUsuario, user)
+        const response = await updateUser(user)
         handleCloseUpdateForm()
         toast.current?.show({
           severity: 'success',
@@ -105,7 +108,7 @@ export const Userpage = () => {
       },
       reject: () => {
         handleCloseUpdateForm()
-        console.log('No se editó el servicio' + user.nombre)
+        console.log('No se editó el servicio')
       },
     })
   }
@@ -136,37 +139,14 @@ export const Userpage = () => {
     })
   }
 
-  // const data: User[] = [
-  //   {
-  //     idUsuario: 1,
-  //     nombre: 'ACM01',
-  //     perfil: 'EPFPIExternos',
-  //     equipo: 'A', // add a value for team
-  //     tipo: 2, // add a value for type
-  //     bloqueado: 0, // add a value for block
-  //   },
-  //   {
-  //     idUsuario: 2,
-  //     nombre: 'Analisis Comercial',
-  //     perfil: 'EPFPExternos_Calidda ',
-  //     equipo: 'B', // add a value for team
-  //     tipo: 2, // add a value for type
-  //     bloqueado: 0, // add a value for block
-  //   },
-  //   {
-  //     idUsuario: 3,
-  //     nombre: 'Analisis Superficial',
-  //     perfil: 'EPFPExternos_Calidda ',
-  //     equipo: 'B', // add a value for team
-  //     tipo: 2, // add a value for type
-  //     bloqueado: 0, // add a value for block
-  //   },
-  // ]
-
   useEffect(() => {
     const fetchWmsServices = async () => {
       const users = await getUsers()
       setUsers(users)
+      const perfiles = await getProfiles()
+      setPerfiles(perfiles)
+      const equipos = await getTeams()
+      setEquipos(equipos)
     }
     fetchWmsServices()
   }, [refresh])
@@ -182,7 +162,7 @@ export const Userpage = () => {
             setIsModalOpen(true)
           }}
           onUpdateClick={(users: User | null) => {
-            setselectedService(users)
+            setselectedUser(users)
           }}
           onDeleteClick={(users: User) => handleDeleteService(users)}
           onAddExternalClick={() => setIsModalOpenExternal(true)}
@@ -195,16 +175,19 @@ export const Userpage = () => {
         onSubmit={handleCreateService}
         onHide={() => console.log('Modal hidden')} // Add this prop
       />
-      {selectedService && (
+      {selectedUser && (
         <UpdateUserForm
           handleClose={handleCloseUpdateForm}
           onSubmit={handleUpdateService}
-          currentService={selectedService}
+          currentUser={selectedUser}
+          perfiles={perfiles}
+          equipos={equipos}
         />
       )}
       <ConfirmDialog />
       <Toast ref={toast} />
       <NewUserExternalForm
+        perfiles={perfiles}
         isModalOpen={isModalOpenExternal}
         onIsModalOpen={setIsModalOpenExternal}
         onSubmit={handleCreateNewExternalUser}

@@ -2,7 +2,6 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { useForm } from 'react-hook-form'
-import { Dropdown } from 'primereact/dropdown'
 import { useState } from 'react'
 import type { UserExterno } from '../types/newUserExternalType'
 import { FormInput } from '../../../shared/components/form/FormInput'
@@ -10,10 +9,12 @@ import { Divider } from 'primereact/divider'
 import type { UserPortal } from '../types/userPortalType'
 import { validateExternalUserPortal, validateUsuarioBd } from '../apis/userApi'
 import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
+import type { Profile } from '../../profiles/types/profileType'
 // import { NewUserForm } from './NewUserForm';
 
 interface NewUserExternalFormProps {
   isModalOpen: boolean
+  perfiles: Profile[]
   onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   onSubmit: (data: UserExterno) => Promise<void>
   onHide: () => void
@@ -21,6 +22,7 @@ interface NewUserExternalFormProps {
 
 export const NewUserExternalForm = ({
   isModalOpen,
+  perfiles,
   onIsModalOpen,
   onSubmit,
 }: NewUserExternalFormProps) => {
@@ -33,7 +35,6 @@ export const NewUserExternalForm = ({
     mode: 'onBlur',
   })
 
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
   const [usuarioPortal, setUsuarioPortal] = useState<UserPortal | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -72,13 +73,9 @@ export const NewUserExternalForm = ({
     }
   }
 
-  const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-    { label: 'Viewer', value: 'viewer' },
-  ]
-
   const onSubmitNewProduct = async (data: UserExterno) => {
+    data.token = ''
+    data.clave = ''
     await onSubmit(data)
     setUsuarioPortal(null)
     reset()
@@ -175,7 +172,6 @@ export const NewUserExternalForm = ({
             <FormInput
               name="ruc"
               label="Ruc/Dni"
-              placeholder="1044444444"
               control={control}
               errors={errors}
               rules={{ required: 'Ruc o Dni es requerido' }}
@@ -186,6 +182,7 @@ export const NewUserExternalForm = ({
               label="Descripción"
               control={control}
               errors={errors}
+              rules={{ required: 'Descripción es requerida' }}
             />
 
             <FormInput
@@ -193,13 +190,14 @@ export const NewUserExternalForm = ({
               label="Razón Social"
               control={control}
               errors={errors}
+              rules={{ required: 'Nombre de la empresa es requerido' }}
             />
             <FormInput
               name="telefono"
               label="Teléfono"
-              placeholder="999999999"
               control={control}
               errors={errors}
+              rules={{ required: 'Número de teléfono es requerido' }}
             />
 
             <FormInput
@@ -207,6 +205,7 @@ export const NewUserExternalForm = ({
               label="Notas"
               control={control}
               errors={errors}
+              rules={{ required: 'Se requiere agregar notas' }}
             />
             <FormMultiSelect
               name="perfiles"
@@ -214,25 +213,10 @@ export const NewUserExternalForm = ({
               control={control}
               errors={errors}
               options={perfiles?.map((perfil) => ({
-                label: perfil.label,
-                value: perfil.value,
+                label: perfil.nombrePerfil,
+                value: perfil.idPerfil,
               }))}
             />
-
-            {/* Perfiles */}
-            <div className="flex flex-column gap-2 mb-3">
-              <label htmlFor="perfil" className="p-text-bold">
-                Perfiles:
-              </label>
-              <Dropdown
-                id="perfil"
-                value={selectedPerfil}
-                options={perfiles}
-                onChange={(e) => setSelectedPerfil(e.value)}
-                placeholder="Seleccione"
-                className="p-dropdown-sm"
-              />
-            </div>
           </form>
         </>
       )}

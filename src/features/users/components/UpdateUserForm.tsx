@@ -1,57 +1,62 @@
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext'
 import { useForm } from 'react-hook-form'
 import type { User } from '../types/userType'
-import { Dropdown } from 'primereact/dropdown'
-import { useState } from 'react'
+import type { EditUser } from '../types/editUserType'
+import { FormInput } from '../../../shared/components/form/FormInput'
+import { FormMultiSelect } from '../../../shared/components/form/FormMultiSelect'
+import type { Profile } from '../../profiles/types/profileType'
+import type { TeamType } from '../../teams/types/teamType'
+import { FormDropdown } from '../../../shared/components/form/FormDropdown'
 
 interface UpdateUserFormProps {
-  // isModalOpen: boolean
-  // onIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  onSubmit: (data: User) => Promise<void>
-  // onHide: () => void
+  onSubmit: (data: EditUser) => Promise<void>
   handleClose: () => void
-  currentService: User
+  currentUser: User
+  perfiles: Profile[]
+  equipos: TeamType[]
 }
 
 export const UpdateUserForm = ({
   // isModalOpen,
-  currentService,
+  currentUser,
+  perfiles,
+  equipos,
   handleClose,
-  // onIsModalOpen,
   onSubmit,
 }: UpdateUserFormProps) => {
-  const { handleSubmit, reset } = useForm<User>({
-    mode: 'onBlur',
-    defaultValues: currentService,
+  const toEditUser = (raw: User): EditUser => ({
+    idUsuario: raw.idUsuario,
+    nombre: raw.nombre,
+    idEquipo: raw.idEquipo ?? 1,
+    bloqueado: raw.bloqueado,
+    perfiles: Array.isArray(raw.perfiles)
+      ? raw.perfiles.map((perfil: Profile) => perfil.idPerfil)
+      : [],
   })
 
-  // const [searchValue, setSearchValue] = useState('')
-  const [selectedUser, setSelectedUser] = useState<any>(null)
-  const [selectedPerfil, setSelectedPerfil] = useState<string | null>(null)
-  const [selectedEquipo, setSelectedEquipo] = useState<string | null>(null)
-  const onSubmitNewProduct = async (data: User) => {
+  const formatedCurrentUser: EditUser = toEditUser(currentUser)
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<EditUser>({
+    mode: 'onBlur',
+    defaultValues: formatedCurrentUser,
+  })
+
+  const onSubmitNewProduct = async (data: EditUser) => {
     await onSubmit(data)
     reset()
   }
 
-  // Aquí deberías cargar los resultados del LDAP
-  const perfiles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Editor', value: 'editor' },
-  ]
-  const equipos = [
-    { label: 'Equipo A', value: 'a' },
-    { label: 'Equipo B', value: 'b' },
-  ]
   const footer = (
     <div className="flex justify-content-end gap-2">
       <Button
-        label="Agregar"
+        label="Guardar cambios"
         icon="pi pi-check"
-        onClick={() => console.log('Agregar usuario')}
-        disabled={!selectedUser || !selectedPerfil || !selectedEquipo}
+        onClick={handleSubmit(onSubmitNewProduct)}
         className="p-button-sm p-button-primary"
       />
       <Button
@@ -65,6 +70,7 @@ export const UpdateUserForm = ({
       />
     </div>
   )
+
   return (
     <Dialog
       header="Agregar Usuario"
@@ -78,47 +84,38 @@ export const UpdateUserForm = ({
     >
       <form onSubmit={handleSubmit(onSubmitNewProduct)}>
         {/* Datos del nuevo usuario */}
-        <div className="mb-3">
-          <h4>Datos específicos del nuevo usuario</h4>
-          <div className="grid">
-            <div className="col-4 flex align-items-center ">
-              Usuario Seleccionado:
-            </div>
-            <div className="col-8">
-              <InputText
-                value={selectedUser?.usuario || ''}
-                disabled
-                style={{ width: '100%' }}
-              />
-            </div>
-
-            <div className="col-4 flex align-items-center p-mb-2">
-              Perfiles:
-            </div>
-            <div className="col-8">
-              <Dropdown
-                value={selectedPerfil}
-                options={perfiles}
-                onChange={(e) => setSelectedPerfil(e.value)}
-                placeholder="Seleccione"
-                className="p-dropdown-sm"
-                style={{ width: '100%' }}
-              />
-            </div>
-
-            <div className="col-4 flex align-items-center p-mb-2">Equipos:</div>
-            <div className="col-8">
-              <Dropdown
-                value={selectedEquipo}
-                options={equipos}
-                onChange={(e) => setSelectedEquipo(e.value)}
-                placeholder="Seleccione"
-                className="p-dropdown-sm"
-                style={{ width: '100%' }}
-              />
-            </div>
-          </div>
-        </div>
+        <FormInput
+          name="nombre"
+          label="Nombre:"
+          disabled
+          control={control}
+          errors={errors}
+          rules={{ required: 'Ingrese nombre del equipo' }}
+        />
+        <FormMultiSelect
+          name="perfiles"
+          label="Perfiles"
+          control={control}
+          errors={errors}
+          options={perfiles?.map((perfil) => ({
+            label: perfil.nombrePerfil,
+            value: perfil.idPerfil,
+          }))}
+        />
+        <FormDropdown
+          name="idEquipo"
+          label="Equipo:"
+          control={control}
+          errors={errors}
+          options={
+            equipos?.map((equipo) => ({
+              label: equipo.nombre,
+              value: equipo.idEquipo,
+            })) ?? []
+          }
+          rules={{ required: 'Defina la Gerencia' }} // Puedes agregar reglas como required, minLength, etc.
+          placeholder="Seleccione una generencia"
+        />
       </form>
     </Dialog>
   )

@@ -3,6 +3,7 @@ import { axiosInstance } from "../../../shared/http/axiosInstance";
 import type { UserExterno } from "../types/newUserExternalType";
 import type { UserPortal } from "../types/userPortalType";
 import type { User } from "../types/userType";
+import type { EditUser } from "../types/editUserType";
 
 
 export const getUsers = async (): Promise<User[]> => {
@@ -19,11 +20,10 @@ export const postExternalUser = async (data: UserExterno) => {
     const response = await axiosInstance.post("/api/Usuarios/UsuarioExterno", data);
     return response.data;
 }
-export const updateUser = async (id: number, data: User) => {
-    const response = await axiosInstance.put(`/api/Usuarios/${id}`, data);
+export const updateUser = async (data: EditUser) => {
+    const response = await axiosInstance.put(`/api/Usuarios`, data);
     return response.data;
 }
-
 export const deleteUser = async (id: number) => {
     const response = await axiosInstance.delete(`/api/Usuarios/${id}`);
     return response.data;
