@@ -3,13 +3,13 @@ import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
 import { useState, type ChangeEvent } from 'react'
 import { UserHistoryTableHeader } from './UserHistoryTableHeader'
-import type { UserHistoryType } from '../types/userHistoryType'
 import { Button } from 'primereact/button'
+import type { User } from '../../users/types/userType'
 
 interface UserHistoryTableProps {
-  data: UserHistoryType[]
+  data: User[]
   onAddClick: () => void
-  onSelectedFilterClick: (row: UserHistoryType) => void
+  onSelectedFilterClick: (row: User) => void
 }
 
 interface Filter {
@@ -34,7 +34,7 @@ export const UserHistoryTable = ({
 
   const [globalFilterValue, setGlobalFilterValue] = useState('')
 
-  const actionBodyTemplate = (row: UserHistoryType) => {
+  const actionBodyTemplate = (row: User) => {
     return (
       <div className="flex justify-content-center ">
         <Button
@@ -78,7 +78,7 @@ export const UserHistoryTable = ({
       emptyMessage="No existen coincidencias"
     >
       <Column
-        header="#"
+        header="Nº"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />

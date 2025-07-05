@@ -1,13 +1,11 @@
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { FilterMatchMode } from 'primereact/api'
-import { useEffect, useState, type ChangeEvent } from 'react'
+import { useState, type ChangeEvent } from 'react'
 import { UserHistoryTableHeader } from './UserHistoryTableHeader'
 import type { RecordsUserHistoryType } from '../types/recordsUserHistoryType'
-import type { UserHistoryType } from '../types/userHistoryType'
 
-interface UserHistoryTableNoMatchProps {
-  user: UserHistoryType | null
+interface UserHistoryChangesTableProps {
   data: RecordsUserHistoryType[]
   onAddClick: () => void
 }
@@ -20,10 +18,10 @@ interface Filters {
   [key: string]: Filter
 }
 
-export const UserHistoryTableNoMatch = ({
+export const UserHistoryChangesTable = ({
   data,
   onAddClick,
-}: UserHistoryTableNoMatchProps) => {
+}: UserHistoryChangesTableProps) => {
   const [filters, setFilters] = useState<Filters>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     editor: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -42,6 +40,7 @@ export const UserHistoryTableNoMatch = ({
 
   return (
     <DataTable
+      showGridlines
       header={
         <UserHistoryTableHeader
           globalFilterValue={globalFilterValue}
@@ -60,7 +59,7 @@ export const UserHistoryTableNoMatch = ({
       emptyMessage="No existen coincidencias"
     >
       <Column
-        header="#"
+        header="Nº"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />

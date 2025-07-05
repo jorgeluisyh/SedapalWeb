@@ -87,7 +87,7 @@ export const MapTable = ({
       emptyMessage="No existen coincidencias"
     >
       <Column
-        header="#"
+        header="Nº"
         body={(_rowData, { rowIndex }) => rowIndex + 1}
         style={{ width: '5%' }}
       />
